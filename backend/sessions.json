@@ -1,0 +1,26 @@
+[
+  {
+    "id": "1",
+    "movie": "Avatar: O Caminho da Água",
+    "time": "18:00",
+    "date": "2023-10-15",
+    "room": "Sala 1",
+    "availableSeats": 50
+  },
+  {
+    "id": "2",
+    "movie": "Oppenheimer",
+    "time": "20:30",
+    "date": "2023-10-15",
+    "room": "Sala 2",
+    "availableSeats": 30
+  },
+  {
+    "id": "3",
+    "movie": "Barbie",
+    "time": "16:00",
+    "date": "2023-10-16",
+    "room": "Sala 3",
+    "availableSeats": 40
+  }
+]
