@@ -1,10 +1,12 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
+  const router = useRouter();
   const [user, setUser] = useState(undefined);
 
   useEffect(() => {
@@ -23,6 +25,7 @@ export function AuthProvider({ children }) {
   }
 
   function logout() {
+    router.replace("/");
     setUser(null);
   }
 
