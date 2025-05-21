@@ -3,6 +3,7 @@ import "./globals.css";
 
 import AppLayout from "./components/layouts/AppLayout";
 import { Toaster } from "react-hot-toast";
+import { AuthProvider } from "@/src/contexts/AuthContext";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -19,15 +20,17 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={poppins.variable}>
-        <AppLayout>{children}</AppLayout>
-        <Toaster
-          containerStyle={{
-            top: 760,
-            left: 850,
-            bottom: 20,
-            right: 0
-          }}
-        />
+        <AuthProvider>
+          <AppLayout>{children}</AppLayout>
+          <Toaster
+            containerStyle={{
+              top: 760,
+              left: 850,
+              bottom: 20,
+              right: 0
+            }}
+          />
+        </AuthProvider>
       </body>
     </html>
   );

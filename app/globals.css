@@ -37,6 +37,25 @@ body {
   font-family: var(--font-poppins), Arial, Helvetica, sans-serif;
 }
 
+/* Scrollbar customizado */
+::-webkit-scrollbar {
+  width: 10px;
+  background: var(--bg-1);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--bg-3);
+  border-radius: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--text-gray);
+}
+
+/* Firefox */
+* {
+  scrollbar-color: var(--bg-3) var(--bg-1);
+  scrollbar-width: thin;
+}
+
 .bg-primary {
   background-color: var(--bg-1) !important;
 }
