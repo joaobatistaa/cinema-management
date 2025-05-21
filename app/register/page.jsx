@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import HomeIcon from "@mui/icons-material/Home";
@@ -27,7 +26,7 @@ export default function RegisterPage() {
     }
 
     try {
-      const res = await fetch("/api/users", {
+      const res = await fetch("/api/users/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, password })
@@ -37,8 +36,8 @@ export default function RegisterPage() {
         toast.error(data.error || "Erro ao criar conta");
         return;
       }
-      login(data); // faz login automático após registo
-      router.push("/movies");
+      toast.success("Conta criada com sucesso, inicia sessão!");
+      router.push("/login");
     } catch {
       toast.error("Erro ao criar conta");
     }

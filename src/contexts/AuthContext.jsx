@@ -5,16 +5,17 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(undefined);
 
   useEffect(() => {
     const stored = localStorage.getItem("user");
     if (stored) setUser(JSON.parse(stored));
+    else setUser(null);
   }, []);
 
   useEffect(() => {
     if (user) localStorage.setItem("user", JSON.stringify(user));
-    else localStorage.removeItem("user");
+    else if (user === null) localStorage.removeItem("user");
   }, [user]);
 
   function login(userData) {

@@ -1,29 +1,46 @@
 "use client";
 
-import { useEffect } from "react";
-import toast, { Toaster } from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 import HomeIcon from "@mui/icons-material/Home";
 import { useAuth } from "@/src/contexts/AuthContext";
+import { useState } from "react";
 
 export default function LoginPage() {
   const router = useRouter();
   const { login } = useAuth();
+  const [loading, setLoading] = useState(false);
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
 
     const email = e.target.email.value;
     const password = e.target.password.value;
 
-    if (email === "admin@admin.com" && password === "admin") {
-      login({ name: "Admin", email, role: "admin" });
-      router.push("/movies");
-    } else if (email === "user@user.com" && password === "user") {
-      login({ name: "User", email, role: "customer" });
-      router.push("/movies");
-    } else {
-      toast.error("Credenciais inválidas");
+    if (!email || !password) {
+      toast.error("Preencha todos os campos");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const res = await fetch("/api/users/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password })
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        toast.error(data.error || "Credenciais inválidas");
+        setLoading(false);
+        return;
+      }
+      login(data);
+      router.push("/home");
+    } catch {
+      toast.error("Erro ao iniciar sessão");
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -53,8 +70,10 @@ export default function LoginPage() {
                 <input
                   type="email"
                   id="email"
+                  name="email"
                   placeholder="email@email.com"
                   className="w-full px-4 py-2 mt-1 border-1 border-white rounded-lg text-gray"
+                  disabled={loading}
                 />
               </div>
 
@@ -68,8 +87,10 @@ export default function LoginPage() {
                 <input
                   type="password"
                   id="password"
+                  name="password"
                   placeholder="********"
                   className="w-full px-4 py-2 mt-1 border-1 border-white rounded-lg text-gray"
+                  disabled={loading}
                 />
                 <div className="mt-2 text-left">
                   <a
@@ -83,9 +104,10 @@ export default function LoginPage() {
 
               <button
                 type="submit"
-                className="w-full py-3 bg-quaternary hover:bg-red-900  text-sm font-bold tracking-wider text-white rounded-lg mt-5 cursor-pointer"
+                className="w-full py-3 bg-quaternary hover:bg-red-900 text-sm font-bold tracking-wider text-white rounded-lg mt-5 cursor-pointer"
+                disabled={loading}
               >
-                INICIAR SESSÃO
+                {loading ? "A ENTRAR..." : "INICIAR SESSÃO"}
               </button>
             </form>
             <p className="text-center text-sm text-white mt-4">

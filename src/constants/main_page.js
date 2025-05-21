@@ -11,5 +11,14 @@ export const Constants = {
   ],
   LOGIN_IN_TEXT:
     "Inicie sessão para aceder às funcionalidades completas e tirar o máximo partido da sua experiência no cinema.",
-  LAST_TEXT: "Se ainda não tem conta, crie uma em poucos segundos!"
+  LAST_TEXT: "Se ainda não tem conta, crie uma em poucos segundos!",
+
+  HOME_BUTTONS: [
+    { label: "Salas", path: "/rooms", permission: "viewRooms" },
+    { label: "Filmes", path: "/movies", permission: "viewMovies" },
+    { label: "Sessões", path: "/sessions", permission: "viewSessions" },
+    { label: "Bilhetes", path: "/tickets", permission: "viewTickets" },
+    { label: "Bar", path: "/bar", permission: "viewBar" },
+    { label: "Consultas", path: "/consultas", permission: "viewConsultas" }
+  ]
 };
