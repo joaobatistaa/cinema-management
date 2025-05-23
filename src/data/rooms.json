@@ -1,0 +1,332 @@
+[
+  {
+    "id": 2,
+    "name": "teste 2",
+    "soundType": "Dolby Atmos",
+    "videoType": "2K",
+    "seats": [
+      [
+        0,
+        null,
+        0
+      ],
+      [
+        0,
+        1,
+        0
+      ]
+    ]
+  },
+  {
+    "id": 3,
+    "name": "teste 3",
+    "soundType": "Dolby Atmos",
+    "videoType": "2K",
+    "seats": [
+      [
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "id": 4,
+    "name": "teste 4",
+    "soundType": "Dolby Atmos",
+    "videoType": "2K",
+    "seats": [
+      [
+        0,
+        0,
+        null,
+        1
+      ],
+      [
+        0,
+        0,
+        0,
+        1
+      ],
+      [
+        1,
+        0,
+        1,
+        0
+      ]
+    ]
+  },
+  {
+    "id": 5,
+    "name": "teste 5",
+    "soundType": "Dolby Atmos",
+    "videoType": "2K",
+    "seats": [
+      [
+        0,
+        0,
+        null,
+        1
+      ],
+      [
+        0,
+        0,
+        0,
+        1
+      ],
+      [
+        1,
+        0,
+        1,
+        0
+      ]
+    ]
+  },
+  {
+    "id": 6,
+    "name": "teste 6",
+    "soundType": "Dolby Atmos",
+    "videoType": "2K",
+    "seats": [
+      [
+        0,
+        1,
+        0,
+        0
+      ],
+      [
+        0,
+        1,
+        0,
+        0
+      ],
+      [
+        0,
+        1,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "id": 7,
+    "name": "teste 7",
+    "soundType": "Dolby Atmos",
+    "videoType": "2K",
+    "seats": [
+      [
+        0,
+        1,
+        0,
+        0
+      ],
+      [
+        0,
+        1,
+        0,
+        0
+      ],
+      [
+        0,
+        1,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "id": 8,
+    "name": "teste",
+    "soundType": "Dolby Atmos",
+    "videoType": "2K",
+    "seats": [
+      [
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "id": 9,
+    "name": "teste22",
+    "soundType": "Dolby Atmos",
+    "videoType": "2K",
+    "seats": [
+      [
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "id": 10,
+    "name": "testeteste",
+    "soundType": "Dolby Atmos",
+    "videoType": "2K",
+    "seats": [
+      [
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "id": 11,
+    "name": "testeteste2",
+    "soundType": "Dolby Atmos",
+    "videoType": "2K",
+    "seats": [
+      [
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "id": 14,
+    "name": "assafafa",
+    "soundType": "Dolby Atmos",
+    "videoType": "2K",
+    "seats": [
+      [
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "id": 15,
+    "name": "ssasada",
+    "soundType": "Dolby Atmos",
+    "videoType": "2K",
+    "seats": [
+      [
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "id": 16,
+    "name": "terassaf",
+    "soundType": "Dolby Atmos",
+    "videoType": "2K",
+    "seats": [
+      [
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0
+      ]
+    ]
+  }
+]

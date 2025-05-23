@@ -6,15 +6,26 @@ export const ROLES = {
 };
 
 export const PERMISSIONS = {
-  viewMovies: [ROLES.GUEST, ROLES.CUSTOMER, ROLES.EMPLOYEE, ROLES.ADMIN],
   buyTickets: [ROLES.CUSTOMER, ROLES.EMPLOYEE, ROLES.ADMIN],
+  // FILMES
+  viewMovies: [ROLES.GUEST, ROLES.CUSTOMER, ROLES.EMPLOYEE, ROLES.ADMIN],
   createMovies: [ROLES.ADMIN],
   updateMovies: [ROLES.ADMIN],
-  viewRooms: [ROLES.EMPLOYEE, ROLES.ADMIN],
-  viewSessions: [ROLES.EMPLOYEE, ROLES.ADMIN],
+
+  // SALAS
+  viewRooms: [ROLES.ADMIN],
+
+  //SESSÕES
+  viewSessions: [ROLES.CUSTOMER, ROLES.EMPLOYEE, ROLES.ADMIN],
+
+  // BILHETES
   viewTickets: [ROLES.CUSTOMER, ROLES.EMPLOYEE, ROLES.ADMIN],
-  viewBar: [ROLES.EMPLOYEE, ROLES.ADMIN],
-  viewConsultas: [ROLES.ADMIN]
+
+  // BAR
+  viewBar: [ROLES.ADMIN],
+
+  // CONSULTAS
+  viewConsultas: [ROLES.EMPLOYEE, ROLES.ADMIN]
 };
 
 export function hasPermission(role, permission) {
