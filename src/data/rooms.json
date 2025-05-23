@@ -45,26 +45,26 @@
   },
   {
     "id": 4,
-    "name": "teste 4",
+    "name": "ATUALIZADO",
     "soundType": "Dolby Atmos",
     "videoType": "2K",
     "seats": [
       [
         0,
         0,
+        0,
+        null
+      ],
+      [
+        0,
+        0,
+        0,
+        null
+      ],
+      [
         null,
-        1
-      ],
-      [
         0,
-        0,
-        0,
-        1
-      ],
-      [
-        1,
-        0,
-        1,
+        null,
         0
       ]
     ]
@@ -228,32 +228,6 @@
   {
     "id": 11,
     "name": "testeteste2",
-    "soundType": "Dolby Atmos",
-    "videoType": "2K",
-    "seats": [
-      [
-        0,
-        0,
-        0,
-        0
-      ],
-      [
-        0,
-        0,
-        0,
-        0
-      ],
-      [
-        0,
-        0,
-        0,
-        0
-      ]
-    ]
-  },
-  {
-    "id": 14,
-    "name": "assafafa",
     "soundType": "Dolby Atmos",
     "videoType": "2K",
     "seats": [

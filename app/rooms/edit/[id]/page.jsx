@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import { useRouter, useParams } from "next/navigation";
 import SaveIcon from "@mui/icons-material/Save";
 import { CircularProgress } from "@mui/material";
 import toast from "react-hot-toast";
@@ -17,20 +17,47 @@ import {
 } from "@/components/ui/select";
 import { SOUND_TYPES, VIDEO_TYPES } from "@/src/constants/rooms";
 
-export default function NewRoomPage() {
+const EditRoomPage = () => {
   const router = useRouter();
+  const { id } = useParams();
   const [name, setName] = useState("");
   const [soundType, setSoundType] = useState(SOUND_TYPES[0]);
   const [videoType, setVideoType] = useState(VIDEO_TYPES[0]);
   const [rows, setRows] = useState(3);
   const [cols, setCols] = useState(4);
-  const [seats, setSeats] = useState(
-    Array.from(
-      { length: 3 },
-      () => Array.from({ length: 4 }, () => 0) // 0: normal, 1: accessible, null: sem cadeira
-    )
-  );
+  const [seats, setSeats] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    async function fetchRoom() {
+      try {
+        const res = await fetch(`/api/rooms/${id}`);
+        if (!res.ok) {
+          const errorData = res.headers
+            .get("Content-Type")
+            ?.includes("application/json")
+            ? await res.json()
+            : { message: "Erro ao carregar sala" };
+          throw new Error(errorData.message);
+        }
+
+        const data = await res.json();
+        setName(data.name);
+        setSoundType(data.soundType);
+        setVideoType(data.videoType);
+        setRows(data.seats.length);
+        setCols(data.seats[0]?.length || 0);
+        setSeats(data.seats);
+        setLoading(false);
+      } catch (err) {
+        toast.error(err.message || "Erro ao carregar sala");
+        router.replace("/rooms");
+      }
+    }
+
+    fetchRoom();
+  }, [id, router]);
 
   function handleRowsChange(e) {
     const value = Math.max(1, Number(e.target.value));
@@ -86,8 +113,8 @@ export default function NewRoomPage() {
     e.preventDefault();
     setSaving(true);
     try {
-      const res = await fetch("/api/rooms", {
-        method: "POST",
+      const res = await fetch(`/api/rooms/${id}`, {
+        method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name,
@@ -97,19 +124,30 @@ export default function NewRoomPage() {
         })
       });
 
-      const data = res.headers.get("Content-Type")?.includes("application/json")
-        ? await res.json()
-        : { message: "Erro ao criar sala" };
+      if (!res.ok) {
+        const errorData = res.headers
+          .get("Content-Type")
+          ?.includes("application/json")
+          ? await res.json()
+          : { message: "Erro ao editar sala" };
+        throw new Error(errorData.message);
+      }
 
-      if (!res.ok) throw new Error(data.message);
-
+      toast.success("Sala editada com sucesso!");
       router.replace("/rooms");
-      toast.success("Sala criada com sucesso!");
     } catch (err) {
-      toast.error(err.message || "Erro ao criar sala");
+      toast.error(err.message || "Erro ao editar sala");
     } finally {
       setSaving(false);
     }
+  }
+
+  if (loading) {
+    return (
+      <div className="flex flex-1 items-center justify-center h-full w-full">
+        <CircularProgress color="error" size={100} />
+      </div>
+    );
   }
 
   return (
@@ -126,7 +164,7 @@ export default function NewRoomPage() {
           </div>
           <div className="flex-1 flex justify-center">
             <h1 className="text-4xl font-semibold text-white text-center tracking-wider whitespace-nowrap overflow-hidden text-ellipsis">
-              NOVA SALA
+              EDITAR SALA
             </h1>
           </div>
           <div className="w-40 flex-shrink-0" />
@@ -339,7 +377,7 @@ export default function NewRoomPage() {
                 className="mt-2 bg-quaternary text-white px-40 py-2 rounded-lg font-bold flex items-center justify-center tracking-wider cursor-pointer"
               >
                 <SaveIcon className="mr-2" />
-                {saving ? "A GUARDAR..." : "CRIAR A SALA"}
+                {saving ? "A GUARDAR..." : "GUARDAR ALTERAÇÕES"}
               </button>
             </div>
           </form>
@@ -347,4 +385,6 @@ export default function NewRoomPage() {
       </div>
     </div>
   );
-}
+};
+
+export default EditRoomPage;

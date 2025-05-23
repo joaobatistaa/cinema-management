@@ -10,8 +10,6 @@ export default function AuthGuard({ children }) {
   const [checked, setChecked] = useState(false);
 
   useEffect(() => {
-    if (user === undefined) return;
-
     if (user && (pathname === "/" || pathname === "/login")) {
       router.replace("/home");
       return;
@@ -40,10 +38,6 @@ export default function AuthGuard({ children }) {
         <CircularProgress color="error" />
       </div>
     );
-  }
-
-  if (!checked) {
-    return null;
   }
 
   return children;

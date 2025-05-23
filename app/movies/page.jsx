@@ -27,12 +27,17 @@ export default function Movies() {
         setLoading(true);
         const response = await fetch("/api/movies");
         if (!response.ok) {
-          throw new Error("Erro ao carregar os filmes.");
+          const errorData = response.headers
+            .get("Content-Type")
+            ?.includes("application/json")
+            ? await response.json()
+            : { message: "Erro ao carregar os filmes." };
+          throw new Error(errorData.message);
         }
         const data = await response.json();
         setMovies(data);
       } catch (error) {
-        toast.error(error.message);
+        toast.error(error.message || "Erro ao carregar os filmes.");
       } finally {
         setLoading(false);
       }

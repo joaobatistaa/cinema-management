@@ -8,13 +8,16 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import toast from "react-hot-toast";
 import { CircularProgress } from "@mui/material";
+import { useAuth } from "@/src/contexts/AuthContext";
 
 const ITEMS_PER_PAGE = 11;
 
 export default function RoomsManagement() {
   const router = useRouter();
+  const { pageLoaging } = useAuth();
   const [page, setPage] = useState(1);
   const [saving, setSaving] = useState(false);
 
@@ -51,11 +54,19 @@ export default function RoomsManagement() {
     }
   }
 
+  if (saving) {
+    return (
+      <div className="flex flex-1 items-center justify-center h-full w-full">
+        <CircularProgress color="error" size={100} />
+      </div>
+    );
+  }
+
   return (
     <div className="h-full w-full flex flex-col">
       <div className="relative w-full flex-1 flex flex-col">
-        <div className="flex flex-col px-8 pt-6 pb-2 w-full">
-          <div className="flex items-center pt-6 w-full">
+        <div className="flex flex-col px-8 pt-6 w-full mb-4">
+          <div className="flex items-center w-full">
             <div className="w-40 flex-shrink-0">
               <button
                 className="bg-quinary text-lg text-white px-6 py-3 rounded font-medium cursor-pointer"
@@ -96,10 +107,21 @@ export default function RoomsManagement() {
                   return (
                     <div
                       key={room.id}
-                      className="bg-secondary rounded-xl flex flex-col items-center justify-center h-35 w-full max-w-xs mx-auto text-primary text-xl font-semibold cursor-pointer"
+                      className="bg-secondary rounded-xl flex flex-col justify-between h-35 w-full max-w-xs mx-auto text-primary text-xl font-semibold p-4"
                     >
-                      <span className="mb-2 text-info">{room.name}</span>
-                      <div className="flex gap-2">
+                      <span className="text-white text-lg text-center">
+                        {room.name}
+                      </span>
+                      <div className="flex justify-center gap-2 mt-auto">
+                        <button
+                          className="bg-info text-white py-1 px-3 rounded-md cursor-pointer"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            router.push(`/rooms/view/${room.id}`);
+                          }}
+                        >
+                          <VisibilityIcon fontSize="small" />
+                        </button>
                         <button
                           className="bg-quinary text-white py-1 px-3 rounded-md cursor-pointer"
                           onClick={(e) => {
@@ -124,7 +146,7 @@ export default function RoomsManagement() {
                 }
               })}
             </div>
-            <div className="flex justify-center mt-8 items-center space-x-2">
+            <div className="flex justify-center mt-10 items-center space-x-2">
               <button
                 className="px-3 py-3 rounded bg-secondary text-white disabled:opacity-50 cursor-pointer flex items-center justify-center"
                 onClick={() => setPage((p) => Math.max(1, p - 1))}
