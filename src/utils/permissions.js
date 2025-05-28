@@ -15,14 +15,11 @@ export const PERMISSIONS = {
   // SALAS
   viewRooms: [ROLES.ADMIN],
 
-  //SESSÕES
-  viewSessions: [ROLES.CUSTOMER, ROLES.EMPLOYEE, ROLES.ADMIN],
-
   // BILHETES
   viewTickets: [ROLES.CUSTOMER, ROLES.EMPLOYEE, ROLES.ADMIN],
 
   // BAR
-  viewBar: [ROLES.ADMIN],
+  viewBar: [ROLES.ADMIN, ROLES.CUSTOMER, ROLES.EMPLOYEE],
 
   // CONSULTAS
   viewConsultas: [ROLES.EMPLOYEE, ROLES.ADMIN]
