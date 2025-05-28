@@ -48,7 +48,7 @@ export default function Movies() {
   const paginatedMovies = movies.slice((page - 1) * pageSize, page * pageSize);
 
   return (
-    <div className="min-h-screen w-full flex flex-col">
+    <div className="h-full w-full flex flex-col">
       <div className="relative w-full flex-1 flex flex-col">
         <div className="grid grid-cols-3 items-center px-8 pt-6 pb-2">
           <div>

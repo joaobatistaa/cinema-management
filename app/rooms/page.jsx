@@ -12,6 +12,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import toast from "react-hot-toast";
 import { CircularProgress } from "@mui/material";
 import { useAuth } from "@/src/contexts/AuthContext";
+import ConfirmDialog from "@/components/shared/ConfirmDialog";
 
 const ITEMS_PER_PAGE = 11;
 
@@ -20,6 +21,10 @@ export default function RoomsManagement() {
   const { pageLoaging } = useAuth();
   const [page, setPage] = useState(1);
   const [saving, setSaving] = useState(false);
+
+  // Novo estado para o modal de confirmação
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [roomToDelete, setRoomToDelete] = useState(null);
 
   const totalPages = Math.ceil(roomsData.length / ITEMS_PER_PAGE);
 
@@ -36,21 +41,22 @@ export default function RoomsManagement() {
     cards.push(null);
   }
 
+  // Função chamada após confirmação no modal
   async function handleDeleteRoom(roomId) {
-    if (confirm("Tem a certeza que deseja eliminar esta sala?")) {
-      try {
-        setSaving(true);
-        const res = await fetch(`/api/rooms/${roomId}`, {
-          method: "DELETE"
-        });
-        if (!res.ok) throw new Error("Erro ao eliminar a sala.");
-        toast.success("Sala eliminada com sucesso.");
-        router.refresh();
-      } catch (error) {
-        toast.error(error.message || "Erro ao eliminar a sala.");
-      } finally {
-        setSaving(false);
-      }
+    try {
+      setSaving(true);
+      const res = await fetch(`/api/rooms/${roomId}`, {
+        method: "DELETE"
+      });
+      if (!res.ok) throw new Error("Erro ao eliminar a sala.");
+      toast.success("Sala eliminada com sucesso.");
+      router.refresh();
+    } catch (error) {
+      toast.error(error.message || "Erro ao eliminar a sala.");
+    } finally {
+      setSaving(false);
+      setRoomToDelete(null);
+      setConfirmOpen(false);
     }
   }
 
@@ -135,7 +141,8 @@ export default function RoomsManagement() {
                           className="bg-quaternary text-white py-1 px-3 rounded-md cursor-pointer"
                           onClick={(e) => {
                             e.stopPropagation();
-                            handleDeleteRoom(room.id);
+                            setRoomToDelete(room.id);
+                            setConfirmOpen(true);
                           }}
                         >
                           <DeleteIcon fontSize="small" />
@@ -180,6 +187,20 @@ export default function RoomsManagement() {
           </>
         )}
       </div>
+      <ConfirmDialog
+        open={confirmOpen}
+        title="Eliminar Sala"
+        description="Tem a certeza que deseja eliminar esta sala?"
+        onCancel={() => {
+          setConfirmOpen(false);
+          setRoomToDelete(null);
+        }}
+        onConfirm={() => {
+          if (roomToDelete) handleDeleteRoom(roomToDelete);
+        }}
+        confirmText="Eliminar"
+        cancelText="Cancelar"
+      />
     </div>
   );
 }
