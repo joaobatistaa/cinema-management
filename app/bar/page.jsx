@@ -16,7 +16,8 @@ export default function Bar() {
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [quantities, setQuantities] = useState({});
-  const pageSize = 15;
+  const [cart, setCart] = useState([]); // Produtos adicionados ao carrinho
+  const pageSize = 12;
 
   useEffect(() => {
     async function fetchProducts() {
@@ -26,36 +27,77 @@ export default function Bar() {
         if (!response.ok) throw new Error("Erro ao carregar os produtos.");
         const data = await response.json();
         setProducts(data);
-        const initialQuantities = {};
-        data.forEach((product) => {
-          initialQuantities[product.id] = 0;
-        });
-        setQuantities(initialQuantities);
       } catch (error) {
         toast.error(error.message || "Erro ao carregar os produtos.");
       } finally {
         setLoading(false);
       }
     }
+
     fetchProducts();
   }, []);
-
-  const handleQuantityChange = (id, delta) => {
-    setQuantities((prev) => {
-      const newQty = Math.max(0, (prev[id] || 0) + delta);
-      return { ...prev, [id]: newQty };
-    });
-  };
 
   const paginatedProducts = products.slice(
     (page - 1) * pageSize,
     page * pageSize
   );
 
-  const total = products.reduce(
-    (sum, product) => sum + (quantities[product.id] || 0) * product.price,
+  // Atualiza a quantidade de um produto
+  function handleQuantityChange(productId, delta) {
+    setQuantities((prev) => {
+      const newQty = Math.max((prev[productId] || 0) + delta, 0);
+      // Atualiza o carrinho ao mesmo tempo
+      setCart((oldCart) => {
+        const exists = oldCart.find((item) => item.id === productId);
+        if (newQty === 0) {
+          // Remove do carrinho se quantidade for 0
+          return oldCart.filter((item) => item.id !== productId);
+        }
+        if (exists) {
+          // Atualiza quantidade
+          return oldCart.map((item) =>
+            item.id === productId ? { ...item, quantity: newQty } : item
+          );
+        }
+        // Adiciona novo produto ao carrinho
+        const product = products.find((p) => p.id === productId);
+        if (product) {
+          return [...oldCart, { ...product, quantity: newQty }];
+        }
+        return oldCart;
+      });
+      return { ...prev, [productId]: newQty };
+    });
+  }
+
+  // Total da compra (usando o carrinho)
+  const total = cart.reduce(
+    (sum, item) => sum + (Number(item.price) || 0) * (item.quantity || 0),
     0
   );
+
+  // Função para criar uma nova transação
+  async function handleBuy() {
+    if (total === 0) return;
+    try {
+      const response = await fetch("/api/transactions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          items: cart,
+          total,
+          user: user?.id || null,
+          date: new Date().toISOString(),
+        }),
+      });
+      if (!response.ok) throw new Error("Erro ao registar transação.");
+      toast.success("Compra efetuada!");
+      setQuantities({});
+      setCart([]);
+    } catch (err) {
+      toast.error(err.message || "Erro ao registar transação.");
+    }
+  }
 
   return (
     <div className="h-full w-full flex flex-col">
@@ -85,42 +127,33 @@ export default function Bar() {
             )}
           </div>
         </div>
-
         {loading ? (
           <div className="flex justify-center items-center h-[400px]">
             <span className="text-white">Carregando...</span>
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-5 gap-4 mb-8">
+            <div className="grid grid-cols-4 grid-rows-3 gap-4 mb-4 p-8">
               {paginatedProducts.map((product) => (
                 <div
                   key={product.id}
                   className="bg-[#1f1f2e] rounded-lg p-4 text-white text-center shadow"
+                  style={{ height: "140px", overflowY: "auto" }}
                 >
-                  <div className="w-full h-24 flex justify-center items-center mb-2">
-                    <Image
-                      src={product.image || "/placeholder.png"}
-                      alt={product.name}
-                      width={80}
-                      height={80}
-                      className="object-contain max-h-full"
-                    />
-                  </div>
                   <h3 className="font-bold">{product.name}</h3>
                   <p className="text-orange-400">Stock: {product.stock}</p>
-                  <p className="text-green-400">{product.price.toFixed(2)} €</p>
+                  <p className="text-green-400">{product.price} €</p>
                   <div className="flex justify-center items-center gap-2 mt-2">
                     <button
                       onClick={() => handleQuantityChange(product.id, -1)}
-                      className="bg-red-500 rounded-full px-2 text-white text-lg"
+                      className="bg-red-500 rounded-full px-2 text-white text-lg cursor-pointer"
                     >
                       -
                     </button>
-                    <span>{quantities[product.id]}</span>
+                    <span>{quantities[product.id] || 0}</span>
                     <button
                       onClick={() => handleQuantityChange(product.id, 1)}
-                      className="bg-green-500 rounded-full px-2 text-white text-lg"
+                      className="bg-green-500 rounded-full px-2 text-white text-lg cursor-pointer"
                     >
                       +
                     </button>
@@ -129,55 +162,68 @@ export default function Bar() {
               ))}
             </div>
 
-            {/* Paginação */}
-            <div className="flex justify-center items-center gap-2 mb-6">
-              <button
-                onClick={() => setPage((p) => Math.max(p - 1, 1))}
-                disabled={page === 1}
-                className="bg-gray-600 text-white px-3 py-1 rounded disabled:opacity-50"
-              >
-                &lt;
-              </button>
-              {[...Array(Math.ceil(products.length / pageSize)).keys()].map(
-                (n) => (
-                  <button
-                    key={n}
-                    onClick={() => setPage(n + 1)}
-                    className={`px-3 py-1 rounded ${page === n + 1
-                        ? "bg-white text-black"
-                        : "bg-gray-800 text-white"
+            {/* Paginação centralizada com total e botão à direita */}
+            <div className="flex items-center gap-2 mb-6 px-8">
+              <div className="flex-1" />
+              <div className="flex justify-center items-center gap-2 flex-shrink-0">
+                <button
+                  onClick={() => setPage((p) => Math.max(p - 1, 1))}
+                  disabled={page === 1}
+                  className="bg-gray-600 text-white px-3 py-1 rounded disabled:opacity-50 cursor-pointer disabled:cursor-auto"
+                >
+                  &lt;
+                </button>
+                {[...Array(Math.ceil(products.length / pageSize)).keys()].map(
+                  (n) => (
+                    <button
+                      key={n}
+                      onClick={() => setPage(n + 1)}
+                      className={`cursor-pointer px-3 py-1 rounded ${
+                        page === n + 1
+                          ? "bg-white text-black"
+                          : "bg-gray-800 text-white"
                       }`}
-                  >
-                    {n + 1}
-                  </button>
-                )
-              )}
-              <button
-                onClick={() =>
-                  setPage((p) =>
-                    Math.min(p + 1, Math.ceil(products.length / pageSize))
+                    >
+                      {n + 1}
+                    </button>
                   )
-                }
-                disabled={page === Math.ceil(products.length / pageSize)}
-                className="bg-gray-600 text-white px-3 py-1 rounded disabled:opacity-50"
-              >
-                &gt;
-              </button>
-            </div>
+                )}
+                <button
+                  onClick={() =>
+                    setPage((p) =>
+                      Math.min(p + 1, Math.ceil(products.length / pageSize))
+                    )
+                  }
+                  disabled={page === Math.ceil(products.length / pageSize)}
+                  className="bg-gray-600 text-white px-3 py-1 rounded disabled:opacity-50 cursor-pointer disabled:cursor-auto"
+                >
+                  &gt;
+                </button>
+              </div>
+              <div className="flex-1 flex justify-end">
+                <div className="flex flex-col items-center ml-8">
+                  <div className="flex flex-row">
+                    <span className="text-white font-semibold mb-2 mr-2">
+                      Total:
+                    </span>
+                    <span className="text-white font-normal mb-2">
+                      {total.toFixed(2)} €
+                    </span>
+                  </div>
 
-            {/* Total e botão comprar */}
-            <div className="flex justify-between items-center px-2">
-              <h2 className="text-white text-2xl font-semibold">
-                Total: {total.toFixed(2)} €
-              </h2>
-              <button className="bg-green-600 text-white px-8 py-3 rounded text-lg font-semibold">
-                COMPRAR
-              </button>
+                  <button
+                    className="bg-green-600 hover:bg-green-700 text-white font-bold px-16 py-2 rounded-lg cursor-pointer"
+                    onClick={handleBuy}
+                    disabled={total === 0}
+                  >
+                    Comprar
+                  </button>
+                </div>
+              </div>
             </div>
           </>
         )}
       </div>
-
     </div>
   );
 }

@@ -1,25 +1,122 @@
 [
-    {
-      "id": "1",
-      "name": "Pipocas grandes salgadas",
-      "price": "10",
-      "stock": "10",
-      "image": ""
-    },
-    {
-      "id": "2",
-      "name": "Pipocas medias salgadas",
-      "price": "5",
-      "stock": "15",
-      "image": ""
-    },
-    {
-      "id": "3",
-      "name": "Pipocas pequenas salgadas",
-      "price": "3",
-      "stock": "20",
-      "image": ""
-    }
-   
-  ]
-  
+  {
+    "id": "1",
+    "name": "Pipocas G",
+    "price": "10",
+    "stock": "10"
+  },
+  {
+    "id": "2",
+    "name": "Pipocas M",
+    "price": "5",
+    "stock": "15"
+  },
+  {
+    "id": "3",
+    "name": "Pipocas P",
+    "price": "3",
+    "stock": "20"
+  },
+  {
+    "id": "4",
+    "name": "Coca-Cola",
+    "price": "2",
+    "stock": "30"
+  },
+  {
+    "id": "5",
+    "name": "Água",
+    "price": "1.5",
+    "stock": "25"
+  },
+  {
+    "id": "6",
+    "name": "Sumo Laranja",
+    "price": "2.5",
+    "stock": "20"
+  },
+  {
+    "id": "7",
+    "name": "Chocolate",
+    "price": "2",
+    "stock": "18"
+  },
+  {
+    "id": "8",
+    "name": "Nachos Q",
+    "price": "4",
+    "stock": "12"
+  },
+  {
+    "id": "9",
+    "name": "Pipocas Doces G",
+    "price": "11",
+    "stock": "8"
+  },
+  {
+    "id": "10",
+    "name": "Pipocas Doces P",
+    "price": "4",
+    "stock": "14"
+  },
+  {
+    "id": "11",
+    "name": "Ice Tea Limão",
+    "price": "2",
+    "stock": "22"
+  },
+  {
+    "id": "12",
+    "name": "Ice Tea Pêssego",
+    "price": "2",
+    "stock": "20"
+  },
+  {
+    "id": "13",
+    "name": "M&Ms",
+    "price": "2.5",
+    "stock": "16"
+  },
+  {
+    "id": "14",
+    "name": "KitKat",
+    "price": "2",
+    "stock": "15"
+  },
+  {
+    "id": "15",
+    "name": "Água Gás",
+    "price": "1.8",
+    "stock": "10"
+  },
+  {
+    "id": "16",
+    "name": "Pipocas Doces M",
+    "price": "6",
+    "stock": "12"
+  },
+  {
+    "id": "17",
+    "name": "Nachos Gua",
+    "price": "4.5",
+    "stock": "8"
+  },
+  {
+    "id": "18",
+    "name": "Twix",
+    "price": "2",
+    "stock": "13"
+  },
+  {
+    "id": "19",
+    "name": "Rebuçados",
+    "price": "1",
+    "stock": "30"
+  },
+  {
+    "id": "20",
+    "name": "Sumo Maçã",
+    "price": "2.5",
+    "stock": "14"
+  }
+]

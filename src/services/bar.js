@@ -1,5 +1,6 @@
 // imports
 import path from "path";
+import { promises as fs } from "fs";
 
 // gets the file
 const filePath = path.join(process.cwd(), "src", "data", "products.json");
@@ -14,7 +15,7 @@ const filePath = path.join(process.cwd(), "src", "data", "products.json");
 
 // gets the products from the file
 export async function getProducts() {
-    const fileContents = await fs.readFile(filePath, "utf-8");
-    console.log(fileContents);
-    return JSON.parse(fileContents);
+  const fileContents = await fs.readFile(filePath, "utf-8");
+  console.log(fileContents);
+  return JSON.parse(fileContents);
 }
