@@ -29,5 +29,12 @@
     "name": "João Batista",
     "email": "joaobatista@email.com",
     "password": "teste"
+  },
+  {
+    "id": 5,
+    "role": "customer",
+    "name": "Jorge Mora da Silva",
+    "email": "jgcfmsilva.jgs@gmail.com",
+    "password": "123"
   }
 ]

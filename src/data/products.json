@@ -1,23 +1,25 @@
 [
     {
       "id": "1",
-      "title": "Pipocas grandes salgadas",
+      "name": "Pipocas grandes salgadas",
+      "price": "10",
+      "stock": "10",
       "image": ""
     },
     {
       "id": "2",
-      "title": "Pipocas medias salgadas",
+      "name": "Pipocas medias salgadas",
+      "price": "5",
+      "stock": "15",
       "image": ""
     },
     {
       "id": "3",
-      "title": "Pipocas pequenas salgadas",
-      "image": ""
-    },
-    {
-      "id": "4",
-      "title": "",
+      "name": "Pipocas pequenas salgadas",
+      "price": "3",
+      "stock": "20",
       "image": ""
     }
+   
   ]
   
