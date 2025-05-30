@@ -94,11 +94,23 @@ export default function Transactions() {
                                     style={{ maxWidth: 220 }}
                                 >
                                     <div className="flex items-center gap-2 mb-1">
-                                        <Image src={ICONS.calendar} alt="calendar" width={15} height={15} />
+                                        <Image
+                                            src={ICONS.calendar}
+                                            alt="calendar"
+                                            width={15}
+                                            height={15}
+                                            style={{ filter: "invert(62%) sepia(82%) saturate(749%) hue-rotate(359deg) brightness(101%) contrast(101%)" }}
+                                        />
                                         <span className="text-white font-bold text-base">{formatDate(t.date)}</span>
                                     </div>
                                     <div className="flex items-center gap-2 mb-1">
-                                        <Image src={ICONS.clock} alt="clock" width={15} height={15} />
+                                        <Image
+                                            src={ICONS.clock}
+                                            alt="clock"
+                                            width={15}
+                                            height={15}
+                                            style={{ filter: "invert(62%) sepia(82%) saturate(749%) hue-rotate(359deg) brightness(101%) contrast(101%)" }}
+                                        />
                                         <span className="text-white font-bold text-base">{formatTime(t.date)}</span>
                                     </div>
                                     <div className={`font-bold text-lg mb-1 ${color}`}>
