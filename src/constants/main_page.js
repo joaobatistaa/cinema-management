@@ -18,6 +18,7 @@ export const Constants = {
     { label: "Filmes", path: "/movies", permission: "viewMovies" },
     { label: "Bilhetes", path: "/tickets", permission: "viewTickets" },
     { label: "Bar", path: "/bar", permission: "viewBar" },
-    { label: "Consultas", path: "/consultas", permission: "viewConsultas" }
+    { label: "Consultas", path: "/consultas", permission: "viewConsultas" },
+    { label: "Transações", path: "/transactions", permission: "viewTraansactions" }
   ]
 };

@@ -88,6 +88,7 @@ export default function Bar() {
           total,
           user: user?.id || null,
           date: new Date().toISOString(),
+          desc: "Compra no Bar",
         }),
       });
       if (!response.ok) throw new Error("Erro ao registar transação.");
@@ -115,16 +116,6 @@ export default function Bar() {
             <h1 className="text-5xl font-semibold text-white text-center tracking-wider">
               Bar
             </h1>
-          </div>
-          <div className="flex justify-end">
-            {hasPermission(userRole, "createMovies") && (
-              <button
-                className="bg-quaternary text-lg text-white px-6 py-3 rounded font-medium ml-auto cursor-pointer"
-                onClick={() => router.push("/movies/new")}
-              >
-                NOVO FILME
-              </button>
-            )}
           </div>
         </div>
         {loading ? (

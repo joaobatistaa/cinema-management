@@ -22,7 +22,10 @@ export const PERMISSIONS = {
   viewBar: [ROLES.ADMIN, ROLES.CUSTOMER, ROLES.EMPLOYEE],
 
   // CONSULTAS
-  viewConsultas: [ROLES.EMPLOYEE, ROLES.ADMIN]
+  viewConsultas: [ROLES.EMPLOYEE, ROLES.ADMIN],
+
+  // TRANSACTIONS
+  viewTraansactions: [ROLES.CUSTOMER],  
 };
 
 export function hasPermission(role, permission) {
