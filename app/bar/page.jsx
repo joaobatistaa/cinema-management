@@ -45,7 +45,16 @@ export default function Bar() {
   // Atualiza a quantidade de um produto
   function handleQuantityChange(productId, delta) {
     setQuantities((prev) => {
-      const newQty = Math.max((prev[productId] || 0) + delta, 0);
+      const currentQty = prev[productId] || 0;
+      const product = products.find((p) => p.id === productId);
+      const stock = Number(product?.stock ?? 0);
+      const newQty = Math.max(currentQty + delta, 0);
+
+      if (delta > 0 && newQty > stock) {
+        toast.error("Já não existe stock suficiente para este produto.");
+        return prev;
+      }
+
       // Atualiza o carrinho ao mesmo tempo
       setCart((oldCart) => {
         const exists = oldCart.find((item) => item.id === productId);
@@ -60,7 +69,6 @@ export default function Bar() {
           );
         }
         // Adiciona novo produto ao carrinho
-        const product = products.find((p) => p.id === productId);
         if (product) {
           return [...oldCart, { ...product, quantity: newQty }];
         }
@@ -95,6 +103,7 @@ export default function Bar() {
       toast.success("Compra efetuada!");
       setQuantities({});
       setCart([]);
+      router.push("/"); // redireciona para a página principal após compra
     } catch (err) {
       toast.error(err.message || "Erro ao registar transação.");
     }

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getTransactions, addTransaction } from "@/src/services/transactions";
+import { updateProductStock } from "@/src/services/bar"; 
 
 // GET /api/transactions
 export async function GET() {
@@ -19,6 +20,7 @@ export async function GET() {
 export async function POST(request) {
   try {
     const body = await request.json();
+    await updateProductStock(body.items); // abate stock antes de registar transação
     addTransaction(body);
     return NextResponse.json({ ok: true }, { status: 201 });
   } catch (error) {

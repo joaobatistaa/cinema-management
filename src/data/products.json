@@ -3,13 +3,13 @@
     "id": "1",
     "name": "Pipocas G",
     "price": "10",
-    "stock": "10"
+    "stock": "0"
   },
   {
     "id": "2",
     "name": "Pipocas M",
     "price": "5",
-    "stock": "15"
+    "stock": "14"
   },
   {
     "id": "3",
@@ -51,7 +51,7 @@
     "id": "9",
     "name": "Pipocas Doces G",
     "price": "11",
-    "stock": "8"
+    "stock": "0"
   },
   {
     "id": "10",

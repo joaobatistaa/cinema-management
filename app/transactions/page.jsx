@@ -43,8 +43,9 @@ export default function Transactions() {
             try {
                 const res = await fetch("/api/transactions");
                 const data = await res.json();
-                // Filtra as transações do utilizador autenticado
+                // Filtra as transações do utilizador autenticado e ordena da mais recente para a mais antiga
                 const filtered = userId ? data.filter((t) => t.user === userId) : [];
+                filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
                 setTransactions(filtered);
             } catch {
                 setTransactions([]);
