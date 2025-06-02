@@ -96,13 +96,17 @@ export default function Movies() {
                 paginatedMovies.map((movie) => (
                   <div
                     key={movie.id}
-                    className="relative flex flex-col items-start shadow w-full"
+                    className="relative flex flex-col items-start shadow w-full cursor-pointer"
                     style={{ minWidth: 0 }}
+                    onClick={() => router.push(`/movies/${movie.id}`)}
                   >
                     {hasPermission(userRole, "createMovies") && (
                       <button
                         className="absolute top-3 right-3 bg-quaternary rounded-full p-1 flex items-center justify-center shadow cursor-pointer"
-                        onClick={() => router.push(`/movies/edit/${movie.id}`)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          router.push(`/movies/edit/${movie.id}`);
+                        }}
                         aria-label="Editar"
                         style={{ width: 32, height: 32 }}
                       >

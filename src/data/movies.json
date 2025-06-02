@@ -2,56 +2,58 @@
   {
     "id": "1",
     "title": "Pecadores",
-    "image": "/images/movies/movie1.jpg"
+    "image": "/images/movies/movie1.jpg",
+    "duration": 120,
+    "year": 2024,
+    "genre": "Drama",
+    "director": "João Silva",
+    "cast": [
+      "Ana Costa",
+      "Miguel Ramos",
+      "Sofia Lopes",
+      "Ricardo Martins",
+      "Beatriz Sousa",
+      "Luís Almeida"
+    ],
+    "rating": "16+",
+    "synopsis": "Um drama intenso sobre escolhas e redenção numa pequena vila portuguesa. Quando um segredo do passado vem à tona, os habitantes são forçados a confrontar as suas próprias falhas e a lutar por perdão e esperança. Entre laços familiares, traições e redenção, cada personagem descobre o verdadeiro significado de ser humano e de enfrentar os seus pecados."
   },
   {
     "id": "2",
     "title": "Marcello Mio",
-    "image": "/images/movies/movie2.jpg"
+    "image": "/images/movies/movie2.jpg",
+    "duration": 110,
+    "year": 2023,
+    "genre": "Comédia",
+    "director": "Maria Fernandes",
+    "cast": [
+      "Carlos Pinto",
+      "Rita Dias",
+      "João Cardoso",
+      "Helena Cruz",
+      "Pedro Lopes",
+      "Marta Silva"
+    ],
+    "rating": "12+",
+    "synopsis": "Marcello embarca numa aventura hilariante para encontrar o verdadeiro significado da amizade. Entre situações caricatas, encontros inesperados e muitos risos, Marcello e os seus amigos vão perceber que, por vezes, o mais importante não é o destino, mas sim a viagem e as pessoas que nos acompanham ao longo do caminho."
   },
   {
     "id": "3",
     "title": "Amador",
-    "image": "/images/movies/movie3.jpg"
-  },
-  {
-    "id": "4",
-    "title": "Pecadores",
-    "image": "/images/movies/movie1.jpg"
-  },
-  {
-    "id": "5",
-    "title": "Marcello Mio teste teste",
-    "image": "/images/movies/movie2.jpg"
-  },
-  {
-    "id": "6",
-    "title": "Amador",
-    "image": "/images/movies/movie3.jpg"
-  },
-  {
-    "id": "7",
-    "title": "Pecadores",
-    "image": "/images/movies/movie1.jpg"
-  },
-  {
-    "id": "8",
-    "title": "Marcello Mio teste teste",
-    "image": "/images/movies/movie2.jpg"
-  },
-  {
-    "id": "9",
-    "title": "Amador",
-    "image": "/images/movies/movie3.jpg"
-  },
-  {
-    "id": "10",
-    "title": "Pecadores",
-    "image": "/images/movies/movie1.jpg"
-  },
-  {
-    "id": "11",
-    "title": "Pecadores",
-    "image": "/images/movies/movie1.jpg"
+    "image": "/images/movies/movie3.jpg",
+    "duration": 95,
+    "year": 2022,
+    "genre": "Romance",
+    "director": "Pedro Amaral",
+    "cast": [
+      "Joana Rocha",
+      "Tiago Faria",
+      "André Gomes",
+      "Patrícia Costa",
+      "Vera Martins",
+      "Fábio Sousa"
+    ],
+    "rating": "14+",
+    "synopsis": "Uma história de amor improvável entre dois desconhecidos em Lisboa. Entre encontros e desencontros, Amador explora as fragilidades e esperanças de quem acredita que o amor pode surgir nos momentos mais inesperados. Uma viagem emocional pela cidade, onde cada esquina esconde uma nova possibilidade de felicidade."
   }
 ]
