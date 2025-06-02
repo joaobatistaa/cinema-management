@@ -1,8 +1,9 @@
-import { NextResponse } from "next/server";
 import path from "path";
 import fs from "fs";
+import { NextResponse } from "next/server";
 
-export async function GET(request, { params }) {
+export async function GET(request, context) {
+  const params = await context.params;
   const { id } = params;
   const filePath = path.join(process.cwd(), "src", "data", "movies.json");
   const movies = JSON.parse(fs.readFileSync(filePath, "utf-8"));

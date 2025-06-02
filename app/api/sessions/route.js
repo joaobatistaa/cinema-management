@@ -1,16 +1,21 @@
 import { NextResponse } from "next/server";
-import { getSessions, addSession } from "@/src/services/sessions";
+import path from "path";
+import fs from "fs";
 
-export async function GET() {
+const sessionsFilePath = path.join(process.cwd(), "src", "data", "sessions.json");
+
+export async function GET(request) {
   try {
-    const sessions = await getSessions();
+    const url = new URL(request.url);
+    const movieId = url.searchParams.get("movie");
+    const data = fs.readFileSync(sessionsFilePath, "utf-8");
+    let sessions = JSON.parse(data);
+    if (movieId) {
+      sessions = sessions.filter((s) => String(s.movieId) === String(movieId));
+    }
     return NextResponse.json(sessions);
   } catch (error) {
-    console.error("Erro ao ler o ficheiro de sessões:", error);
-    return NextResponse.json(
-      { error: "Erro ao carregar sessões" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Erro ao carregar sessões" }, { status: 500 });
   }
 }
 

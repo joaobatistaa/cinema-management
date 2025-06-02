@@ -74,7 +74,7 @@ export default function MovieDetail() {
           </div>
         </div>
         {/* Sinopse + Detalhes + Poster */}
-        <div className="flex flex-col md:flex-row gap-12 px-12 pt-2 pb-0 mt-20 items-start">
+        <div className="flex flex-col md:flex-row gap-12 px-12 pt-2 pb-0 mt-15 items-start">
           {/* Esquerda: Sinopse + Detalhes */}
           <div className="flex-1 flex flex-col justify-between">
             {/* Sinopse alinhada à esquerda */}

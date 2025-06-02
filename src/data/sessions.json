@@ -1,26 +1,163 @@
 [
   {
     "id": "1",
-    "movie": "Avatar: O Caminho da Água",
-    "time": "18:00",
-    "date": "2023-10-15",
-    "room": "Sala 1",
-    "availableSeats": 50
+    "movieId": "1",
+    "room": 1,
+    "date": "2025-06-01T21:30:00",
+    "language": "PT"
   },
   {
     "id": "2",
-    "movie": "Oppenheimer",
-    "time": "20:30",
-    "date": "2023-10-15",
-    "room": "Sala 2",
-    "availableSeats": 30
+    "movieId": "1",
+    "room": 2,
+    "date": "2025-06-02T18:00:00",
+    "language": "EN"
   },
   {
     "id": "3",
-    "movie": "Barbie",
-    "time": "16:00",
-    "date": "2023-10-16",
-    "room": "Sala 3",
-    "availableSeats": 40
+    "movieId": "1",
+    "room": 3,
+    "date": "2025-06-03T17:00:00",
+    "language": "PT"
+  },
+  {
+    "id": "4",
+    "movieId": "1",
+    "room": 4,
+    "date": "2025-06-04T20:00:00",
+    "language": "EN"
+  },
+  {
+    "id": "5",
+    "movieId": "1",
+    "room": 5,
+    "date": "2025-06-05T19:30:00",
+    "language": "PT"
+  },
+  {
+    "id": "6",
+    "movieId": "1",
+    "room": 6,
+    "date": "2025-06-06T21:00:00",
+    "language": "EN"
+  },
+  {
+    "id": "7",
+    "movieId": "2",
+    "room": 7,
+    "date": "2025-06-01T19:00:00",
+    "language": "PT"
+  },
+  {
+    "id": "8",
+    "movieId": "2",
+    "room": 8,
+    "date": "2025-06-02T21:00:00",
+    "language": "EN"
+  },
+  {
+    "id": "9",
+    "movieId": "2",
+    "room": 9,
+    "date": "2025-06-03T18:30:00",
+    "language": "PT"
+  },
+  {
+    "id": "10",
+    "movieId": "2",
+    "room": 10,
+    "date": "2025-06-04T20:30:00",
+    "language": "EN"
+  },
+  {
+    "id": "11",
+    "movieId": "2",
+    "room": 1,
+    "date": "2025-06-05T17:00:00",
+    "language": "PT"
+  },
+  {
+    "id": "12",
+    "movieId": "2",
+    "room": 2,
+    "date": "2025-06-06T22:00:00",
+    "language": "EN"
+  },
+  {
+    "id": "13",
+    "movieId": "3",
+    "room": 3,
+    "date": "2025-06-03T10:00:00",
+    "language": "PT"
+  },
+  {
+    "id": "14",
+    "movieId": "3",
+    "room": 4,
+    "date": "2025-06-03T12:00:00",
+    "language": "EN"
+  },
+  {
+    "id": "15",
+    "movieId": "3",
+    "room": 5,
+    "date": "2025-06-03T14:00:00",
+    "language": "PT"
+  },
+  {
+    "id": "16",
+    "movieId": "3",
+    "room": 6,
+    "date": "2025-06-03T16:00:00",
+    "language": "EN"
+  },
+  {
+    "id": "17",
+    "movieId": "3",
+    "room": 7,
+    "date": "2025-06-03T18:00:00",
+    "language": "PT"
+  },
+  {
+    "id": "18",
+    "movieId": "3",
+    "room": 8,
+    "date": "2025-06-04T19:00:00",
+    "language": "EN"
+  },
+  {
+    "id": "19",
+    "movieId": "3",
+    "room": 9,
+    "date": "2025-06-05T21:30:00",
+    "language": "PT"
+  },
+  {
+    "id": "20",
+    "movieId": "3",
+    "room": 10,
+    "date": "2025-06-06T18:00:00",
+    "language": "EN"
+  },
+  {
+    "id": "21",
+    "movieId": "3",
+    "room": 1,
+    "date": "2025-06-07T20:00:00",
+    "language": "PT"
+  },
+  {
+    "id": "22",
+    "movieId": "3",
+    "room": 2,
+    "date": "2025-06-08T22:00:00",
+    "language": "EN"
+  },
+  {
+    "id": "23",
+    "movieId": "3",
+    "room": 3,
+    "date": "2025-06-03T22:00:00",
+    "language": "PT"
   }
 ]
