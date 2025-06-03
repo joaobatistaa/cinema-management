@@ -2,289 +2,61 @@
   {
     "items": [
       {
-        "id": "3",
-        "name": "Pipocas P",
-        "price": "3",
-        "stock": "20",
+        "id": "11",
+        "name": "Ice Tea Limão",
+        "price": "2",
+        "stock": "22",
         "quantity": 1
-      }
-    ],
-    "total": 3,
-    "user": 5,
-    "date": "2025-05-30T10:49:07.863Z",
-    "id": "1748602148129",
-    "desc": "Compra no Bar"
-  },
-  {
-    "items": [
-      {
-        "id": "3",
-        "name": "Pipocas P",
-        "price": "3",
-        "stock": "20",
-        "quantity": 1
-      }
-    ],
-    "total": 3,
-    "user": 5,
-    "date": "2025-05-30T11:18:42.182Z",
-    "id": "1748603922207",
-    "desc": "Compra no Bar"
-  },
-  {
-    "items": [
-      {
-        "id": "3",
-        "name": "Pipocas P",
-        "price": "3",
-        "stock": "20",
-        "quantity": 1
-      }
-    ],
-    "total": 3,
-    "user": 5,
-    "date": "2025-05-30T11:18:47.158Z",
-    "id": "1748603927176",
-    "desc": "Compra no Bar"
-  },
-  {
-    "items": [
-      {
-        "id": "3",
-        "name": "Pipocas P",
-        "price": "3",
-        "stock": "20",
-        "quantity": 1
-      }
-    ],
-    "total": 3,
-    "user": 5,
-    "date": "2025-05-30T11:18:49.797Z",
-    "id": "1748603929823",
-    "desc": "Compra no Bar"
-  },
-  {
-    "items": [
+      },
       {
         "id": "12",
         "name": "Ice Tea Pêssego",
         "price": "2",
-        "stock": "20",
+        "stock": "2",
         "quantity": 1
       }
     ],
-    "total": 2,
-    "user": 5,
-    "date": "2025-05-30T11:18:51.551Z",
-    "id": "1748603931566",
-    "desc": "Compra no Bar"
+    "total": 4,
+    "userId": 5,
+    "desc": "Compra no Bar",
+    "date": "2025-06-03T21:12:36.354Z",
+    "id": "1748985156355"
   },
   {
     "items": [
       {
-        "id": "12",
-        "name": "Ice Tea Pêssego",
-        "price": "2",
+        "id": "6",
+        "name": "Sumo Laranja",
+        "price": "2.5",
         "stock": "20",
-        "quantity": 1
-      }
-    ],
-    "total": 2,
-    "user": 5,
-    "date": "2025-05-30T11:18:53.587Z",
-    "id": "1748603933604",
-    "desc": "Compra no Bar"
-  },
-  {
-    "items": [
-      {
-        "id": "12",
-        "name": "Ice Tea Pêssego",
-        "price": "2",
-        "stock": "20",
-        "quantity": 1
-      }
-    ],
-    "total": 2,
-    "user": 5,
-    "date": "2025-05-30T11:18:55.707Z",
-    "id": "1748603935721",
-    "desc": "Compra no Bar"
-  },
-  {
-    "items": [
-      {
-        "id": "12",
-        "name": "Ice Tea Pêssego",
-        "price": "2",
-        "stock": "20",
-        "quantity": 1
-      }
-    ],
-    "total": 2,
-    "user": 5,
-    "date": "2025-05-30T11:18:57.428Z",
-    "id": "1748603937446",
-    "desc": "Compra no Bar"
-  },
-  {
-    "items": [
-      {
-        "id": "12",
-        "name": "Ice Tea Pêssego",
-        "price": "2",
-        "stock": "20",
-        "quantity": 1
-      }
-    ],
-    "total": 2,
-    "user": 5,
-    "date": "2025-05-30T11:19:00.166Z",
-    "id": "1748603940187",
-    "desc": "Compra no Bar"
-  },
-  {
-    "items": [
-      {
-        "id": "12",
-        "name": "Ice Tea Pêssego",
-        "price": "2",
-        "stock": "20",
-        "quantity": 1
-      }
-    ],
-    "total": 2,
-    "user": 5,
-    "date": "2025-05-30T11:19:02.253Z",
-    "id": "1748603942267",
-    "desc": "Compra no Bar"
-  },
-  {
-    "items": [
+        "quantity": 4
+      },
       {
         "id": "2",
         "name": "Pipocas M",
         "price": "5",
-        "stock": "15",
+        "stock": "14",
         "quantity": 1
-      }
-    ],
-    "total": 5,
-    "user": 5,
-    "date": "2025-05-30T17:49:17.985Z",
-    "desc": "Compra no Bar",
-    "id": "1748627358009"
-  },
-  {
-    "items": [
+      },
       {
-        "id": "1",
-        "name": "Pipocas G",
-        "price": "10",
-        "stock": "10",
-        "quantity": 1
-      }
-    ],
-    "total": 10,
-    "user": 5,
-    "date": "2025-05-30T18:01:09.321Z",
-    "desc": "Compra no Bar",
-    "id": "1748628069499"
-  },
-  {
-    "items": [
+        "id": "5",
+        "name": "Água",
+        "price": "1.5",
+        "stock": "25",
+        "quantity": 2
+      },
       {
-        "id": "1",
-        "name": "Pipocas G",
-        "price": "10",
-        "stock": "10",
-        "quantity": 1
+        "id": "10",
+        "name": "Pipocas Doces P",
+        "price": "4",
+        "stock": "14",
+        "quantity": 4
       }
     ],
-    "total": 10,
-    "user": 5,
-    "date": "2025-05-30T18:03:49.717Z",
+    "total": 34,
+    "userId": 5,
     "desc": "Compra no Bar",
-    "id": "1748628229939"
-  },
-  {
-    "items": [
-      {
-        "id": "2",
-        "name": "Pipocas M",
-        "price": "5",
-        "stock": "15",
-        "quantity": 1
-      }
-    ],
-    "total": 5,
-    "user": 5,
-    "date": "2025-05-30T18:05:16.326Z",
-    "desc": "Compra no Bar",
-    "id": "1748628316449"
-  },
-  {
-    "items": [
-      {
-        "id": "1",
-        "name": "Pipocas G",
-        "price": "10",
-        "stock": "9",
-        "quantity": 9
-      }
-    ],
-    "total": 90,
-    "user": 5,
-    "date": "2025-05-30T18:07:47.163Z",
-    "desc": "Compra no Bar",
-    "id": "1748628467288"
-  },
-  {
-    "items": [
-      {
-        "id": "1",
-        "name": "Pipocas G",
-        "price": "10",
-        "stock": "10",
-        "quantity": 10
-      }
-    ],
-    "total": 100,
-    "user": 5,
-    "date": "2025-05-30T18:08:43.581Z",
-    "desc": "Compra no Bar",
-    "id": "1748628523600"
-  },
-  {
-    "items": [
-      {
-        "id": "9",
-        "name": "Pipocas Doces G",
-        "price": "11",
-        "stock": "8",
-        "quantity": 8
-      }
-    ],
-    "total": 88,
-    "user": 5,
-    "date": "2025-05-30T18:09:58.925Z",
-    "desc": "Compra no Bar",
-    "id": "1748628598944"
-  },
-  {
-    "items": [
-      {
-        "id": "1",
-        "name": "Pipocas G",
-        "price": "10",
-        "stock": "3",
-        "quantity": 3
-      }
-    ],
-    "total": 30,
-    "user": 5,
-    "date": "2025-05-30T18:10:58.099Z",
-    "desc": "Compra no Bar",
-    "id": "1748628658115"
+    "date": "2025-06-03T21:21:10.817Z",
+    "id": "1748985670818"
   }
 ]

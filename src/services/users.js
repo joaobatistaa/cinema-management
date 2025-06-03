@@ -42,7 +42,8 @@ export async function addUser(user) {
 // Procura utilizador por email
 export async function getUserByEmail(email) {
   const users = await getUsers();
-  return users.find((u) => u.email === email) || null;
+
+  return users.find((u) =>  u.email === email) || null;
 }
 
 // Autentica utilizador (login)

@@ -19,7 +19,7 @@ export function getTransactions() {
   return readTransactions();
 }
 
-export function addTransaction(transaction) {
+export async function addTransaction(transaction) {
   const transactions = readTransactions();
   transactions.push({
     ...transaction,
