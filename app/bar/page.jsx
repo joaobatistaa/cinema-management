@@ -17,6 +17,8 @@ export default function Bar() {
   const [loading, setLoading] = useState(true);
   const [quantities, setQuantities] = useState({});
   const [cart, setCart] = useState([]); // Produtos adicionados ao carrinho
+  const [showEmailForm, setShowEmailForm] = useState(false);
+  const [clientEmail, setClientEmail] = useState("");
   const pageSize = 12;
 
   useEffect(() => {
@@ -84,28 +86,49 @@ export default function Bar() {
     0
   );
 
+  const handleOpenForm = () => {
+    console.log("Total:", userRole);
+    if (userRole === "employee") {
+      setShowEmailForm(true);
+    } else {
+      if (total === 0) return;
+      handleBuy(user?.email || "");
+    }
+  }
+
   // Função para criar uma nova transação
-  async function handleBuy() {
+  async function handleBuy(finalEmail) {
     if (total === 0) return;
-    try {
-      const response = await fetch("/api/transactions", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          items: cart,
-          total,
-          user: user?.id || null,
-          date: new Date().toISOString(),
-          desc: "Compra no Bar",
-        }),
-      });
-      if (!response.ok) throw new Error("Erro ao registar transação.");
-      toast.success("Compra efetuada!");
-      setQuantities({});
-      setCart([]);
-      router.push("/"); // redireciona para a página principal após compra
-    } catch (err) {
-      toast.error(err.message || "Erro ao registar transação.");
+
+    let emailToUse = finalEmail;
+
+    if (emailToUse) {
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailToUse)) {
+        setEmailError("Insira um email válido.");
+        return;
+      }
+
+      try {
+        const res = await fetch("/api/transactions", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: emailToUse.trim().toLowerCase(), cart, desc: "Compra no Bar" }),
+        });
+        if (!res.ok) {
+          const data = await res.json().catch(() => ({}));
+          console.log("Erro ao registar transação:", data);
+          throw new Error(data.error || "Erro ao registar transação.");
+        };
+        toast.success("Compra efetuada com sucesso.");
+        router.push("/home");
+      } catch (err) {
+        toast.error(err.message || "Erro ao registar transação.");
+      } finally {
+        setLoading(false);
+      }    
+    } else {
+      toast.error("Não tem permissão para efetuar compras no bar.");
+      return;
     }
   }
 
@@ -178,11 +201,10 @@ export default function Bar() {
                     <button
                       key={n}
                       onClick={() => setPage(n + 1)}
-                      className={`cursor-pointer px-3 py-1 rounded ${
-                        page === n + 1
+                      className={`cursor-pointer px-3 py-1 rounded ${page === n + 1
                           ? "bg-white text-black"
                           : "bg-gray-800 text-white"
-                      }`}
+                        }`}
                     >
                       {n + 1}
                     </button>
@@ -210,10 +232,10 @@ export default function Bar() {
                       {total.toFixed(2)} €
                     </span>
                   </div>
-
+                  {/* Botão de compra normal */}
                   <button
                     className="bg-green-600 hover:bg-green-700 text-white font-bold px-16 py-2 rounded-lg cursor-pointer"
-                    onClick={handleBuy}
+                    onClick={() => handleOpenForm()}
                     disabled={total === 0}
                   >
                     Comprar
@@ -224,6 +246,53 @@ export default function Bar() {
           </>
         )}
       </div>
+
+      {/* Modal de email para funcionário */}
+      {showEmailForm && userRole === "employee" && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
+          <div className="bg-[#232336] rounded-xl shadow-lg p-8 flex flex-col items-center min-w-[320px] max-w-[90vw]">
+            <h2 className="text-white text-xl font-bold mb-4">
+              Email do cliente
+            </h2>
+            <form
+              className="flex flex-col items-center w-full"
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleBuy(clientEmail);
+              }}
+            >
+              <input
+                type="email"
+                className="px-3 py-2 rounded border border-gray-400 mb-2 w-full bg-[#232336] text-white"
+                placeholder="Email do cliente"
+                value={clientEmail}
+                onChange={(e) => setClientEmail(e.target.value)}
+                required
+                autoFocus
+              />
+              <div className="flex gap-2 mt-2">
+                <button
+                  type="submit"
+                  className="bg-green-600 hover:bg-green-700 text-white font-bold px-8 py-2 rounded-lg cursor-pointer"
+                >
+                  Finalizar Compra
+                </button>
+                <button
+                  type="button"
+                  className="bg-gray-400 hover:bg-gray-500 text-white font-bold px-6 py-2 rounded-lg cursor-pointer"
+                  onClick={() => {
+                    setShowEmailForm(false);
+                    setClientEmail("");
+                    setEmailError("");
+                  }}
+                >
+                  Cancelar
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

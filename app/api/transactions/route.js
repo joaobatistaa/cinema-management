@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getTransactions, addTransaction } from "@/src/services/transactions";
 import { updateProductStock } from "@/src/services/bar"; 
+import { getUserByEmail } from "@/src/services/users";
 
 // GET /api/transactions
 export async function GET() {
@@ -20,10 +21,54 @@ export async function GET() {
 export async function POST(request) {
   try {
     const body = await request.json();
-    await updateProductStock(body.items); // abate stock antes de registar transação
-    addTransaction(body);
+
+    const { email, cart, desc } = body;
+
+    if (!email) {
+      return NextResponse.json(
+        { error: "Email do cliente é obrigatório" },
+        { status: 400 }
+      );
+    }
+    
+    const user = await getUserByEmail(email);
+    
+    if (!user) {
+      return NextResponse.json(
+        { error: "Utilizador não encontrado" },
+        { status: 404 }
+      );
+    }
+
+    try {
+        await updateProductStock(cart);
+    } catch (error) {
+      return NextResponse.json(
+        { error: "Erro ao atualizar stock!" },
+        { status: 500 }
+      );
+    }
+
+    const transaction = {
+      items: cart,
+      total: cart.reduce((sum, item) => sum + item.price * item.quantity, 0),
+      userId: user.id,
+      desc,
+      date: new Date().toISOString(),
+    };
+    
+    try {
+        await addTransaction(transaction);
+    } catch (error) {
+      return NextResponse.json(
+        { error: "Erro ao criar transação!" },
+        { status: 500 }
+      );
+    }
+
     return NextResponse.json({ ok: true }, { status: 201 });
   } catch (error) {
+    console.log("Erro ao processar transação:", error);
     console.error("Erro ao guardar transação:", error);
     return NextResponse.json(
       { error: "Erro ao guardar transação" },
