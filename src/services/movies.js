@@ -1,7 +1,7 @@
 import { promises as fs } from "fs";
 import path from "path";
 
-const filePath = path.join(process.cwd(), "src", "data", "movies.json");
+const filePath = path.join(process.cwd(), "src", "data", "tickets.json");
 
 /**
  * @typedef {Object} Movie
@@ -27,7 +27,7 @@ export async function addMovie(session) {
 }
 
 // Remove um filme pelo id
-export async function removeMovie(id) { 
+export async function removeMovie(id) {
   const movies = await getMovies();
   const filtered = movies.filter((s) => s.id !== id);
   await fs.writeFile(filePath, JSON.stringify(filtered, null, 2), "utf-8");

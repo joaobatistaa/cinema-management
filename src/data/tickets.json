@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "movie_id": 1,
+    "session_id": 101,
+    "room_id": 1,
+    "client_id": 5,
+    "seat": { "row": 1, "col": 5 },
+    "datetime": "2024-06-01T21:00"
+  },
+  {
+    "id": 2,
+    "movie_id": 2,
+    "session_id": 102,
+    "room_id": 2,
+    "client_id": 4,
+    "seat": { "row": 2, "col": 10 },
+    "datetime": "2024-06-02T18:30"
+  }
+]

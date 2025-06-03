@@ -112,9 +112,7 @@ export default function Sessions() {
           <div className="flex justify-center">
             <h1 className="text-5xl font-semibold text-white text-center tracking-wider whitespace-nowrap max-w-6xl">
               SESSÕES
-              {movie && movie.title
-                ? ` - ${movie.title.toUpperCase()}`
-                : ""}
+              {movie && movie.title ? ` - ${movie.title.toUpperCase()}` : ""}
             </h1>
           </div>
         </div>
@@ -157,7 +155,13 @@ export default function Sessions() {
                   style={{ boxShadow: "0 0 6px #0008" }}
                 >
                   <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-                    <circle cx="11" cy="11" r="10" stroke="#fff" strokeWidth="2" />
+                    <circle
+                      cx="11"
+                      cy="11"
+                      r="10"
+                      stroke="#fff"
+                      strokeWidth="2"
+                    />
                     <path
                       d="M14 7l-4 4 4 4"
                       stroke="#fff"
@@ -176,7 +180,7 @@ export default function Sessions() {
                       selectedSession && selectedSession.id === session.id
                         ? "border-[#F45B69]"
                         : "border-transparent"
-                    } rounded-xl bg-[#181825] shadow-lg transition-all duration-150 w-40`}
+                    } rounded-xl bg-[#212132] shadow-lg transition-all duration-150 w-40`}
                     onClick={() => handleSelectSession(session)}
                   >
                     {(movie?.poster || movie?.image) && (
@@ -204,14 +208,21 @@ export default function Sessions() {
               {/* Seta direita (dentro do container) */}
               {filteredSessions.length > SESSIONS_PER_PAGE &&
                 page <
-                  Math.ceil(filteredSessions.length / SESSIONS_PER_PAGE) - 1 && (
+                  Math.ceil(filteredSessions.length / SESSIONS_PER_PAGE) -
+                    1 && (
                   <button
                     className="flex items-center justify-center w-8 h-8 rounded-full bg-[#F45B69] hover:bg-[#e14a58] text-white text-xl font-bold absolute right-4 top-1/2 -translate-y-1/2 z-10 hover:cursor-pointer"
                     onClick={() => setPage(page + 1)}
                     style={{ boxShadow: "0 0 6px #0008" }}
                   >
                     <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-                      <circle cx="11" cy="11" r="10" stroke="#fff" strokeWidth="2" />
+                      <circle
+                        cx="11"
+                        cy="11"
+                        r="10"
+                        stroke="#fff"
+                        strokeWidth="2"
+                      />
                       <path
                         d="M8 7l4 4-4 4"
                         stroke="#fff"
@@ -230,17 +241,20 @@ export default function Sessions() {
                   {selectedSession
                     ? `${movie?.title?.toUpperCase() || ""} - ${
                         selectedSession.date
-                          ? new Date(selectedSession.date).toLocaleTimeString("pt-PT", {
-                              hour: "2-digit",
-                              minute: "2-digit",
-                            })
+                          ? new Date(selectedSession.date).toLocaleTimeString(
+                              "pt-PT",
+                              {
+                                hour: "2-digit",
+                                minute: "2-digit",
+                              }
+                            )
                           : ""
                       }`
                     : "--"}
                 </span>
               </div>
               <button
-                className="bg-[#F45B69] hover:bg-[#e14a58] text-white font-bold px-16 py-4 rounded-lg text-lg mt-2"
+                className="bg-quaternary text-white font-bold px-16 py-4 rounded-lg text-lg mt-2 cursor-pointer"
                 onClick={handleBuyTicket}
               >
                 COMPRAR BILHETE

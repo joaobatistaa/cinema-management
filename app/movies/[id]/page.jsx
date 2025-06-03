@@ -30,7 +30,9 @@ export default function MovieDetail() {
     if (!minutes || isNaN(minutes)) return "";
     const h = Math.floor(minutes / 60);
     const m = minutes % 60;
-    return `${h > 0 ? `${h}h` : ""}${m > 0 ? ` ${m}m` : h === 0 ? "0m" : ""}`.trim();
+    return `${h > 0 ? `${h}h` : ""}${
+      m > 0 ? ` ${m}m` : h === 0 ? "0m" : ""
+    }`.trim();
   }
 
   if (loading) {
@@ -86,19 +88,33 @@ export default function MovieDetail() {
               {/* Coluna esquerda */}
               <div>
                 <span className="font-semibold text-[#b0b0b0]">Duração:</span>
-                <div className="ml-2 font-bold text-white">{formatDuration(movie.duration)}</div>
-                <span className="font-semibold text-[#b0b0b0] mt-3 block">Ano de Lançamento:</span>
+                <div className="ml-2 font-bold text-white">
+                  {formatDuration(movie.duration)}
+                </div>
+                <span className="font-semibold text-[#b0b0b0] mt-3 block">
+                  Ano de Lançamento:
+                </span>
                 <div className="ml-2 font-bold text-white">{movie.year}</div>
-                <span className="font-semibold text-[#b0b0b0] mt-3 block">Género:</span>
+                <span className="font-semibold text-[#b0b0b0] mt-3 block">
+                  Género:
+                </span>
                 <div className="ml-2 font-bold text-white">{movie.genre}</div>
-                <span className="font-semibold text-[#b0b0b0] mt-3 block">Classificação:</span>
+                <span className="font-semibold text-[#b0b0b0] mt-3 block">
+                  Classificação:
+                </span>
                 <div className="ml-2 font-bold text-white">{movie.rating}</div>
               </div>
               {/* Coluna direita */}
               <div>
-                <span className="font-semibold text-[#b0b0b0]">Realização:</span>
-                <div className="ml-2 font-bold text-white">{movie.director}</div>
-                <span className="font-semibold text-[#b0b0b0] mt-3 block">Elenco:</span>
+                <span className="font-semibold text-[#b0b0b0]">
+                  Realização:
+                </span>
+                <div className="ml-2 font-bold text-white">
+                  {movie.director}
+                </div>
+                <span className="font-semibold text-[#b0b0b0] mt-3 block">
+                  Elenco:
+                </span>
                 <div className="ml-2 font-bold text-white">
                   <ul className="mt-1 list-none">
                     {Array.isArray(movie.cast)
@@ -124,7 +140,7 @@ export default function MovieDetail() {
         </div>
         <div className="flex justify-center mt-10 mb-8">
           <button
-            className="bg-[#F45B69] hover:bg-[#e14a58] text-white font-bold px-16 py-4 rounded-lg text-lg"
+            className="bg-quaternary text-white font-bold px-16 py-4 rounded-lg text-lg cursor-pointer"
             onClick={() => router.push(`/sessions?movie=${movie.id}`)}
           >
             VER SESSÕES
