@@ -19,7 +19,8 @@ export default function AuthGuard({ children }) {
       pathname === "/" ||
       pathname === "/login" ||
       pathname === "/register" ||
-      pathname === "/movies"
+      pathname === "/movies" ||
+      pathname === "/bar" 
     ) {
       setChecked(true);
       return;

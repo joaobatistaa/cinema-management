@@ -248,5 +248,92 @@
     "desc": "Compra no Bar",
     "date": "2025-06-04T18:42:44.801Z",
     "id": "1749062564801"
+  },
+  {
+    "items": [
+      {
+        "id": "1",
+        "name": "Pipocas G",
+        "price": "10.00",
+        "stock": 10,
+        "quantity": 1
+      },
+      {
+        "id": "13",
+        "name": "M&Ms",
+        "price": "2.5",
+        "stock": "15",
+        "quantity": 1
+      }
+    ],
+    "total": 12.5,
+    "userId": 0,
+    "desc": "Compra no Bar",
+    "date": "2025-06-04T19:58:44.187Z",
+    "id": "1749067124188"
+  },
+  {
+    "items": [
+      {
+        "id": "13",
+        "name": "M&Ms",
+        "price": "2.5",
+        "stock": "14",
+        "quantity": 1
+      }
+    ],
+    "total": 2.5,
+    "userId": 0,
+    "desc": "Compra no Bar",
+    "date": "2025-06-04T19:59:17.123Z",
+    "id": "1749067157123"
+  },
+  {
+    "items": [
+      {
+        "id": "13",
+        "name": "M&Ms",
+        "price": "2.5",
+        "stock": "13",
+        "quantity": 1
+      }
+    ],
+    "total": 2.5,
+    "userId": 0,
+    "desc": "Compra no Bar",
+    "date": "2025-06-04T19:59:50.522Z",
+    "id": "1749067190522"
+  },
+  {
+    "items": [
+      {
+        "id": "13",
+        "name": "M&Ms",
+        "price": "2.5",
+        "stock": "12",
+        "quantity": 1
+      }
+    ],
+    "total": 2.5,
+    "userId": 0,
+    "desc": "Compra no Bar",
+    "date": "2025-06-04T20:00:18.978Z",
+    "id": "1749067218978"
+  },
+  {
+    "items": [
+      {
+        "id": "13",
+        "name": "M&Ms",
+        "price": "2.5",
+        "stock": "11",
+        "quantity": 1
+      }
+    ],
+    "total": 2.5,
+    "userId": 5,
+    "desc": "Compra no Bar",
+    "date": "2025-06-04T20:00:34.248Z",
+    "id": "1749067234248"
   }
 ]

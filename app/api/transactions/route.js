@@ -30,18 +30,24 @@ export async function POST(request) {
         { status: 400 }
       );
     }
-    
-    const user = await getUserByEmail(email);
-    
-    if (!user) {
-      return NextResponse.json(
-        { error: "Utilizador não encontrado" },
-        { status: 404 }
-      );
+
+    let user = null;
+    let userId = null;
+    if (email === "guest@guest.com") {
+      userId = 0;
+    } else {
+      user = await getUserByEmail(email);
+      if (!user) {
+        return NextResponse.json(
+          { error: "Utilizador não encontrado" },
+          { status: 404 }
+        );
+      }
+      userId = user.id;
     }
 
     try {
-        await updateProductStock(cart);
+      await updateProductStock(cart);
     } catch (error) {
       return NextResponse.json(
         { error: "Erro ao atualizar stock!" },
@@ -52,13 +58,13 @@ export async function POST(request) {
     const transaction = {
       items: cart,
       total: cart.reduce((sum, item) => sum + item.price * item.quantity, 0),
-      userId: user.id,
+      userId,
       desc,
       date: new Date().toISOString(),
     };
-    
+
     try {
-        await addTransaction(transaction);
+      await addTransaction(transaction);
     } catch (error) {
       return NextResponse.json(
         { error: "Erro ao criar transação!" },

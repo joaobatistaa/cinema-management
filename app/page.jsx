@@ -16,30 +16,31 @@ export default function Home() {
           {!user ? (
             <>
               <button
-                className="mr-2 bg-quinary text-white text-xl px-12 py-6 rounded cursor-pointer"
+                className="bg-quinary text-white text-xl px-8 py-3 rounded cursor-pointer"
                 onClick={() => router.push("/login")}
               >
                 INICIAR SESSÃO
               </button>
-              <button
-                className="bg-quinary text-white text-xl px-12 py-6 rounded cursor-pointer"
-                onClick={() => router.push("/register")}
-              >
-                CRIAR CONTA
-              </button>
             </>
           ) : (
             <button
-              className="bg-quinary text-white text-xl px-12 py-6 rounded cursor-pointer"
+              className="bg-quinary text-white text-xl px-8 py-3 rounded cursor-pointer"
               onClick={logout}
             >
               TERMINAR SESSÃO
             </button>
           )}
         </div>
-        <div className="p-5">
+        <div className="p-5 flex gap-5">
+          {/* Botão para guest aceder ao bar */}
           <button
-            className="mr-2 bg-quaternary text-xl text-white px-16 py-6 rounded cursor-pointer"
+            className="bg-quaternary text-xl text-white px-8 py-3 rounded cursor-pointer"
+            onClick={() => router.push("/bar")}
+          >
+            BAR
+          </button>
+          <button
+            className="bg-quaternary text-xl text-white px-8 py-3 rounded cursor-pointer"
             onClick={() => router.push("/movies")}
           >
             FILMES

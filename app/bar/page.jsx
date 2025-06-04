@@ -10,7 +10,7 @@ import { useAuth } from "@/src/contexts/AuthContext";
 export default function Bar() {
   const router = useRouter();
   const { user } = useAuth();
-  const userRole = user?.role || "guest";
+  const userRole = !user ? "guest" : user.role;
 
   const [products, setProducts] = useState([]);
   const [page, setPage] = useState(1);
@@ -103,7 +103,8 @@ export default function Bar() {
       setShowEmailForm(true);
     } else {
       if (total === 0) return;
-      handleBuy(user?.email || "");
+      // Para guest, envia um email especial
+      handleBuy("guest@guest.com");
     }
   }
 
