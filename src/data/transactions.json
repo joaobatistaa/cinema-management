@@ -186,5 +186,67 @@
     "desc": "Compra no Bar",
     "date": "2025-06-04T16:58:22.910Z",
     "id": "1749056302911"
+  },
+  {
+    "items": [
+      {
+        "id": "13",
+        "name": "M&Ms",
+        "price": "2.5",
+        "stock": "16",
+        "quantity": 1
+      }
+    ],
+    "total": 2.5,
+    "userId": 5,
+    "desc": "Compra no Bar",
+    "date": "2025-06-04T18:41:18.538Z",
+    "id": "1749062478539"
+  },
+  {
+    "items": [
+      {
+        "id": "3",
+        "name": "Pipocas P",
+        "price": "3",
+        "stock": "20",
+        "quantity": 1
+      },
+      {
+        "id": "2",
+        "name": "Pipocas M",
+        "price": "5",
+        "stock": "11",
+        "quantity": 1
+      }
+    ],
+    "total": 8,
+    "userId": 5,
+    "desc": "Compra no Bar",
+    "date": "2025-06-04T18:42:13.430Z",
+    "id": "1749062533430"
+  },
+  {
+    "items": [
+      {
+        "id": "3",
+        "name": "Pipocas P",
+        "price": "3",
+        "stock": "19",
+        "quantity": 2
+      },
+      {
+        "id": "7",
+        "name": "Chocolate",
+        "price": "2",
+        "stock": "18",
+        "quantity": 1
+      }
+    ],
+    "total": 8,
+    "userId": 5,
+    "desc": "Compra no Bar",
+    "date": "2025-06-04T18:42:44.801Z",
+    "id": "1749062564801"
   }
 ]

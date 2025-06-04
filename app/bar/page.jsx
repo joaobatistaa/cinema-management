@@ -304,7 +304,7 @@ export default function Bar() {
                       <div className="flex gap-2 ml-2">
                         <button
                           title="Editar produto"
-                          className="bg-blue-600 hover:bg-blue-700 rounded-full p-1"
+                          className="bg-blue-600 hover:bg-blue-700 rounded-full p-1 cursor-pointer"
                           onClick={() => handleEditProduct(product)}
                           tabIndex={-1}
                           type="button"
@@ -316,7 +316,7 @@ export default function Bar() {
                         </button>
                         <button
                           title="Eliminar produto"
-                          className="bg-red-600 hover:bg-red-700 rounded-full p-1"
+                          className="bg-red-600 hover:bg-red-700 rounded-full p-1 cursor-pointer"
                           onClick={() => {
                             if (window.confirm("Tem a certeza que pretende eliminar este produto?")) {
                               fetch(`/api/bar?id=${product.id}`, {
@@ -513,13 +513,13 @@ export default function Bar() {
               </div>
               <button
                 type="submit"
-                className="w-full mt-6 bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-lg text-lg"
+                className="w-full mt-6 bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg text-lg cursor-pointer"
               >
                 CONFIRMAR ALTERAÇÕES
               </button>
               <button
                 type="button"
-                className="w-full mt-2 bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 rounded-lg"
+                className="w-full mt-2 bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 rounded-lg cursor-pointer"
                 onClick={() => setShowEditModal(false)}
               >
                 Cancelar
@@ -571,13 +571,13 @@ export default function Bar() {
               </div>
               <button
                 type="submit"
-                className="w-full mt-6 bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg text-lg"
+                className="w-full mt-6 bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg text-lg cursor-pointer"
               >
                 CRIAR PRODUTO
               </button>
               <button
                 type="button"
-                className="w-full mt-2 bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 rounded-lg"
+                className="w-full mt-2 bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 rounded-lg cursor-pointer"
                 onClick={() => setShowCreateModal(false)}
               >
                 Cancelar
