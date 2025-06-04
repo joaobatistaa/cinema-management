@@ -104,7 +104,7 @@ export default function Bar() {
 
     if (emailToUse) {
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailToUse)) {
-        setEmailError("Insira um email válido.");
+        toast.error("Insira um email válido.");
         return;
       }
 
@@ -116,7 +116,6 @@ export default function Bar() {
         });
         if (!res.ok) {
           const data = await res.json().catch(() => ({}));
-          console.log("Erro ao registar transação:", data);
           throw new Error(data.error || "Erro ao registar transação.");
         };
         toast.success("Compra efetuada com sucesso.");
@@ -283,7 +282,6 @@ export default function Bar() {
                   onClick={() => {
                     setShowEmailForm(false);
                     setClientEmail("");
-                    setEmailError("");
                   }}
                 >
                   Cancelar

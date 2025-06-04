@@ -58,5 +58,53 @@
     "desc": "Compra no Bar",
     "date": "2025-06-03T21:21:10.817Z",
     "id": "1748985670818"
+  },
+  {
+    "items": [
+      {
+        "id": "2",
+        "name": "Pipocas M",
+        "price": "5",
+        "stock": "13",
+        "quantity": 1
+      }
+    ],
+    "total": 5,
+    "userId": 5,
+    "desc": "Compra no Bar",
+    "date": "2025-06-04T13:20:29.006Z",
+    "id": "1749043229007"
+  },
+  {
+    "items": [
+      {
+        "id": "2",
+        "name": "Pipocas M",
+        "price": "5",
+        "stock": "12",
+        "quantity": 1
+      }
+    ],
+    "total": 5,
+    "userId": 5,
+    "desc": "Compra no Bar",
+    "date": "2025-06-04T13:22:05.025Z",
+    "id": "1749043325026"
+  },
+  {
+    "items": [
+      {
+        "id": "12",
+        "name": "Ice Tea Pêssego",
+        "price": "2",
+        "stock": "1",
+        "quantity": 1
+      }
+    ],
+    "total": 2,
+    "userId": 5,
+    "desc": "Compra no Bar",
+    "date": "2025-06-04T13:36:48.112Z",
+    "id": "1749044208112"
   }
 ]
