@@ -1,7 +1,7 @@
 import { promises as fs } from "fs";
 import path from "path";
 
-const filePath = path.join(process.cwd(), "src", "data", "tickets.json");
+const filePath = path.join(process.cwd(), "src", "data", "movies.json");
 
 /**
  * @typedef {Object} Movie

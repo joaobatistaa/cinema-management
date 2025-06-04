@@ -35,6 +35,7 @@ export default function Movies() {
           throw new Error(errorData.message);
         }
         const data = await response.json();
+        console.log(data);
         setMovies(data);
       } catch (error) {
         toast.error(error.message || "Erro ao carregar os filmes.");
@@ -94,6 +95,7 @@ export default function Movies() {
             >
               {paginatedMovies &&
                 paginatedMovies.map((movie) => (
+                   console.log(movie) ||
                   <div
                     key={movie.id}
                     className="relative flex flex-col items-start shadow w-full cursor-pointer"
@@ -116,13 +118,29 @@ export default function Movies() {
                         />
                       </button>
                     )}
-                    <Image
-                      src={movie.image || "/placeholder_movie.png"}
-                      alt={movie.title}
-                      width={190}
-                      height={200}
-                      className="rounded-lg object-cover mb-2 mt-0"
-                    />
+                    {(movie.poster || movie.image) ? (
+                      <Image
+                        src={
+                          (movie.poster && movie.poster !== "")
+                            ? movie.poster
+                            : (movie.image && movie.image !== "")
+                              ? movie.image
+                              : "/placeholder_movie.png"
+                        }
+                        alt={movie.title || "Poster do filme"}
+                        width={190}
+                        height={200}
+                        className="rounded-lg object-cover mb-2 mt-0"
+                      />
+                    ) : (
+                      <Image
+                        src="/placeholder_movie.png"
+                        alt="Poster do filme"
+                        width={190}
+                        height={200}
+                        className="rounded-lg object-cover mb-2 mt-0"
+                      />
+                    )}
                     <div className="w-full">
                       <span
                         className="block text-center font-normal text-white break-words truncate"
