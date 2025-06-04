@@ -34,3 +34,57 @@ export async function updateProductStock(items) {
 
   await fs.writeFile(filePath, JSON.stringify(products, null, 2));
 }
+
+// Atualiza um produto existente
+export async function updateProduct({ id, name, stock, price }) {
+  const fileContents = await fs.readFile(filePath, "utf-8");
+  const products = JSON.parse(fileContents);
+
+  const idx = products.findIndex((p) => String(p.id) === String(id));
+  if (idx === -1) return false;
+
+  products[idx] = {
+    ...products[idx],
+    name,
+    stock,
+    price,
+  };
+
+  await fs.writeFile(filePath, JSON.stringify(products, null, 2));
+  return true;
+}
+
+// Elimina um produto existente
+export async function deleteProduct(id) {
+  const fileContents = await fs.readFile(filePath, "utf-8");
+  const products = JSON.parse(fileContents);
+
+  const idx = products.findIndex((p) => String(p.id) === String(id));
+  if (idx === -1) return false;
+
+  products.splice(idx, 1);
+
+  await fs.writeFile(filePath, JSON.stringify(products, null, 2));
+  return true;
+}
+
+// Adiciona um novo produto
+export async function addProduct({ name, stock, price }) {
+  const fileContents = await fs.readFile(filePath, "utf-8");
+  const products = JSON.parse(fileContents);
+
+  // Gera novo id incremental
+  const newId = products.length > 0 ? Math.max(...products.map((p) => Number(p.id))) + 1 : 1;
+  const newProduct = {
+    id: newId,
+    name,
+    stock,
+    price,
+    image: "" // ou defina um valor default se necessário
+  };
+
+  products.push(newProduct);
+
+  await fs.writeFile(filePath, JSON.stringify(products, null, 2));
+  return newProduct;
+}

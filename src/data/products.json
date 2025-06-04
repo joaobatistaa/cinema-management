@@ -45,13 +45,7 @@
     "id": "8",
     "name": "Nachos Q",
     "price": "4",
-    "stock": "12"
-  },
-  {
-    "id": "9",
-    "name": "Pipocas Doces G",
-    "price": "11",
-    "stock": "0"
+    "stock": "11"
   },
   {
     "id": "10",
@@ -63,13 +57,13 @@
     "id": "11",
     "name": "Ice Tea Limão",
     "price": "2",
-    "stock": "21"
+    "stock": "16"
   },
   {
     "id": "12",
     "name": "Ice Tea Pêssego",
-    "price": "2",
-    "stock": "0"
+    "price": "2.00",
+    "stock": 3
   },
   {
     "id": "13",
@@ -118,5 +112,19 @@
     "name": "Sumo Maçã",
     "price": "2.5",
     "stock": "14"
+  },
+  {
+    "id": 21,
+    "name": "bananinhas",
+    "stock": 10,
+    "price": "2.5",
+    "image": ""
+  },
+  {
+    "id": 22,
+    "name": "paulinho",
+    "stock": 10,
+    "price": "5",
+    "image": ""
   }
 ]

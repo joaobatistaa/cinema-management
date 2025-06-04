@@ -106,5 +106,85 @@
     "desc": "Compra no Bar",
     "date": "2025-06-04T13:36:48.112Z",
     "id": "1749044208112"
+  },
+  {
+    "items": [
+      {
+        "id": "11",
+        "name": "Ice Tea Limão",
+        "price": "2",
+        "stock": "21",
+        "quantity": 1
+      }
+    ],
+    "total": 2,
+    "userId": 5,
+    "desc": "Compra no Bar",
+    "date": "2025-06-04T14:23:33.076Z",
+    "id": "1749047013076"
+  },
+  {
+    "items": [
+      {
+        "id": "11",
+        "name": "Ice Tea Limão",
+        "price": "2",
+        "stock": "20",
+        "quantity": 2
+      }
+    ],
+    "total": 4,
+    "userId": 5,
+    "desc": "Compra no Bar",
+    "date": "2025-06-04T14:29:21.473Z",
+    "id": "1749047361473"
+  },
+  {
+    "items": [
+      {
+        "id": "11",
+        "name": "Ice Tea Limão",
+        "price": "2",
+        "stock": "18",
+        "quantity": 1
+      }
+    ],
+    "total": 2,
+    "userId": 1,
+    "desc": "Compra no Bar",
+    "date": "2025-06-04T14:41:57.643Z",
+    "id": "1749048117643"
+  },
+  {
+    "items": [
+      {
+        "id": "11",
+        "name": "Ice Tea Limão",
+        "price": "2",
+        "stock": "17",
+        "quantity": 1
+      }
+    ],
+    "total": 2,
+    "userId": 5,
+    "desc": "Compra no Bar",
+    "date": "2025-06-04T14:44:17.840Z",
+    "id": "1749048257840"
+  },
+  {
+    "items": [
+      {
+        "id": "8",
+        "name": "Nachos Q",
+        "price": "4",
+        "stock": "12",
+        "quantity": 1
+      }
+    ],
+    "total": 4,
+    "userId": 5,
+    "desc": "Compra no Bar",
+    "date": "2025-06-04T16:58:22.910Z",
+    "id": "1749056302911"
   }
 ]
