@@ -29,7 +29,6 @@ export function addTicket(ticket) {
   return newTicket;
 }
 
-// Função para filtrar bilhetes (opcional, pode ser feita no frontend)
 export function filterTickets({
   movie_id,
   datetime,
@@ -37,7 +36,7 @@ export function filterTickets({
   id,
   room_id,
   session_id,
-  seat,
+  seat
 }) {
   let tickets = readTickets();
   if (movie_id) tickets = tickets.filter((t) => t.movie_id === movie_id);

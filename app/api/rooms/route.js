@@ -26,6 +26,19 @@ async function saveRooms(rooms) {
   }
 }
 
+// GET: devolve todas as salas
+export async function GET() {
+  try {
+    const rooms = await getRooms();
+    return NextResponse.json(rooms);
+  } catch (error) {
+    return NextResponse.json(
+      { message: "Erro ao carregar as salas." },
+      { status: 500 }
+    );
+  }
+}
+
 export async function POST(request) {
   try {
     const newRoom = await request.json();

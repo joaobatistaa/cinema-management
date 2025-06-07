@@ -2,7 +2,16 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/src/contexts/AuthContext";
 import toast from "react-hot-toast";
+import {
+  formatDate,
+  formatHour,
+  getMovieName,
+  getRoomName,
+  seatLabel,
+  truncate
+} from "@/src/utils/helpers";
 
 async function fetchMovies() {
   const res = await fetch("/api/movies");
@@ -37,6 +46,10 @@ export default function TicketsPage() {
   const [client, setClient] = useState("");
   const [ticketNum, setTicketNum] = useState("");
 
+  const [loading, setLoading] = useState(true);
+
+  const { user } = useAuth();
+
   useEffect(() => {
     async function fetchAll() {
       try {
@@ -44,7 +57,7 @@ export default function TicketsPage() {
           fetch("/api/tickets"),
           fetchMovies(),
           fetchUsers(),
-          fetchRooms(),
+          fetchRooms()
         ]);
         if (!ticketsRes.ok) throw new Error("Erro ao carregar bilhetes");
         const ticketsData = await ticketsRes.json();
@@ -55,6 +68,8 @@ export default function TicketsPage() {
         setRooms(roomsRes);
       } catch (err) {
         toast.error(err.message || "Erro ao carregar dados");
+      } finally {
+        setLoading(false);
       }
     }
     fetchAll();
@@ -73,11 +88,15 @@ export default function TicketsPage() {
     if (datetime)
       result = result.filter((t) => t.datetime?.startsWith(datetime));
     if (client) {
-      const clientId = users.find((u) =>
-        u.name?.toLowerCase().includes(client.toLowerCase())
-      )?.id;
-      if (clientId)
-        result = result.filter((t) => String(t.client_id) === String(clientId));
+      console.log(users);
+
+      const matchingUserIds = users
+        .filter((u) => u.name?.toLowerCase().includes(client.toLowerCase()))
+        .map((u) => String(u.id));
+      if (matchingUserIds.length > 0)
+        result = result.filter((t) =>
+          matchingUserIds.includes(String(t.client_id))
+        );
       else result = [];
     }
     if (ticketNum)
@@ -89,20 +108,17 @@ export default function TicketsPage() {
   const paged = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
   const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
 
-  // Helpers para mostrar nomes
-  function getMovieName(id) {
-    return movies.find((m) => String(m.id) === String(id))?.title || id;
-  }
-  function getClientName(id) {
-    return users.find((u) => String(u.id) === String(id))?.name || id;
-  }
-  function getRoomName(id) {
-    return rooms.find((r) => String(r.id) === String(id))?.name || id;
-  }
-  function seatLabel(seat) {
-    if (!seat) return "";
-    const rowLetter = String.fromCharCode(65 + ((seat.row || 1) - 1));
-    return `${rowLetter}${seat.col}`;
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-full w-full">
+        <div className="flex flex-col items-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-quinary mb-4"></div>
+          <span className="text-white text-lg font-semibold">
+            A carregar bilhetes...
+          </span>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -120,90 +136,144 @@ export default function TicketsPage() {
             </div>
             <div className="flex-1 flex justify-center">
               <h1 className="text-4xl font-semibold text-white text-center tracking-wider whitespace-nowrap overflow-hidden text-ellipsis">
-                BILHETES
+                {user?.role === "admin" ? "GESTÃO DOS BILHETES" : "BILHETES"}
               </h1>
             </div>
             <div className="w-40 flex-shrink-0" />
           </div>
-          {/* Filtros */}
-          <div className="grid grid-cols-4 gap-4 mb-6">
-            <input
-              className="rounded px-3 py-2 bg-gray-100 text-gray-800 placeholder-gray-400"
-              placeholder="Filme"
-              value={movie}
-              onChange={(e) => setMovie(e.target.value)}
-            />
-            <input
-              className="rounded px-3 py-2 bg-gray-100 text-gray-800 placeholder-gray-400"
-              placeholder="Data (YYYY-MM-DD)"
-              value={datetime}
-              onChange={(e) => setDatetime(e.target.value)}
-              type="date"
-            />
-            <input
-              className="rounded px-3 py-2 bg-gray-100 text-gray-800 placeholder-gray-400"
-              placeholder="Cliente"
-              value={client}
-              onChange={(e) => setClient(e.target.value)}
-            />
-            <input
-              className="rounded px-3 py-2 bg-gray-100 text-gray-800 placeholder-gray-400"
-              placeholder="Nº Bilhete"
-              value={ticketNum}
-              onChange={(e) => setTicketNum(e.target.value)}
-              type="number"
-            />
-          </div>
+          {(user?.role === "admin" || user?.role === "employee") && (
+            <div className="grid grid-cols-4 gap-4">
+              <div className="flex flex-col">
+                <label className="mb-1 text-sm text-white font-medium">
+                  FILTRAR POR FILME
+                </label>
+                <input
+                  className="px-3 py-2 rounded-lg border-2 border-white bg-transparent text-white placeholder-gray-400 focus:outline-none"
+                  placeholder="Filme"
+                  value={movie}
+                  onChange={(e) => setMovie(e.target.value)}
+                />
+              </div>
+              <div className="flex flex-col">
+                <label className="mb-1 text-sm text-white font-medium">
+                  FILTRAR POR DATA E HORA
+                </label>
+                <input
+                  className="px-3 py-2 rounded-lg border-2 border-white bg-transparent text-white placeholder-gray-400 focus:outline-none"
+                  placeholder="Data e Hora"
+                  value={datetime}
+                  onChange={(e) => setDatetime(e.target.value)}
+                  type="datetime-local"
+                />
+              </div>
+              <div className="flex flex-col">
+                <label className="mb-1 text-sm text-white font-medium">
+                  FILTRAR POR CLIENTE
+                </label>
+                <input
+                  className="px-3 py-2 rounded-lg border-2 border-white bg-transparent text-white placeholder-gray-400 focus:outline-none"
+                  placeholder="Cliente"
+                  value={client}
+                  onChange={(e) => setClient(e.target.value)}
+                />
+              </div>
+              <div className="flex flex-col">
+                <label className="mb-1 text-sm text-white font-medium">
+                  FILTRAR POR Nº BILHETE
+                </label>
+                <input
+                  className="px-3 py-2 rounded-lg border-2 border-white bg-transparent text-white placeholder-gray-400 focus:outline-none"
+                  placeholder="Nº Bilhete"
+                  value={ticketNum}
+                  onChange={(e) => setTicketNum(e.target.value)}
+                  type="number"
+                />
+              </div>
+            </div>
+          )}
         </div>
         {/* Cards */}
-        <div className="grid grid-cols-4 grid-rows-2 gap-6 px-8 mt-2">
+        <div className="grid grid-cols-4 grid-rows-2 gap-4 px-8 mt-2">
           {paged.map((ticket) => (
             <div
               key={ticket.id}
-              className="bg-white border border-gray-200 rounded-xl flex flex-col justify-between h-48 w-full max-w-xs mx-auto text-primary text-base font-semibold p-4 shadow"
+              className="bg-tertiary rounded-xl flex flex-col justify-between h-50 w-full max-w-xs mx-auto text-primary text-base font-semibold p-3"
             >
-              <div className="flex flex-col gap-1">
-                <span className="text-xs text-gray-500">
-                  {ticket.datetime?.split("T")[0]}
-                </span>
-                <span className="text-xs text-gray-500">
-                  {ticket.datetime?.split("T")[1]?.slice(0, 5)} | Sala{" "}
-                  {getRoomName(ticket.room_id)}
-                </span>
-                <span className="text-lg text-gray-800 font-bold">
-                  {getMovieName(ticket.movie_id)}
-                </span>
-                <span className="text-gray-700">
-                  Lugar: {seatLabel(ticket.seat)}
+              {/* Data no topo, centrada */}
+              <div className="flex justify-center mb-1">
+                <span className="text-base text-white">
+                  📅 {formatDate(ticket.datetime)}
                 </span>
               </div>
-              <div className="flex flex-row gap-2 mt-2">
-                <button
-                  className="bg-blue-200 text-blue-900 py-1 px-3 rounded-md cursor-pointer flex-1"
-                  onClick={() => router.push(`/tickets/qrcode/${ticket.id}`)}
-                >
-                  QRCode
-                </button>
-                <button
-                  className="bg-green-200 text-green-900 py-1 px-3 rounded-md cursor-pointer flex-1"
-                  onClick={() => router.push(`/tickets/${ticket.id}`)}
-                >
-                  Detalhes
-                </button>
-              </div>
-              <div className="flex justify-between items-center mt-2">
-                <span className="text-xs text-gray-400">
-                  Nº Bilhete: {ticket.id}
+              {/* Hora e sala lado a lado */}
+              <div className="flex flex-row justify-between items-center mb-1">
+                <span className="text-sm text-white flex items-center gap-1">
+                  🕒 {formatHour(ticket.datetime)}
                 </span>
-                <span className="text-xs text-gray-400">
-                  {getClientName(ticket.client_id)}
+                <span className="text-sm text-white flex items-center gap-1">
+                  📍 {truncate(getRoomName(ticket.room_id, rooms), 9)}
+                </span>
+              </div>
+              {/* Nome do filme e cadeira lado a lado */}
+              <div className="flex flex-row justify-between items-center mb-1">
+                <span className="text-sm text-white flex items-center gap-1">
+                  🎬 {truncate(getMovieName(ticket.movie_id, movies), 18)}
+                </span>
+                <span className="text-sm text-white flex items-center gap-1">
+                  💺 {seatLabel(ticket.seat)}
+                </span>
+              </div>
+              {/* Botões lado a lado */}
+              {user?.role === "admin" || user?.role === "employee" ? (
+                <>
+                  <div className="flex flex-row gap-2 mt-2">
+                    <button
+                      className="bg-quaternary text-white py-1 px-3 rounded-md cursor-pointer flex-1 text-sm"
+                      onClick={() =>
+                        router.push(`/tickets/qrcode/${ticket.id}`)
+                      }
+                    >
+                      EDITAR
+                    </button>
+                    <button
+                      className="bg-quaternary text-white py-1 px-3 rounded-md cursor-pointer flex-1 text-sm"
+                      onClick={() => router.push(`/tickets/${ticket.id}`)}
+                    >
+                      DETALHES
+                    </button>
+                  </div>
+                </>
+              ) : user?.role === "customer" ? (
+                <>
+                  <div className="flex flex-row gap-2 mt-2">
+                    <button
+                      className="bg-quaternary text-white py-1 px-3 rounded-md cursor-pointer flex-1 text-sm"
+                      onClick={() =>
+                        router.push(`/tickets/qrcode/${ticket.id}`)
+                      }
+                    >
+                      QR CODE
+                    </button>
+                    <button
+                      className="bg-quaternary text-white py-1 px-3 rounded-md cursor-pointer flex-1 text-sm"
+                      onClick={() => router.push(`/tickets/${ticket.id}`)}
+                    >
+                      DETALHES
+                    </button>
+                  </div>
+                </>
+              ) : null}
+              {/* Nº Bilhete alinhado à esquerda */}
+              <div className="flex justify-start items-center mt-2">
+                <span className="text-sm text-white flex items-center gap-1">
+                  🎟️ Nº Bilhete: {ticket.id}
                 </span>
               </div>
             </div>
           ))}
         </div>
         {/* Paginação */}
-        <div className="flex justify-center mt-8 items-center space-x-2">
+        <div className="flex justify-center mt-6 items-center space-x-2">
           <button
             className="px-3 py-3 rounded bg-secondary text-white disabled:opacity-50 cursor-pointer flex items-center justify-center"
             onClick={() => setPage((p) => Math.max(1, p - 1))}
