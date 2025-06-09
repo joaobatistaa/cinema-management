@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import toast from "react-hot-toast";
 
 export default function Sessions() {
   const router = useRouter();
@@ -15,30 +16,43 @@ export default function Sessions() {
   const [page, setPage] = useState(0);
   const SESSIONS_PER_PAGE = 5;
   const [error, setError] = useState("");
+  const [showError, setShowError] = useState(false);
 
   useEffect(() => {
     async function fetchSessionsAndMovie() {
       setLoading(true);
       try {
         const resSessions = await fetch(`/api/sessions?movie=${movieId}`);
-        const sessionsData = await resSessions.json();
+        let sessionsData = await resSessions.json();
+
+        // Ordena as sessões por data/hora crescente (mais próxima primeiro)
+        sessionsData.sort((a, b) => new Date(a.date) - new Date(b.date));
         setSessions(sessionsData);
 
         const resMovie = await fetch(`/api/movies/${movieId}`);
         const movieData = await resMovie.json();
         setMovie(movieData);
 
-        // Selecionar a primeira data disponível que seja hoje ou futura
+        // Selecionar a primeira sessão válida (data >= hoje e hora > agora se for hoje)
         if (sessionsData.length > 0) {
           const now = new Date();
-          now.setSeconds(0, 0);
-          const firstValidSession = sessionsData.find(
-            (s) => new Date(s.date) >= now
-          );
-          const firstDate = firstValidSession
-            ? firstValidSession.date.split("T")[0]
-            : sessionsData[0].date.split("T")[0];
-          setSelectedDate(firstDate);
+          let firstValidSession = sessionsData.find((s) => {
+            const sessionDate = new Date(s.date);
+            const sessionDay = sessionDate.toISOString().split("T")[0];
+            const todayStr = getTodayStr();
+            if (sessionDay > todayStr) return true;
+            if (sessionDay === todayStr && sessionDate > now) return true;
+            return false;
+          });
+
+          let firstValidDate = "";
+          if (firstValidSession) {
+            firstValidDate = firstValidSession.date.split("T")[0];
+          } else {
+            // Se não houver sessão válida, mostra a data mais próxima (primeira do array)
+            firstValidDate = sessionsData[0].date.split("T")[0];
+          }
+          setSelectedDate(firstValidDate);
         }
       } catch {
         setSessions([]);
@@ -70,22 +84,37 @@ export default function Sessions() {
     return d >= now;
   }
 
+  // Função utilitária para verificar se a sessão pode ser selecionada
+  function canSelectSession(session) {
+    const now = new Date();
+    const sessionDate = new Date(session.date);
+    const sessionDay = sessionDate.toISOString().split("T")[0];
+    const todayStr = getTodayStr();
+
+    // Se for hoje, só pode selecionar se a hora for futura
+    if (sessionDay === todayStr) {
+      return sessionDate > now;
+    }
+    // Se for depois de hoje, pode selecionar
+    return sessionDay > todayStr;
+  }
+
   function handleSelectSession(session) {
-    // Bloquear seleção de sessões de dias/horas anteriores
-    if (!isNowOrFuture(session.date)) {
-      setError("Não é possível selecionar sessões anteriores à hora atual.");
+    if (!canSelectSession(session)) {
+      toast.error(
+        "Só pode selecionar sessões futuras. Para o dia de hoje, apenas sessões com hora posterior à atual."
+      );
       return;
     }
     setSelectedSession(session);
-    setError("");
   }
 
   function handleBuyTicket() {
     if (!selectedSession) {
-      setError("Selecione uma sessão para comprar o bilhete.");
+      toast.error("Selecione uma sessão para comprar o bilhete.");
       return;
     }
-    setError("Funcionalidade não implementada.");
+    toast.error("Funcionalidade não implementada.");
   }
 
   // Função utilitária para obter a data de hoje no formato yyyy-mm-dd
@@ -259,8 +288,9 @@ export default function Sessions() {
               >
                 COMPRAR BILHETE
               </button>
-              {error && (
-                <div className="mt-4 bg-[#f8d7da] text-[#a94442] px-6 py-2 rounded">
+              {/* Toaster de erro igual ao bar */}
+              {error && showError && (
+                <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 bg-[#f8d7da] text-[#a94442] px-6 py-2 rounded shadow-lg z-50 transition-opacity duration-300">
                   {error}
                 </div>
               )}
