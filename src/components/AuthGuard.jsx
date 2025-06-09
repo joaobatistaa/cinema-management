@@ -20,7 +20,9 @@ export default function AuthGuard({ children }) {
       pathname === "/login" ||
       pathname === "/register" ||
       pathname === "/movies" ||
-      pathname === "/bar" 
+      pathname === "/bar" ||
+      pathname.startsWith("/movies/") ||
+      pathname.startsWith("/sessions")
     ) {
       setChecked(true);
       return;
