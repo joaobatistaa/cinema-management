@@ -6,7 +6,7 @@ const filePath = path.join(process.cwd(), "src", "data", "movies.json");
 /**
  * @typedef {Object} Movie
  * @property {number} id
- * @property {number} title
+ * @property {string} title
  * @property {string} image
  */
 
@@ -37,9 +37,9 @@ export async function removeMovie(id) {
 // Atualiza um filme pelo id
 export async function updateMovie(id, updatedFields) {
   const movies = await getMovies();
-  const updatedMovies = movies.map((s) =>
-    s.id === id ? { ...s, ...updatedFields, id } : s
+  const updatedMovies = movies.map((m) =>
+    String(m.id) === String(id) ? { ...m, ...updatedFields, id: m.id } : m
   );
   await fs.writeFile(filePath, JSON.stringify(updatedMovies, null, 2), "utf-8");
-  return updatedMovies.find((s) => s.id === id);
+  return updatedMovies.find((m) => String(m.id) === String(id));
 }

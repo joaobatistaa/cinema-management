@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getMovies, addMovie } from "@/src/services/movies";
+import { getMovies, addMovie, updateMovie } from "@/src/services/movies";
 
 export async function GET() {
   try {
@@ -22,13 +22,56 @@ export async function POST(request) {
       return NextResponse.json({ error: "Dados incompletos" }, { status: 400 });
     }
 
-    const newSession = await addMovie(sessionData);
+    const newMovie = await addMovie(movieData);
 
-    return NextResponse.json(newSession, { status: 201 });
+    return NextResponse.json(newMovie, { status: 201 });
   } catch (error) {
     return NextResponse.json(
       { error: "Erro ao adicionar filme" },
       { status: 500 }
     );
+  }
+}
+
+export async function PUT(request) {
+  try {
+    const body = await request.json();
+    const { id, ...updatedFields } = body;
+    if (!id) {
+      return NextResponse.json({ error: "ID em falta" }, { status: 400 });
+    }
+    const updated = await updateMovie(Number(id), updatedFields);
+    if (!updated) {
+      return NextResponse.json({ error: "Filme não encontrado" }, { status: 404 });
+    }
+    return NextResponse.json(updated);
+  } catch (error) {
+    return NextResponse.json({ error: "Erro ao atualizar filme" }, { status: 500 });
+  }
+}
+
+export async function DELETE(request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get("id");
+    if (!id) {
+      return NextResponse.json({ error: "ID em falta" }, { status: 400 });
+    }
+    const movies = await getMovies();
+    const idx = movies.findIndex((m) => String(m.id) === String(id));
+    if (idx === -1) {
+      return NextResponse.json({ error: "Filme não encontrado" }, { status: 404 });
+    }
+    movies.splice(idx, 1);
+    await import("fs/promises").then(fs =>
+      fs.writeFile(
+        require("path").join(process.cwd(), "src", "data", "movies.json"),
+        JSON.stringify(movies, null, 2),
+        "utf-8"
+      )
+    );
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    return NextResponse.json({ error: "Erro ao eliminar filme" }, { status: 500 });
   }
 }
