@@ -46,6 +46,10 @@ export default function Movies() {
   const pageSize = 10;
   const [tickets, setTickets] = useState([]);
 
+  // Ano mínimo e máximo permitidos
+  const MIN_YEAR = 1900;
+  const MAX_YEAR = new Date().getFullYear();
+
   useEffect(() => {
     async function fetchMovies() {
       try {
@@ -122,6 +126,12 @@ export default function Movies() {
 
   async function handleEditMovie(e) {
     e.preventDefault();
+    // Validação do ano
+    const yearNum = Number(editYear);
+    if (yearNum < MIN_YEAR || yearNum > MAX_YEAR) {
+      toast.error(`O ano deve estar entre ${MIN_YEAR} e ${MAX_YEAR}.`);
+      return;
+    }
     if (
       !editTitle.trim() ||
       !editSynopsis.trim() ||
@@ -174,6 +184,12 @@ export default function Movies() {
 
   async function handleCreateMovie(e) {
     e.preventDefault();
+    // Validação do ano
+    const yearNum = Number(createYear);
+    if (yearNum < MIN_YEAR || yearNum > MAX_YEAR) {
+      toast.error(`O ano deve estar entre ${MIN_YEAR} e ${MAX_YEAR}.`);
+      return;
+    }
     if (
       !createTitle.trim() ||
       !createSynopsis.trim() ||
@@ -301,7 +317,6 @@ export default function Movies() {
                     style={{ minWidth: 0 }}
                     onClick={() => router.push(`/movies/${movie.id}`)}
                   >
-                    {/* Botões de admin */}
                     {userRole === "admin" && (
                       <div className="absolute top-3 right-3 flex gap-2 z-10">
                         <button
@@ -316,7 +331,6 @@ export default function Movies() {
                           aria-label="Editar"
                           style={{ width: 32, height: 32 }}
                         >
-                          {/* Edit icon SVG */}
                           <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
                             <path d="M4 21h17" stroke="#fff" strokeWidth="2" strokeLinecap="round"/>
                             <path d="M17.7 6.29a1 1 0 0 1 0 1.41l-9.3 9.3-3.4.7.7-3.4 9.3-9.3a1 1 0 0 1 1.41 0l1.29 1.29a1 1 0 0 1 0 1.41z" stroke="#fff" strokeWidth="2"/>
@@ -334,7 +348,6 @@ export default function Movies() {
                           aria-label="Eliminar"
                           style={{ width: 32, height: 32 }}
                         >
-                          {/* Trash icon SVG */}
                           <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
                             <path d="M3 6h18" stroke="#fff" strokeWidth="2" strokeLinecap="round"/>
                             <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" stroke="#fff" strokeWidth="2"/>
@@ -419,7 +432,6 @@ export default function Movies() {
           )}
         </div>
       </div>
-      {/* Modal editar filme */}
       {showEditModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
           <div className="bg-[#232336] rounded-xl shadow-lg p-10 flex flex-col items-center min-w-[900px] max-w-[98vw]">
@@ -515,6 +527,8 @@ export default function Movies() {
                       value={editYear}
                       onChange={e => setEditYear(e.target.value)}
                       required
+                      min={MIN_YEAR}
+                      max={MAX_YEAR}
                     />
                   </div>
                 </div>
@@ -565,7 +579,7 @@ export default function Movies() {
           </div>
         </div>
       )}
-      {/* Modal criar filme */}
+      
       {showCreateModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
           <div className="bg-[#232336] rounded-xl shadow-lg p-10 flex flex-col items-center min-w-[900px] max-w-[98vw]">
@@ -666,6 +680,8 @@ export default function Movies() {
                       value={createYear}
                       onChange={e => setCreateYear(e.target.value)}
                       required
+                      min={MIN_YEAR}
+                      max={MAX_YEAR}
                     />
                   </div>
                 </div>

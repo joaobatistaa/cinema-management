@@ -1,6 +1,5 @@
 // imports
 import { NextResponse } from "next/server";
-
 import { getProducts, updateProduct, deleteProduct, addProduct } from "@/src/services/bar";
 
 // handles the request

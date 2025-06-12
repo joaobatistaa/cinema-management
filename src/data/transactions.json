@@ -335,5 +335,21 @@
     "desc": "Compra no Bar",
     "date": "2025-06-04T20:00:34.248Z",
     "id": "1749067234248"
+  },
+  {
+    "items": [
+      {
+        "id": "12",
+        "name": "Ice Tea Pêssego",
+        "price": "2.00",
+        "stock": 3,
+        "quantity": 1
+      }
+    ],
+    "total": 2,
+    "userId": 0,
+    "desc": "Compra no Bar",
+    "date": "2025-06-12T17:59:52.996Z",
+    "id": "1749751192996"
   }
 ]

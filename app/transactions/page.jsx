@@ -77,7 +77,6 @@ export default function Transactions() {
                     </div>
                 </div>
             </div>
-            {/* Cards */}
             <div className="flex-1 w-full flex flex-col items-center mt-20">
                 {loading ? (
                     <div className="text-white mt-8">A carregar...</div>
@@ -125,7 +124,6 @@ export default function Transactions() {
                         })}
                     </div>
                 )}
-                {/* Paginação */}
                 {totalPages > 1 && (
                     <div className="flex gap-2 mt-8 mb-6">
                         <button

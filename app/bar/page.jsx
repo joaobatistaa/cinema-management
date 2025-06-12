@@ -300,7 +300,6 @@ export default function Bar() {
                     >
                       +
                     </button>
-                    {/* Ícones de admin lado a lado dos botões de quantidade */}
                     {userRole === "admin" && (
                       <div className="flex gap-2 ml-2">
                         <button
@@ -346,7 +345,6 @@ export default function Bar() {
                   </div>
                 </div>
               ))}
-              {/* Card para adicionar novo produto (apenas admin, só na última página e depois do último produto) */}
               {userRole === "admin" &&
                 page === Math.ceil(products.length / pageSize) && (
                   <div
@@ -363,7 +361,6 @@ export default function Bar() {
                   </div>
                 )}
             </div>
-            {/* Paginação centralizada */}
             <div className="flex items-end gap-2 mb-6 px-8">
               <div className="flex-1" />
               <div className="flex justify-center items-end gap-2 flex-shrink-0">
@@ -400,7 +397,6 @@ export default function Bar() {
                   &gt;
                 </button>
               </div>
-              {/* Total e botão de compra alinhados à direita */}
               <div className="flex-1 flex justify-end items-end">
                 <div className="flex flex-col items-center ml-8 justify-end self-end">
                   <div className="flex flex-row">
@@ -426,7 +422,6 @@ export default function Bar() {
         )}
       </div>
   
-      {/* Modal de email para funcionário e admin */}
       {(showEmailForm && (userRole === "employee" || userRole === "admin")) && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
           <div className="bg-[#232336] rounded-xl shadow-lg p-8 flex flex-col items-center min-w-[320px] max-w-[90vw]">
@@ -472,7 +467,6 @@ export default function Bar() {
         </div>
       )}
 
-      {/* Modal editar produto */}
       {showEditModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
           <div className="bg-[#161621] rounded-xl shadow-lg p-8 flex flex-col items-center min-w-[320px] max-w-[90vw]">
@@ -530,7 +524,6 @@ export default function Bar() {
         </div>
       )}
 
-      {/* Modal criar produto */}
       {showCreateModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
           <div className="bg-[#1f1f2e] rounded-xl shadow-lg p-8 flex flex-col items-center min-w-[320px] max-w-[90vw]">

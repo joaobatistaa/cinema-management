@@ -19,7 +19,7 @@ export default function Home() {
                 className="bg-quinary text-white text-xl px-8 py-3 rounded cursor-pointer"
                 onClick={() => router.push("/login")}
               >
-                INICIAR SESSÃO
+                Sign in
               </button>
             </>
           ) : (
@@ -32,7 +32,6 @@ export default function Home() {
           )}
         </div>
         <div className="p-5 flex gap-5">
-          {/* Botão para guest aceder ao bar */}
           <button
             className="bg-quaternary text-xl text-white px-8 py-3 rounded cursor-pointer"
             onClick={() => router.push("/bar")}

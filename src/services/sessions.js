@@ -1,16 +1,15 @@
 import { promises as fs } from "fs";
 import path from "path";
 
-const filePath = path.join(process.cwd(), "data", "sessions.json");
+const filePath = path.join(process.cwd(), "src", "data", "sessions.json");
 
 /**
  * @typedef {Object} Session
- * @property {number} id
- * @property {number} movie_id
- * @property {number} room_id
- * @property {number} interval_duration
- * @property {number} price
- * @property {string} datetime
+ * @property {number|string} id
+ * @property {number|string} movieId
+ * @property {number|string} room
+ * @property {string} date
+ * @property {string} language
  */
 
 export async function getSessions() {
@@ -42,12 +41,20 @@ export async function removeSession(id) {
 export async function updateSession(id, updatedFields) {
   const sessions = await getSessions();
   const updatedSessions = sessions.map((s) =>
-    s.id === id ? { ...s, ...updatedFields, id } : s
+    String(s.id) === String(id)
+      ? {
+          ...s,
+          ...(updatedFields.room !== undefined ? { room: updatedFields.room } : {}),
+          ...(updatedFields.date !== undefined ? { date: updatedFields.date } : {}),
+          ...(updatedFields.language !== undefined ? { language: updatedFields.language } : {}),
+          id: s.id,
+        }
+      : s
   );
   await fs.writeFile(
     filePath,
     JSON.stringify(updatedSessions, null, 2),
     "utf-8"
   );
-  return updatedSessions.find((s) => s.id === id);
+  return updatedSessions.find((s) => String(s.id) === String(id));
 }

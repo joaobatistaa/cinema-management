@@ -8,7 +8,6 @@ export async function POST(request) {
       return NextResponse.json({ error: "Dados incompletos" }, { status: 400 });
     }
     const newUser = await addUser(userData);
-    // Nunca retornar a password no response
     const { password, ...userWithoutPassword } = newUser;
     return NextResponse.json(userWithoutPassword, { status: 201 });
   } catch (error) {

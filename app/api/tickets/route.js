@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { getTickets } from "@/src/services/tickets";
 
-// GET: retorna todos os bilhetes
 export async function GET() {
   try {
     const tickets = getTickets();

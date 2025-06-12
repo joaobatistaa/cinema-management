@@ -2,7 +2,7 @@
   {
     "id": 1,
     "movie_id": 1,
-    "session_id": 101,
+    "session_id": 15,
     "room_id": 1,
     "client_id": 5,
     "seat": { "row": 1, "col": 5 },

@@ -80,7 +80,7 @@ export async function addProduct({ name, stock, price }) {
     name,
     stock,
     price,
-    image: "" // ou defina um valor default se necessário
+    image: "" 
   };
 
   products.push(newProduct);

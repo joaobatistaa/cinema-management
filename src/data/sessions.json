@@ -100,15 +100,15 @@
   {
     "id": "15",
     "movieId": "3",
-    "room": 5,
-    "date": "2025-07-03T14:00:00",
-    "language": "PT"
+    "room": "10",
+    "date": "2025-07-03T14:00",
+    "language": "xines"
   },
   {
     "id": "16",
     "movieId": "3",
-    "room": 6,
-    "date": "2025-07-03T16:00:00",
+    "room": "10",
+    "date": "2025-07-06T19:40",
     "language": "EN"
   },
   {
@@ -159,5 +159,12 @@
     "room": 3,
     "date": "2025-06-09T22:00:00",
     "language": "PT"
+  },
+  {
+    "id": 24,
+    "movieId": "4",
+    "room": "10",
+    "date": "2025-07-10T14:02",
+    "language": "en"
   }
 ]

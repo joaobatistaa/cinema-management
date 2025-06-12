@@ -3,7 +3,6 @@ import { getTransactions, addTransaction } from "@/src/services/transactions";
 import { updateProductStock } from "@/src/services/bar"; 
 import { getUserByEmail } from "@/src/services/users";
 
-// GET /api/transactions
 export async function GET() {
   try {
     const transactions = getTransactions();
@@ -17,20 +16,16 @@ export async function GET() {
   }
 }
 
-// POST /api/transactions
 export async function POST(request) {
   try {
     const body = await request.json();
-
     const { email, cart, desc } = body;
-
     if (!email) {
       return NextResponse.json(
         { error: "Email do cliente é obrigatório" },
         { status: 400 }
       );
     }
-
     let user = null;
     let userId = null;
     if (email === "guest@guest.com") {
@@ -45,7 +40,6 @@ export async function POST(request) {
       }
       userId = user.id;
     }
-
     try {
       await updateProductStock(cart);
     } catch (error) {
@@ -54,7 +48,6 @@ export async function POST(request) {
         { status: 500 }
       );
     }
-
     const transaction = {
       items: cart,
       total: cart.reduce((sum, item) => sum + item.price * item.quantity, 0),
@@ -62,7 +55,6 @@ export async function POST(request) {
       desc,
       date: new Date().toISOString(),
     };
-
     try {
       await addTransaction(transaction);
     } catch (error) {
@@ -71,7 +63,6 @@ export async function POST(request) {
         { status: 500 }
       );
     }
-
     return NextResponse.json({ ok: true }, { status: 201 });
   } catch (error) {
     console.log("Erro ao processar transação:", error);

@@ -5,11 +5,9 @@ const filePath = path.join(process.cwd(), "src", "data", "rooms.json");
 
 export async function DELETE(request, { params }) {
   const { id } = params;
-
   try {
     const fileContents = await fs.readFile(filePath, "utf-8");
     const rooms = JSON.parse(fileContents);
-
     const roomIndex = rooms.findIndex((room) => room.id === parseInt(id, 10));
     if (roomIndex === -1) {
       return new Response(JSON.stringify({ message: "Sala não encontrada." }), {
@@ -17,11 +15,8 @@ export async function DELETE(request, { params }) {
         headers: { "Content-Type": "application/json" }
       });
     }
-
     rooms.splice(roomIndex, 1);
-
     await fs.writeFile(filePath, JSON.stringify(rooms, null, 2), "utf-8");
-
     return new Response(
       JSON.stringify({ message: "Sala eliminada com sucesso." }),
       {
@@ -43,11 +38,9 @@ export async function DELETE(request, { params }) {
 
 export async function GET(request, { params }) {
   const { id } = params;
-
   try {
     const fileContents = await fs.readFile(filePath, "utf-8");
     const rooms = JSON.parse(fileContents);
-
     const room = rooms.find((room) => room.id === parseInt(id, 10));
     if (!room) {
       return new Response(JSON.stringify({ message: "Sala não encontrada." }), {
@@ -55,7 +48,6 @@ export async function GET(request, { params }) {
         headers: { "Content-Type": "application/json" }
       });
     }
-
     return new Response(JSON.stringify(room), {
       status: 200,
       headers: { "Content-Type": "application/json" }
@@ -74,12 +66,10 @@ export async function GET(request, { params }) {
 
 export async function PUT(request, { params }) {
   const { id } = params;
-
   try {
     const updatedRoom = await request.json();
     const fileContents = await fs.readFile(filePath, "utf-8");
     const rooms = JSON.parse(fileContents);
-
     const roomIndex = rooms.findIndex((room) => room.id === parseInt(id, 10));
     if (roomIndex === -1) {
       return new Response(JSON.stringify({ message: "Sala não encontrada." }), {
@@ -87,12 +77,8 @@ export async function PUT(request, { params }) {
         headers: { "Content-Type": "application/json" }
       });
     }
-
-    // Atualizar os dados da sala
     rooms[roomIndex] = { ...rooms[roomIndex], ...updatedRoom };
-
     await fs.writeFile(filePath, JSON.stringify(rooms, null, 2), "utf-8");
-
     return new Response(
       JSON.stringify({ message: "Sala atualizada com sucesso." }),
       {

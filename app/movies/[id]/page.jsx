@@ -75,17 +75,12 @@ export default function MovieDetail() {
             </h1>
           </div>
         </div>
-        {/* Sinopse + Detalhes + Poster */}
         <div className="flex flex-col md:flex-row gap-12 px-12 pt-2 pb-0 mt-15 items-start">
-          {/* Esquerda: Sinopse + Detalhes */}
           <div className="flex-1 flex flex-col justify-between">
-            {/* Sinopse alinhada à esquerda */}
             <div className="mb-6">
               <p className="text-white text-base">{movie.synopsis}</p>
             </div>
-            {/* Detalhes */}
             <div className="grid grid-cols-2 gap-x-12 gap-y-2 text-white text-base">
-              {/* Coluna esquerda */}
               <div>
                 <span className="font-semibold text-[#b0b0b0]">Duração:</span>
                 <div className="ml-2 font-bold text-white">
@@ -104,7 +99,6 @@ export default function MovieDetail() {
                 </span>
                 <div className="ml-2 font-bold text-white">{movie.rating}</div>
               </div>
-              {/* Coluna direita */}
               <div>
                 <span className="font-semibold text-[#b0b0b0]">
                   Realização:
@@ -127,7 +121,6 @@ export default function MovieDetail() {
               </div>
             </div>
           </div>
-          {/* Direita: Poster */}
           <div className="flex flex-col items-center min-w-[220px]">
             {(movie.poster || movie.image) && (
               <img
