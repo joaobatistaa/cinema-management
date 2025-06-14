@@ -2,6 +2,7 @@ import { useAuth } from "@/src/contexts/AuthContext";
 import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
+import path from "path";
 
 export default function AuthGuard({ children }) {
   const { user } = useAuth();
@@ -22,7 +23,8 @@ export default function AuthGuard({ children }) {
       pathname === "/movies" ||
       pathname === "/bar" ||
       pathname.startsWith("/movies/") ||
-      pathname.startsWith("/sessions")
+      pathname.startsWith("/sessions") ||
+      pathname.startsWith("/confirmEmail") 
     ) {
       setChecked(true);
       return;

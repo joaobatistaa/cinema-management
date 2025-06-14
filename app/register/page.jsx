@@ -4,15 +4,17 @@ import toast, { Toaster } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import HomeIcon from "@mui/icons-material/Home";
 import { useAuth } from "@/src/contexts/AuthContext";
+import { useState } from "react";
 
 export default function RegisterPage() {
   const router = useRouter();
   const { login } = useAuth();
+  const [email, setEmail] = useState("");
+  const [nif, setNif] = useState("");
 
   async function handleSubmit(e) {
     e.preventDefault();
     const name = e.target.name.value;
-    const email = e.target.email.value;
     const password = e.target.password.value;
     const confirmPassword = e.target.confirmPassword.value;
 
@@ -24,12 +26,24 @@ export default function RegisterPage() {
       toast.error("As passwords não coincidem");
       return;
     }
+    // Validação do NIF (opcional, mas se existir tem de ser válido)
+    if (nif && !/^\d{9}$/.test(nif)) {
+      toast.error("NIF inválido. Deve ter 9 dígitos.");
+      return;
+    }
+    // Validação da password: mínimo 8 caracteres, pelo menos uma letra e um caracter especial
+    if (
+      !/^.*(?=.{8,})(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).*$/.test(password)
+    ) {
+      toast.error("A password deve ter pelo menos 8 caracteres, uma letra e um caracter especial.");
+      return;
+    }
 
     try {
       const res = await fetch("/api/users/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password })
+        body: JSON.stringify({ name, email, password, nif: nif || undefined })
       });
       const data = await res.json();
       if (!res.ok) {
@@ -53,7 +67,7 @@ export default function RegisterPage() {
         <HomeIcon style={{ color: "white", fontSize: 32 }} />
       </button>
       <div className="flex flex-col items-center justify-start">
-        <h2 className="text-[50px] font-bold text-center text-white tracking-wider mb-8">
+        <h2 className="text-[40px] font-bold text-center text-white tracking-wider">
           CRIAR CONTA
         </h2>
         <div className="w-full max-w-md">
@@ -74,21 +88,28 @@ export default function RegisterPage() {
               />
             </div>
             <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-white"
-              >
-                Email
-              </label>
+              <label className="block text-white mb-1">Email</label>
               <input
                 type="email"
-                id="email"
-                name="email"
-                placeholder="email@email.com"
                 className="w-full px-4 py-2 mt-1 border-1 border-white rounded-lg text-gray"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                required
               />
             </div>
-
+            <div>
+              <label className="block text-white mb-1">NIF (opcional, 9 dígitos)</label>
+              <input
+                type="text"
+                className="w-full px-4 py-2 mt-1 border-1 border-white rounded-lg text-gray"
+                value={nif}
+                onChange={e => setNif(e.target.value.replace(/\D/g, "").slice(0, 9))}
+                maxLength={9}
+                pattern="\d{9}"
+                inputMode="numeric"
+                placeholder="NIF"
+              />
+            </div>
             <div>
               <label
                 htmlFor="password"
