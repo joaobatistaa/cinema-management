@@ -18,7 +18,6 @@ async function generateUniquePurl(email) {
   let purl;
   let exists = true;
   while (exists) {
-    // Usa base64 de email + timestamp + random seed
     const seed =
       email +
       "-" +
@@ -65,9 +64,7 @@ export async function addUser(user) {
     }
     const newId =
       users.length > 0 ? Math.max(...users.map((u) => u.id)) + 1 : 1;
-    // Hash da password antes de guardar
     const hashedPassword = await bcrypt.hash(user.password, 10);
-    // Gera purl único
     const purl = await generateUniquePurl(user.email);
     const newUser = {
       id: newId,
@@ -100,12 +97,18 @@ export async function authenticateUser(email, password) {
     if (!user) {
       throw new Error("Utilizador não encontrado");
     }
-    // Verifica a password com bcrypt
-    const valid = await bcrypt.compare(password, user.password);
+    if (!user.password) {
+      throw new Error("Password não definida");
+    }
+    const valid =
+      user.password.startsWith("$2a$") ||
+      user.password.startsWith("$2b$") ||
+      user.password.startsWith("$2y$")
+        ? await bcrypt.compare(password, user.password)
+        : false;
     if (!valid) {
       throw new Error("Password incorreta");
     }
-    // Nunca retornar a password
     const { password: _, ...userWithoutPassword } = user;
     return userWithoutPassword;
   } catch (error) {

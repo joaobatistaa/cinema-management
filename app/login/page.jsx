@@ -31,7 +31,12 @@ export default function LoginPage() {
       });
       const data = await res.json();
       if (!res.ok) {
-        toast.error(data.error || "Credenciais inválidas");
+        // Mostra mensagem específica se for necessário confirmar email
+        if (res.status === 403 && data.error) {
+          toast.error(data.error);
+        } else {
+          toast.error(data.error || "Credenciais inválidas");
+        }
         setLoading(false);
         return;
       }
