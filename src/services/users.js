@@ -75,6 +75,7 @@ export async function addUser(user) {
       active: 0,
       purl,
       desc: "pending email confirmation",
+      tickets: [], // <-- Adicionado campo tickets vazio
     };
     users.push(newUser);
     await fs.writeFile(filePath, JSON.stringify(users, null, 2), "utf-8");

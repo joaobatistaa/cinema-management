@@ -25,11 +25,12 @@
     "id": 3,
     "role": "customer",
     "name": "Jorge Mora da Silva",
-    "email": "teste@teste.com",
-    "password": "$2b$10$2XCxyi8bzXfkLN/B9ofq2.gpBHnNeggHtbP1C6nOO1/TLWRXK4.82",
-    "nif": 270309136,
+    "email": "test@test.com",
+    "password": "$2b$10$F/Cihhu9YiVTfE9YQ8oUh.lMs4XPUAPvkxKoxRHZKxcYi1cJ2LKOa",
+    "nif": "270309136",
     "active": 1,
     "purl": null,
-    "desc": "email confirmed"
+    "desc": "email confirmed",
+    "tickets": []
   }
 ]
