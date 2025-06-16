@@ -99,7 +99,7 @@ export default function LoginPage() {
                 />
                 <div className="mt-2 text-left">
                   <a
-                    href="/forgot-password"
+                    href="/forgotPassword"
                     className="text-sm text-white hover:text-gray-200 transition"
                   >
                     Esqueceu-se da password?

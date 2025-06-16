@@ -8,7 +8,7 @@ export async function GET(request) {
     return NextResponse.json({ error: "Email em falta" }, { status: 400 });
   }
   const user = await getUserByEmail(email.trim());
-  if (!user) {
+  if (!user || !user.active) {
     return NextResponse.json(null, { status: 404 });
   }
   return NextResponse.json(user);

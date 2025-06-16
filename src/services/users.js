@@ -13,7 +13,7 @@ try {
 const filePath = path.join(process.cwd(), "src", "data", "users.json");
 
 // Função para gerar um purl único
-async function generateUniquePurl(email) {
+export async function generateUniquePurl(email) {
   const users = await getUsers();
   let purl;
   let exists = true;

@@ -26,11 +26,11 @@
     "role": "customer",
     "name": "Jorge Mora da Silva",
     "email": "test@test.com",
-    "password": "$2b$10$F/Cihhu9YiVTfE9YQ8oUh.lMs4XPUAPvkxKoxRHZKxcYi1cJ2LKOa",
+    "password": "$2b$10$7w2lJEU9o.g/3yOW5ylO9uCm3.epZH8GycatXl3A3D6UvBF8LqtE6",
     "nif": "270309136",
     "active": 1,
     "purl": null,
-    "desc": "email confirmed",
+    "desc": "changed password",
     "tickets": []
   }
 ]
