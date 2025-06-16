@@ -5,21 +5,76 @@
     "session_id": 15,
     "room_id": 1,
     "client_id": 5,
-    "seat": { "row": 1, "col": 5 },
+    "seat": {
+      "row": 1,
+      "col": 5
+    },
     "datetime": "2024-06-03T21:00",
     "bar_items": [
-      { "id": 1, "name": "Pipocas G", "price": 5.3, "quantity": 2 },
-      { "id": 2, "name": "Pipocas M", "price": 3.5, "quantity": 2 },
-      { "id": 3, "name": "Pipocas P", "price": 2.5, "quantity": 1 },
-      { "id": 5, "name": "Água", "price": 1.5, "quantity": 1 },
-      { "id": 6, "name": "Sumo Laranja", "price": 2.5, "quantity": 2 },
-      { "id": 7, "name": "Chocolate", "price": 2, "quantity": 3 },
-      { "id": 8, "name": "Nachos Q", "price": 4, "quantity": 6 },
-      { "id": 10, "name": "Pipocas Doces P", "price": 4, "quantity": 2 },
-      { "id": 11, "name": "Ice Tea Limão", "price": 2, "quantity": 1 },
-      { "id": 4, "name": "Coca-Cola", "price": 2, "quantity": 2 }
+      {
+        "id": 1,
+        "name": "Pipocas G",
+        "price": 5.3,
+        "quantity": 2
+      },
+      {
+        "id": 2,
+        "name": "Pipocas M",
+        "price": 3.5,
+        "quantity": 2
+      },
+      {
+        "id": 3,
+        "name": "Pipocas P",
+        "price": 2.5,
+        "quantity": 1
+      },
+      {
+        "id": 5,
+        "name": "Água",
+        "price": 1.5,
+        "quantity": 1
+      },
+      {
+        "id": 6,
+        "name": "Sumo Laranja",
+        "price": 2.5,
+        "quantity": 2
+      },
+      {
+        "id": 7,
+        "name": "Chocolate",
+        "price": 2,
+        "quantity": 3
+      },
+      {
+        "id": 8,
+        "name": "Nachos Q",
+        "price": 4,
+        "quantity": 6
+      },
+      {
+        "id": 10,
+        "name": "Pipocas Doces P",
+        "price": 4,
+        "quantity": 2
+      },
+      {
+        "id": 11,
+        "name": "Ice Tea Limão",
+        "price": 2,
+        "quantity": 1
+      },
+      {
+        "id": 4,
+        "name": "Coca-Cola",
+        "price": 2,
+        "quantity": 2
+      }
     ],
-    "ticket_price": 27.6
+    "ticket_price": 27.6,
+    "bar_total": 67.1,
+    "buy_total": 94.7
   },
   {
     "id": 2,
@@ -27,13 +82,28 @@
     "session_id": 102,
     "room_id": 2,
     "client_id": 4,
-    "seat": { "row": 2, "col": 10 },
+    "seat": {
+      "row": 2,
+      "col": 10
+    },
     "datetime": "2024-06-02T18:30",
     "bar_items": [
-      { "id": 1, "name": "Pipocas G", "price": 5.3, "quantity": 2 },
-      { "id": 2, "name": "Pipocas M", "price": 3.5, "quantity": 2 }
+      {
+        "id": 1,
+        "name": "Pipocas G",
+        "price": 5.3,
+        "quantity": 2
+      },
+      {
+        "id": 2,
+        "name": "Pipocas M",
+        "price": 3.5,
+        "quantity": 2
+      }
     ],
-    "ticket_price": 27.6
+    "ticket_price": 27.6,
+    "bar_total": 17.6,
+    "buy_total": 45.2
   },
   {
     "id": 3,
@@ -41,14 +111,34 @@
     "session_id": 102,
     "room_id": 2,
     "client_id": 4,
-    "seat": { "row": 2, "col": 10 },
+    "seat": {
+      "row": 2,
+      "col": 10
+    },
     "datetime": "2024-06-01T18:30",
     "bar_items": [
-      { "id": 1, "name": "Pipocas G", "price": 5.3, "quantity": 2 },
-      { "id": 2, "name": "Pipocas M", "price": 3.5, "quantity": 2 },
-      { "id": 3, "name": "Pipocas P", "price": 2.5, "quantity": 2 }
+      {
+        "id": 1,
+        "name": "Pipocas G",
+        "price": 5.3,
+        "quantity": 2
+      },
+      {
+        "id": 2,
+        "name": "Pipocas M",
+        "price": 3.5,
+        "quantity": 2
+      },
+      {
+        "id": 3,
+        "name": "Pipocas P",
+        "price": 2.5,
+        "quantity": 2
+      }
     ],
-    "ticket_price": 27.6
+    "ticket_price": 27.6,
+    "bar_total": 22.6,
+    "buy_total": 50.2
   },
   {
     "id": 4,
@@ -56,18 +146,58 @@
     "session_id": 102,
     "room_id": 2,
     "client_id": 4,
-    "seat": { "row": 2, "col": 10 },
+    "seat": {
+      "row": 2,
+      "col": 10
+    },
     "datetime": "2024-06-04T18:30",
     "bar_items": [
-      { "id": 1, "name": "Pipocas G", "price": 5.3, "quantity": 2 },
-      { "id": 2, "name": "Pipocas M", "price": 3.5, "quantity": 2 },
-      { "id": 3, "name": "Pipocas P", "price": 2.5, "quantity": 2 },
-      { "id": 5, "name": "Água", "price": 1.5, "quantity": 2 },
-      { "id": 6, "name": "Sumo Laranja", "price": 2.5, "quantity": 2 },
-      { "id": 7, "name": "Chocolate", "price": 2, "quantity": 2 },
-      { "id": 8, "name": "Nachos Q", "price": 4, "quantity": 2 }
+      {
+        "id": 1,
+        "name": "Pipocas G",
+        "price": 5.3,
+        "quantity": 2
+      },
+      {
+        "id": 2,
+        "name": "Pipocas M",
+        "price": 3.5,
+        "quantity": 2
+      },
+      {
+        "id": 3,
+        "name": "Pipocas P",
+        "price": 2.5,
+        "quantity": 2
+      },
+      {
+        "id": 5,
+        "name": "Água",
+        "price": 1.5,
+        "quantity": 2
+      },
+      {
+        "id": 6,
+        "name": "Sumo Laranja",
+        "price": 2.5,
+        "quantity": 2
+      },
+      {
+        "id": 7,
+        "name": "Chocolate",
+        "price": 2,
+        "quantity": 2
+      },
+      {
+        "id": 8,
+        "name": "Nachos Q",
+        "price": 4,
+        "quantity": 2
+      }
     ],
-    "ticket_price": 27.6
+    "ticket_price": 27.6,
+    "bar_total": 44.6,
+    "buy_total": 72.2
   },
   {
     "id": 5,
@@ -75,21 +205,76 @@
     "session_id": 102,
     "room_id": 2,
     "client_id": 4,
-    "seat": { "row": 2, "col": 10 },
+    "seat": {
+      "row": 2,
+      "col": 10
+    },
     "datetime": "2024-06-05T18:30",
     "bar_items": [
-      { "id": 1, "name": "Pipocas G", "price": 5.3, "quantity": 2 },
-      { "id": 2, "name": "Pipocas M", "price": 3.5, "quantity": 2 },
-      { "id": 3, "name": "Pipocas P", "price": 2.5, "quantity": 2 },
-      { "id": 5, "name": "Água", "price": 1.5, "quantity": 2 },
-      { "id": 6, "name": "Sumo Laranja", "price": 2.5, "quantity": 2 },
-      { "id": 7, "name": "Chocolate", "price": 2, "quantity": 2 },
-      { "id": 8, "name": "Nachos Q", "price": 4, "quantity": 2 },
-      { "id": 10, "name": "Pipocas Doces P", "price": 4, "quantity": 2 },
-      { "id": 11, "name": "Ice Tea Limão", "price": 2, "quantity": 2 },
-      { "id": 4, "name": "Coca-Cola", "price": 2, "quantity": 2 }
+      {
+        "id": 1,
+        "name": "Pipocas G",
+        "price": 5.3,
+        "quantity": 2
+      },
+      {
+        "id": 2,
+        "name": "Pipocas M",
+        "price": 3.5,
+        "quantity": 2
+      },
+      {
+        "id": 3,
+        "name": "Pipocas P",
+        "price": 2.5,
+        "quantity": 2
+      },
+      {
+        "id": 5,
+        "name": "Água",
+        "price": 1.5,
+        "quantity": 2
+      },
+      {
+        "id": 6,
+        "name": "Sumo Laranja",
+        "price": 2.5,
+        "quantity": 2
+      },
+      {
+        "id": 7,
+        "name": "Chocolate",
+        "price": 2,
+        "quantity": 2
+      },
+      {
+        "id": 8,
+        "name": "Nachos Q",
+        "price": 4,
+        "quantity": 2
+      },
+      {
+        "id": 10,
+        "name": "Pipocas Doces P",
+        "price": 4,
+        "quantity": 2
+      },
+      {
+        "id": 11,
+        "name": "Ice Tea Limão",
+        "price": 2,
+        "quantity": 2
+      },
+      {
+        "id": 4,
+        "name": "Coca-Cola",
+        "price": 2,
+        "quantity": 2
+      }
     ],
-    "ticket_price": 27.6
+    "ticket_price": 27.6,
+    "bar_total": 62.6,
+    "buy_total": 90.2
   },
   {
     "id": 6,
@@ -97,13 +282,55 @@
     "session_id": 102,
     "room_id": 2,
     "client_id": 4,
-    "seat": { "row": 2, "col": 10 },
+    "seat": {
+      "row": 2,
+      "col": 10
+    },
     "datetime": "2024-06-06T18:30",
     "bar_items": [
-      { "id": 1, "name": "Pipocas G", "price": 5.3, "quantity": 2 },
-      { "id": 11, "name": "Ice Tea Limão", "price": 2, "quantity": 2 },
-      { "id": 4, "name": "Coca-Cola", "price": 2, "quantity": 2 }
+      {
+        "id": 1,
+        "name": "Pipocas G",
+        "price": 5.3,
+        "quantity": 2
+      },
+      {
+        "id": 11,
+        "name": "Ice Tea Limão",
+        "price": 2,
+        "quantity": 2
+      },
+      {
+        "id": 4,
+        "name": "Coca-Cola",
+        "price": 2,
+        "quantity": 2
+      }
     ],
-    "ticket_price": 27.6
+    "ticket_price": 27.6,
+    "bar_total": 18.6,
+    "buy_total": 46.2
+  },
+  {
+    "id": 7,
+    "movie_id": "1",
+    "session_id": "1",
+    "room_id": 1,
+    "seat": {
+      "row": 1,
+      "col": 1
+    },
+    "datetime": "2025-06-16T00:50:12.192Z",
+    "bar_items": [
+      {
+        "id": "10",
+        "name": "Pipocas Doces P",
+        "price": "4",
+        "quantity": 1
+      }
+    ],
+    "ticket_price": 7,
+    "bar_total": 4,
+    "buy_total": 11
   }
 ]

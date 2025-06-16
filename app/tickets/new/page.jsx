@@ -130,7 +130,41 @@ export default function BuyTicketPage() {
     }
     setSaving(true);
     try {
-      // Aqui deveria enviar os dados do bilhete para a API
+      const now = new Date();
+      const datetime = now.toISOString();
+
+      const data = {
+        movie_id: movieId,
+        session_id: sessionId,
+        room_id: room?.id,
+        seat: selectedSeat,
+        datetime,
+        bar_items: Object.entries(quantities)
+          .filter(([_, qty]) => qty > 0)
+          .map(([itemId, qty]) => {
+            const item = barItems.find((i) => String(i.id) === String(itemId));
+            return {
+              id: item?.id,
+              name: item?.name,
+              price: item?.price,
+              quantity: qty
+            };
+          }),
+        ticket_price: session?.price,
+        bar_total: barTotal,
+        buy_total: session?.price + barTotal
+      };
+
+      const response = await fetch("/api/tickets", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+
+      if (!response.ok) {
+        throw new Error("Erro ao criar bilhete");
+      }
+
       toast.success("Bilhete comprado com sucesso!");
       router.replace("/tickets");
     } catch (err) {
@@ -139,6 +173,19 @@ export default function BuyTicketPage() {
       setSaving(false);
     }
   }
+
+  // Calcula o total do bar sempre que quantities ou barItems mudam
+  const barTotal = React.useMemo(() => {
+    let total = 0;
+    barItems.forEach((item) => {
+      const qty = quantities[item.id] || 0;
+      const price = Number(
+        String(item.price).replace(",", ".").replace("€", "")
+      );
+      total += qty * price;
+    });
+    return total;
+  }, [barItems, quantities]);
 
   return (
     <div className="h-full w-full flex flex-col overflow-x-hidden overflow-y-auto">
@@ -321,34 +368,13 @@ export default function BuyTicketPage() {
                   <div className="flex font-semibold justify-left gap-4 text-white">
                     <span>BAR:</span>
                     <span className="text-secondary">
-                      {(() => {
-                        let total = 0;
-                        barItems.forEach((item) => {
-                          const qty = quantities[item.id] || 0;
-                          const price = Number(
-                            item.price.replace(",", ".").replace("€", "")
-                          );
-                          total += qty * price;
-                        });
-                        return total.toFixed(2) + "€";
-                      })()}
+                      {barTotal.toFixed(2) + "€"}
                     </span>
                   </div>
                   <div className="flex font-bold justify-left gap-4 text-white">
                     <span>TOTAL:</span>
                     <span className="text-secondary">
-                      {(() => {
-                        let ticket = session?.price ? Number(session.price) : 0;
-                        let bar = 0;
-                        barItems.forEach((item) => {
-                          const qty = quantities[item.id] || 0;
-                          const price = Number(
-                            item.price.replace(",", ".").replace("€", "")
-                          );
-                          bar += qty * price;
-                        });
-                        return (ticket + bar).toFixed(2) + "€";
-                      })()}
+                      {(barTotal + session?.price).toFixed(2) + "€"}
                     </span>
                   </div>
                 </div>

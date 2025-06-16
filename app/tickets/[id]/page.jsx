@@ -30,6 +30,12 @@ async function fetchRooms() {
   if (!res.ok) return [];
   return await res.json();
 }
+async function fetchSession(sessionId) {
+  if (!sessionId) return null;
+  const res = await fetch(`/api/sessions/${sessionId}`);
+  if (!res.ok) return null;
+  return await res.json();
+}
 
 export default function TicketDetailsPage() {
   const router = useRouter();
@@ -42,6 +48,7 @@ export default function TicketDetailsPage() {
   const [movies, setMovies] = useState([]);
   const [users, setUsers] = useState([]);
   const [rooms, setRooms] = useState([]);
+  const [session, setSession] = useState(null);
   const [barPage, setBarPage] = useState(0);
   const BAR_PAGE_SIZE = 2;
 
@@ -57,15 +64,27 @@ export default function TicketDetailsPage() {
   useEffect(() => {
     async function fetchAll() {
       try {
-        const [ticketsRes, moviesRes, usersRes, roomsRes] = await Promise.all([
-          fetch("/api/tickets"),
+        // Busca apenas o bilhete em questão
+        const ticketRes = await fetch(`/api/tickets?id=${id}`);
+        if (!ticketRes.ok) throw new Error("Erro ao carregar bilhete");
+        const ticketData = await ticketRes.json();
+        const ticketObj = Array.isArray(ticketData)
+          ? ticketData[0]
+          : ticketData;
+        setTicket(ticketObj);
+
+        // Busca sessão do bilhete
+        let sessionObj = null;
+        if (ticketObj?.session_id) {
+          sessionObj = await fetchSession(ticketObj.session_id);
+        }
+        setSession(sessionObj);
+
+        const [moviesRes, usersRes, roomsRes] = await Promise.all([
           fetchMovies(),
           fetchUsers(),
           fetchRooms()
         ]);
-        if (!ticketsRes.ok) throw new Error("Erro ao carregar bilhetes");
-        const ticketsData = await ticketsRes.json();
-        setTicket(ticketsData.find((t) => String(t.id) === String(id)));
         setMovies(moviesRes);
         setUsers(usersRes);
         setRooms(roomsRes);
@@ -107,6 +126,8 @@ export default function TicketDetailsPage() {
     );
   }
 
+  const sessionDate = session?.date;
+
   return (
     <div className="h-full w-full flex flex-col">
       {/* Topo: voltar + título, ocupa a largura toda */}
@@ -133,13 +154,13 @@ export default function TicketDetailsPage() {
           <div className="text-white space-y-2 mt-10">
             <div>
               <span className="text-lg font-semibold">
-                📅 {formatDate(ticket.datetime)}
+                📅 {formatDate(sessionDate)}
               </span>
             </div>
             <div className="flex gap-4">
               <div>
                 <span className="text-lg font-semibold">
-                  🕒 {formatHour(ticket.datetime)}
+                  🕒 {formatHour(sessionDate)}
                 </span>
               </div>
               <div>
