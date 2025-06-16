@@ -11,6 +11,7 @@
   --bg-1: #161621; /* Azul escuro */
   --bg-2: #2b2b38; /* Cinzento Escuro */
   --bg-3: #2d2f3a; /* Cinzento Claro */
+  --bg-room-map: #232323; /* Cinzento Claro */
   --bg-4: #f74346; /* Cinzento Claro */
   --bg-5: #f18f01; /* Cinzento Claro */
   --bg-6: #3f4be9; /* Azul Escuro */
@@ -120,7 +121,9 @@ body {
   scrollbar-color: var(--bg-3) var(--bg-1);
   scrollbar-width: thin;
 }
-
+.bg-room-map {
+  background-color: var(--bg-room-map) !important;
+}
 .bg-primary {
   background-color: var(--bg-1) !important;
 }

@@ -98,9 +98,13 @@ const EditRoomPage = () => {
       const newSeats = prev.map((row, r) =>
         row.map((seat, c) => {
           if (r === rowIdx && c === colIdx) {
-            if (seat === 0) return 1;
-            if (seat === 1) return null;
-            return 0;
+            if (!seat) return { type: "normal", status: 0 };
+            if (seat.type === "normal" && seat.status === 0)
+              return { type: "accessibility", status: 0 };
+            if (seat.type === "accessibility" && seat.status === 0)
+              return null;
+            if (seat === null) return { type: "normal", status: 0 };
+            return { type: "normal", status: 0 };
           }
           return seat;
         })
@@ -334,7 +338,6 @@ const EditRoomPage = () => {
                           {/* Mapa de cadeiras */}
                           {seats.map((row, rowIdx) => (
                             <React.Fragment key={rowIdx}>
-                              {/* Letra da linha */}
                               <div className="text-xs text-white font-bold flex items-center justify-center">
                                 {String.fromCharCode(65 + rowIdx)}
                               </div>
@@ -346,11 +349,11 @@ const EditRoomPage = () => {
                                   <button
                                     type="button"
                                     className={`cursor-pointer w-full max-w-[42px] h-8 rounded ${
-                                      seat === 1
+                                      !seat
+                                        ? "bg-white"
+                                        : seat.type === "accessibility"
                                         ? "bg-senary"
-                                        : seat === 0
-                                        ? "bg-quaternary"
-                                        : "bg-white"
+                                        : "bg-quaternary"
                                     }`}
                                     title={`Linha ${String.fromCharCode(
                                       65 + rowIdx

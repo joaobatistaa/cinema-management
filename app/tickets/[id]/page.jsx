@@ -171,6 +171,7 @@ export default function TicketDetailsPage() {
                 </span>
               </div>
             )}
+            {/* Bar section with pagination */}
             <div className="mt-5">
               <span className="text-lg font-semibold">🍿 Bar: </span>
             </div>
@@ -277,7 +278,7 @@ export default function TicketDetailsPage() {
         <div className="flex flex-col items-center justify-end flex-[1]">
           <div className="flex flex-col items-center gap-6 w-full mb-8">
             <button
-              className="bg-quaternary text-white px-8 py-3 rounded text-lg font-semibold w-60"
+              className="bg-quaternary text-white px-8 py-3 rounded text-lg font-semibold w-60 cursor-pointer"
               onClick={() => {
                 toast.error("Funcionalidade de cancelamento não implementada.");
               }}
@@ -285,7 +286,7 @@ export default function TicketDetailsPage() {
               Cancelar Bilhete
             </button>
             <button
-              className="bg-quaternary text-white px-8 py-3 rounded text-lg font-semibold w-60"
+              className="bg-quaternary text-white px-8 py-3 rounded text-lg font-semibold w-60 cursor-pointer"
               onClick={() => router.push(`/tickets/${ticket.id}/edit`)}
             >
               Alterar Bilhete

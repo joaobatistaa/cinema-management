@@ -25,9 +25,8 @@ export default function NewRoomPage() {
   const [rows, setRows] = useState(3);
   const [cols, setCols] = useState(4);
   const [seats, setSeats] = useState(
-    Array.from(
-      { length: 3 },
-      () => Array.from({ length: 4 }, () => 0) // 0: normal, 1: accessible, null: sem cadeira
+    Array.from({ length: 3 }, () =>
+      Array.from({ length: 4 }, () => ({ type: "normal", status: 0 }))
     )
   );
   const [saving, setSaving] = useState(false);
@@ -39,7 +38,9 @@ export default function NewRoomPage() {
       const newSeats = [...prev];
       if (value > prev.length) {
         for (let i = prev.length; i < value; i++) {
-          newSeats.push(Array.from({ length: cols }, () => 0));
+          newSeats.push(
+            Array.from({ length: cols }, () => ({ type: "normal", status: 0 }))
+          );
         }
       } else {
         newSeats.length = value;
@@ -56,7 +57,7 @@ export default function NewRoomPage() {
         const newRow = [...row];
         if (value > row.length) {
           for (let i = row.length; i < value; i++) {
-            newRow.push(0);
+            newRow.push({ type: "normal", status: 0 });
           }
         } else {
           newRow.length = value;
@@ -71,9 +72,12 @@ export default function NewRoomPage() {
       const newSeats = prev.map((row, r) =>
         row.map((seat, c) => {
           if (r === rowIdx && c === colIdx) {
-            if (seat === 0) return 1;
-            if (seat === 1) return null;
-            return 0;
+            if (!seat) return { type: "normal", status: 0 };
+            if (seat.type === "normal" && seat.status === 0)
+              return { type: "accessibility", status: 0 };
+            if (seat.type === "accessibility" && seat.status === 0) return null;
+            if (seat === null) return { type: "normal", status: 0 };
+            return { type: "normal", status: 0 };
           }
           return seat;
         })
@@ -296,7 +300,6 @@ export default function NewRoomPage() {
                           {/* Mapa de cadeiras */}
                           {seats.map((row, rowIdx) => (
                             <React.Fragment key={rowIdx}>
-                              {/* Letra da linha */}
                               <div className="text-xs text-white font-bold flex items-center justify-center">
                                 {String.fromCharCode(65 + rowIdx)}
                               </div>
@@ -308,11 +311,11 @@ export default function NewRoomPage() {
                                   <button
                                     type="button"
                                     className={`cursor-pointer w-full max-w-[42px] h-8 rounded ${
-                                      seat === 1
+                                      !seat
+                                        ? "bg-white"
+                                        : seat.type === "accessibility"
                                         ? "bg-senary"
-                                        : seat === 0
-                                        ? "bg-quaternary"
-                                        : "bg-white"
+                                        : "bg-quaternary"
                                     }`}
                                     title={`Linha ${String.fromCharCode(
                                       65 + rowIdx

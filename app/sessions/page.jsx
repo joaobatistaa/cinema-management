@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
-import { useAuth } from "@/src/contexts/AuthContext"; 
+import { useAuth } from "@/src/contexts/AuthContext";
 
 export default function Sessions() {
   const router = useRouter();
@@ -25,7 +25,7 @@ export default function Sessions() {
   const [editTime, setEditTime] = useState("");
   const [editLanguage, setEditLanguage] = useState("");
   const [tickets, setTickets] = useState([]);
-  const [userRole, setUserRole] = useState("guest"); 
+  const [userRole, setUserRole] = useState("guest");
   const [rooms, setRooms] = useState([]);
   const [maxRoomId, setMaxRoomId] = useState(1);
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -180,7 +180,9 @@ export default function Sessions() {
       toast.error("Selecione uma sessão para comprar o bilhete.");
       return;
     }
-    toast.error("Funcionalidade não implementada.");
+    router.push(
+      `/tickets/new?session_id=${selectedSession.id}&movie_id=${movieId}`
+    );
   }
 
   // Função utilitária para obter a data de hoje no formato yyyy-mm-dd
@@ -195,7 +197,9 @@ export default function Sessions() {
   // Handler para abrir modal de edição
   function handleEditSessionClick(session) {
     // Verifica se há bilhetes associados
-    const hasTickets = tickets.some((t) => String(t.session_id) === String(session.id));
+    const hasTickets = tickets.some(
+      (t) => String(t.session_id) === String(session.id)
+    );
     if (hasTickets) {
       toast.error("Não é possível editar sessões com bilhetes associados.");
       return;
@@ -236,7 +240,9 @@ export default function Sessions() {
       if (String(s.room) !== String(editRoom)) return false;
       let sDuration = movieDuration;
       if (s.movieId && s.movieId !== movieId) {
-        const movieForSession = movies?.find?.(m => String(m.id) === String(s.movieId));
+        const movieForSession = movies?.find?.(
+          (m) => String(m.id) === String(s.movieId)
+        );
         if (movieForSession && movieForSession.duration) {
           sDuration = movieForSession.duration;
         }
@@ -258,8 +264,8 @@ export default function Sessions() {
           id: editSession.id,
           room: editRoom,
           date: `${editDate}T${editTime}`,
-          language: editLanguage,
-        }),
+          language: editLanguage
+        })
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
@@ -268,7 +274,9 @@ export default function Sessions() {
       const updated = await res.json();
       toast.success("Sessão atualizada com sucesso.");
       setSessions((prev) =>
-        prev.map((s) => (String(s.id) === String(editSession.id) ? { ...s, ...updated } : s))
+        prev.map((s) =>
+          String(s.id) === String(editSession.id) ? { ...s, ...updated } : s
+        )
       );
       setShowEditModal(false);
       setEditSession(null);
@@ -280,12 +288,15 @@ export default function Sessions() {
   // Handler para eliminar sessão
   async function handleDeleteSession(session) {
     // Verifica se há bilhetes associados
-    const hasTickets = tickets.some((t) => String(t.session_id) === String(session.id));
+    const hasTickets = tickets.some(
+      (t) => String(t.session_id) === String(session.id)
+    );
     if (hasTickets) {
       toast.error("Não é possível eliminar sessões com bilhetes associados.");
       return;
     }
-    if (!window.confirm("Tem a certeza que pretende eliminar esta sessão?")) return;
+    if (!window.confirm("Tem a certeza que pretende eliminar esta sessão?"))
+      return;
     try {
       const res = await fetch(`/api/sessions?id=${session.id}`, {
         method: "DELETE"
@@ -295,7 +306,9 @@ export default function Sessions() {
         throw new Error(data.error || "Erro ao eliminar sessão.");
       }
       toast.success("Sessão eliminada com sucesso.");
-      setSessions((prev) => prev.filter((s) => String(s.id) !== String(session.id)));
+      setSessions((prev) =>
+        prev.filter((s) => String(s.id) !== String(session.id))
+      );
     } catch (err) {
       toast.error(err.message || "Erro ao eliminar sessão.");
     }
@@ -328,7 +341,9 @@ export default function Sessions() {
       if (String(s.room) !== String(createRoom)) return false;
       let sDuration = movieDuration;
       if (s.movieId && String(s.movieId) !== String(movieId)) {
-        const movieForSession = movies?.find?.(m => String(m.id) === String(s.movieId));
+        const movieForSession = movies?.find?.(
+          (m) => String(m.id) === String(s.movieId)
+        );
         if (movieForSession && movieForSession.duration) {
           sDuration = movieForSession.duration;
         }
@@ -350,8 +365,8 @@ export default function Sessions() {
           movieId: movieId,
           room: createRoom,
           date: `${createDate}T${createTime}`,
-          language: createLanguage,
-        }),
+          language: createLanguage
+        })
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
@@ -391,7 +406,7 @@ export default function Sessions() {
             </button>
           </div>
           <div className="flex justify-center">
-            <h1 className="text-5xl font-semibold text-white text-center tracking-wider whitespace-nowrap max-w-6xl">
+            <h1 className="text-4xl font-semibold text-white text-center tracking-wider whitespace-nowrap max-w-6xl">
               SESSÕES
               {movie && movie.title ? ` - ${movie.title.toUpperCase()}` : ""}
             </h1>
@@ -486,7 +501,12 @@ export default function Sessions() {
                             handleEditSessionClick(session);
                           }}
                         >
-                          <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                          <svg
+                            width="16"
+                            height="16"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                          >
                             <path
                               d="M4 21h17"
                               stroke="#fff"
@@ -512,7 +532,12 @@ export default function Sessions() {
                             handleDeleteSession(session);
                           }}
                         >
-                          <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                          <svg
+                            width="16"
+                            height="16"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                          >
                             <path
                               d="M3 6h18"
                               stroke="#fff"
@@ -555,7 +580,7 @@ export default function Sessions() {
                       {session.date &&
                         new Date(session.date).toLocaleTimeString("pt-PT", {
                           hour: "2-digit",
-                          minute: "2-digit",
+                          minute: "2-digit"
                         })}
                     </div>
                     <div className="text-white text-base pb-2">
@@ -604,7 +629,7 @@ export default function Sessions() {
                               "pt-PT",
                               {
                                 hour: "2-digit",
-                                minute: "2-digit",
+                                minute: "2-digit"
                               }
                             )
                           : ""
@@ -641,7 +666,7 @@ export default function Sessions() {
                 className="text-white font-bold mb-6 text-center flex-1"
                 style={{
                   fontSize: "1.6rem",
-                  marginLeft: "32px"   
+                  marginLeft: "32px"
                 }}
               >
                 EDITAR SESSÃO
@@ -693,9 +718,15 @@ export default function Sessions() {
                   required
                   style={{ color: editLanguage ? "#fff" : "#888" }}
                 >
-                  <option value="" style={{ color: "#888" }}>Selecione</option>
-                  <option value="PT" style={{ color: "#fff" }}>PT</option>
-                  <option value="EN" style={{ color: "#fff" }}>EN</option>
+                  <option value="" style={{ color: "#888" }}>
+                    Selecione
+                  </option>
+                  <option value="PT" style={{ color: "#fff" }}>
+                    PT
+                  </option>
+                  <option value="EN" style={{ color: "#fff" }}>
+                    EN
+                  </option>
                 </select>
               </div>
               <button
@@ -774,9 +805,15 @@ export default function Sessions() {
                   required
                   style={{ color: createLanguage ? "#fff" : "#888" }}
                 >
-                  <option value="" style={{ color: "#888" }}>Selecione</option>
-                  <option value="PT" style={{ color: "#fff" }}>PT</option>
-                  <option value="EN" style={{ color: "#fff" }}>EN</option>
+                  <option value="" style={{ color: "#888" }}>
+                    Selecione
+                  </option>
+                  <option value="PT" style={{ color: "#fff" }}>
+                    PT
+                  </option>
+                  <option value="EN" style={{ color: "#fff" }}>
+                    EN
+                  </option>
                 </select>
               </div>
               <button

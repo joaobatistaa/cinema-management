@@ -241,7 +241,6 @@ const ViewRoomPage = () => {
                         {/* Mapa de cadeiras */}
                         {seats.map((row, rowIdx) => (
                           <React.Fragment key={rowIdx}>
-                            {/* Letra da linha */}
                             <div className="text-xs text-white font-bold flex items-center justify-center">
                               {String.fromCharCode(65 + rowIdx)}
                             </div>
@@ -249,11 +248,11 @@ const ViewRoomPage = () => {
                               <div
                                 key={colIdx}
                                 className={`flex items-center justify-center w-full max-w-[42px] h-8 rounded ${
-                                  seat === 1
+                                  !seat
+                                    ? "bg-white"
+                                    : seat.type === "accessibility"
                                     ? "bg-senary"
-                                    : seat === 0
-                                    ? "bg-quaternary"
-                                    : "bg-white"
+                                    : "bg-quaternary"
                                 }`}
                               />
                             ))}

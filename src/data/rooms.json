@@ -5,12 +5,60 @@
     "soundType": "Dolby Atmos",
     "videoType": "2K",
     "seats": [
-      [0, null, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      [
+        { "type": "normal" },
+        null,
+        { "type": "accessibility" },
+        { "type": "normal" },
+        { "type": "normal" },
+        { "type": "normal" },
+        { "type": "normal" }
+      ],
+      [
+        { "type": "normal" },
+        { "type": "accessibility" },
+        { "type": "accessibility" },
+        { "type": "normal" },
+        { "type": "normal" },
+        { "type": "normal" },
+        { "type": "normal" }
+      ],
+      [
+        { "type": "normal" },
+        { "type": "normal" },
+        { "type": "accessibility" },
+        { "type": "normal" },
+        { "type": "normal" },
+        { "type": "normal" },
+        { "type": "normal" }
+      ],
+      [
+        { "type": "normal" },
+        { "type": "normal" },
+        { "type": "accessibility" },
+        { "type": "normal" },
+        { "type": "normal" },
+        { "type": "normal" },
+        { "type": "normal" }
+      ],
+      [
+        { "type": "normal" },
+        { "type": "normal" },
+        { "type": "normal" },
+        { "type": "normal" },
+        { "type": "normal" },
+        { "type": "normal" },
+        { "type": "normal" }
+      ],
+      [
+        { "type": "normal" },
+        { "type": "normal" },
+        { "type": "normal" },
+        { "type": "normal" },
+        { "type": "normal" },
+        { "type": "normal" },
+        { "type": "normal" }
+      ]
     ]
   },
   {
@@ -19,12 +67,46 @@
     "soundType": "Dolby Atmos",
     "videoType": "2K",
     "seats": [
-      [0, null, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      [
+        { "type": "normal" },
+        null,
+        { "type": "normal" },
+        { "type": "normal" },
+        { "type": "normal" },
+        { "type": "normal" },
+        { "type": "normal" },
+        { "type": "normal" }
+      ],
+      [
+        { "type": "normal" },
+        { "type": "accessibility" },
+        { "type": "normal" },
+        { "type": "normal" },
+        { "type": "normal" },
+        { "type": "normal" },
+        { "type": "normal" },
+        { "type": "normal" }
+      ],
+      [
+        { "type": "normal" },
+        { "type": "normal" },
+        { "type": "normal" },
+        { "type": "normal" },
+        { "type": "normal" },
+        { "type": "normal" },
+        { "type": "normal" },
+        { "type": "normal" }
+      ],
+      [
+        { "type": "normal" },
+        { "type": "normal" },
+        { "type": "normal" },
+        { "type": "normal" },
+        { "type": "normal" },
+        { "type": "normal" },
+        { "type": "normal" },
+        { "type": "normal" }
+      ]
     ]
   },
   {
@@ -33,9 +115,24 @@
     "soundType": "Dolby Atmos",
     "videoType": "2K",
     "seats": [
-      [0, 0, 0, 0],
-      [0, 0, 0, 0],
-      [0, 0, 0, 0]
+      [
+        { "type": "normal" },
+        { "type": "normal" },
+        { "type": "normal" },
+        { "type": "normal" }
+      ],
+      [
+        { "type": "normal" },
+        { "type": "normal" },
+        { "type": "normal" },
+        { "type": "normal" }
+      ],
+      [
+        { "type": "normal" },
+        { "type": "normal" },
+        { "type": "normal" },
+        { "type": "normal" }
+      ]
     ]
   },
   {
@@ -44,9 +141,9 @@
     "soundType": "Dolby Atmos",
     "videoType": "2K",
     "seats": [
-      [0, 0, 0, null],
-      [0, 0, 0, null],
-      [null, 0, null, 0]
+      [{ "type": "normal" }, { "type": "normal" }, { "type": "normal" }, null],
+      [{ "type": "normal" }, { "type": "normal" }, { "type": "normal" }, null],
+      [null, { "type": "normal" }, null, { "type": "normal" }]
     ]
   },
   {
@@ -55,9 +152,24 @@
     "soundType": "Dolby Atmos",
     "videoType": "2K",
     "seats": [
-      [0, 0, null, 1],
-      [0, 0, 0, 1],
-      [1, 0, 1, 0]
+      [
+        { "type": "normal" },
+        { "type": "normal" },
+        null,
+        { "type": "accessibility" }
+      ],
+      [
+        { "type": "normal" },
+        { "type": "normal" },
+        { "type": "normal" },
+        { "type": "accessibility" }
+      ],
+      [
+        { "type": "accessibility" },
+        { "type": "normal" },
+        { "type": "accessibility" },
+        { "type": "normal" }
+      ]
     ]
   },
   {
@@ -66,9 +178,24 @@
     "soundType": "Dolby Atmos",
     "videoType": "2K",
     "seats": [
-      [0, 1, 0, 0],
-      [0, 1, 0, 0],
-      [0, 1, 0, 0]
+      [
+        { "type": "normal" },
+        { "type": "accessibility" },
+        { "type": "normal" },
+        { "type": "normal" }
+      ],
+      [
+        { "type": "normal" },
+        { "type": "accessibility" },
+        { "type": "normal" },
+        { "type": "normal" }
+      ],
+      [
+        { "type": "normal" },
+        { "type": "accessibility" },
+        { "type": "normal" },
+        { "type": "normal" }
+      ]
     ]
   },
   {
@@ -77,9 +204,24 @@
     "soundType": "Dolby Atmos",
     "videoType": "2K",
     "seats": [
-      [0, 1, 0, 0],
-      [0, 1, 0, 0],
-      [0, 1, 0, 0]
+      [
+        { "type": "normal" },
+        { "type": "accessibility" },
+        { "type": "normal" },
+        { "type": "normal" }
+      ],
+      [
+        { "type": "normal" },
+        { "type": "accessibility" },
+        { "type": "normal" },
+        { "type": "normal" }
+      ],
+      [
+        { "type": "normal" },
+        { "type": "accessibility" },
+        { "type": "normal" },
+        { "type": "normal" }
+      ]
     ]
   },
   {
@@ -88,9 +230,24 @@
     "soundType": "Dolby Atmos",
     "videoType": "2K",
     "seats": [
-      [0, 0, 0, 0],
-      [0, 0, 0, 0],
-      [0, 0, 0, 0]
+      [
+        { "type": "normal" },
+        { "type": "normal" },
+        { "type": "normal" },
+        { "type": "normal" }
+      ],
+      [
+        { "type": "normal" },
+        { "type": "normal" },
+        { "type": "normal" },
+        { "type": "normal" }
+      ],
+      [
+        { "type": "normal" },
+        { "type": "normal" },
+        { "type": "normal" },
+        { "type": "normal" }
+      ]
     ]
   },
   {
@@ -99,20 +256,24 @@
     "soundType": "Dolby Atmos",
     "videoType": "2K",
     "seats": [
-      [0, 0, 0, 0],
-      [0, 0, 0, 0],
-      [0, 0, 0, 0]
-    ]
-  },
-  {
-    "id": 10,
-    "name": "testeteste",
-    "soundType": "Dolby Atmos",
-    "videoType": "2K",
-    "seats": [
-      [0, 0, 0, 0],
-      [0, 0, 0, 0],
-      [0, 0, 0, 0]
+      [
+        { "type": "normal" },
+        { "type": "normal" },
+        { "type": "normal" },
+        { "type": "normal" }
+      ],
+      [
+        { "type": "normal" },
+        { "type": "normal" },
+        { "type": "normal" },
+        { "type": "normal" }
+      ],
+      [
+        { "type": "normal" },
+        { "type": "normal" },
+        { "type": "normal" },
+        { "type": "normal" }
+      ]
     ]
   }
 ]

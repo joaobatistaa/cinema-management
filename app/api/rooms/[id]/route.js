@@ -4,7 +4,8 @@ import path from "path";
 const filePath = path.join(process.cwd(), "src", "data", "rooms.json");
 
 export async function DELETE(request, { params }) {
-  const { id } = params;
+  const { id } = await params;
+
   try {
     const fileContents = await fs.readFile(filePath, "utf-8");
     const rooms = JSON.parse(fileContents);
@@ -37,7 +38,8 @@ export async function DELETE(request, { params }) {
 }
 
 export async function GET(request, { params }) {
-  const { id } = params;
+  const { id } = await params;
+
   try {
     const fileContents = await fs.readFile(filePath, "utf-8");
     const rooms = JSON.parse(fileContents);
@@ -65,7 +67,8 @@ export async function GET(request, { params }) {
 }
 
 export async function PUT(request, { params }) {
-  const { id } = params;
+  const { id } = await params;
+
   try {
     const updatedRoom = await request.json();
     const fileContents = await fs.readFile(filePath, "utf-8");
