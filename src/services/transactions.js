@@ -7,8 +7,17 @@ function readTransactions() {
   if (!fs.existsSync(transactionsFilePath)) {
     fs.writeFileSync(transactionsFilePath, JSON.stringify([]));
   }
-  const data = fs.readFileSync(transactionsFilePath, "utf-8");
-  return JSON.parse(data);
+  let data = "";
+  try {
+    data = fs.readFileSync(transactionsFilePath, "utf-8");
+    // Se o ficheiro estiver vazio, retorna array vazio
+    if (!data.trim()) return [];
+    return JSON.parse(data);
+  } catch (err) {
+    // Se o ficheiro estiver corrompido ou vazio, reescreve como array vazio
+    fs.writeFileSync(transactionsFilePath, JSON.stringify([]));
+    return [];
+  }
 }
 
 function writeTransactions(transactions) {

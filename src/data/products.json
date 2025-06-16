@@ -27,13 +27,13 @@
     "id": "5",
     "name": "Água",
     "price": "1.5",
-    "stock": "23"
+    "stock": "20"
   },
   {
     "id": "6",
     "name": "Sumo Laranja",
     "price": "2.5",
-    "stock": "16"
+    "stock": "12"
   },
   {
     "id": "7",
@@ -51,25 +51,25 @@
     "id": "10",
     "name": "Pipocas Doces P",
     "price": "4",
-    "stock": "10"
+    "stock": "8"
   },
   {
     "id": "11",
     "name": "Ice Tea Limão",
     "price": "2",
-    "stock": "16"
+    "stock": "8"
   },
   {
     "id": "12",
     "name": "Ice Tea Pêssego",
     "price": "2.00",
-    "stock": "2"
+    "stock": "1"
   },
   {
     "id": "13",
     "name": "M&Ms",
     "price": "2.5",
-    "stock": "10"
+    "stock": "0"
   },
   {
     "id": "14",

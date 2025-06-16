@@ -21,7 +21,22 @@ export function AuthProvider({ children }) {
   }, [user]);
 
   function login(userData) {
-    setUser(userData);
+    // Se for customer, carrega o NIF do utilizador (se existir)
+    if (userData && userData.role === "customer" && userData.id) {
+      fetch(`/api/users`)
+        .then((res) => res.json())
+        .then((users) => {
+          const found = users.find((u) => String(u.id) === String(userData.id));
+          if (found && found.nif) {
+            setUser({ ...userData, nif: found.nif });
+          } else {
+            setUser(userData);
+          }
+        })
+        .catch(() => setUser(userData));
+    } else {
+      setUser(userData);
+    }
   }
 
   function logout() {

@@ -5,336 +5,33 @@
         "id": "11",
         "name": "Ice Tea Limão",
         "price": "2",
-        "stock": "22",
-        "quantity": 1
-      },
-      {
-        "id": "12",
-        "name": "Ice Tea Pêssego",
-        "price": "2",
-        "stock": "2",
+        "stock": "13",
         "quantity": 1
       }
     ],
-    "total": 4,
-    "userId": 5,
+    "total": 2,
+    "userId": 3,
     "desc": "Compra no Bar",
-    "date": "2025-06-03T21:12:36.354Z",
-    "id": "1748985156355"
+    "date": "2025-06-16T17:58:30.540Z",
+    "nif": null,
+    "id": "1750096710540"
   },
   {
     "items": [
-      {
-        "id": "6",
-        "name": "Sumo Laranja",
-        "price": "2.5",
-        "stock": "20",
-        "quantity": 4
-      },
-      {
-        "id": "2",
-        "name": "Pipocas M",
-        "price": "5",
-        "stock": "14",
-        "quantity": 1
-      },
       {
         "id": "5",
         "name": "Água",
         "price": "1.5",
-        "stock": "25",
-        "quantity": 2
-      },
-      {
-        "id": "10",
-        "name": "Pipocas Doces P",
-        "price": "4",
-        "stock": "14",
-        "quantity": 4
-      }
-    ],
-    "total": 34,
-    "userId": 5,
-    "desc": "Compra no Bar",
-    "date": "2025-06-03T21:21:10.817Z",
-    "id": "1748985670818"
-  },
-  {
-    "items": [
-      {
-        "id": "2",
-        "name": "Pipocas M",
-        "price": "5",
-        "stock": "13",
-        "quantity": 1
-      }
-    ],
-    "total": 5,
-    "userId": 5,
-    "desc": "Compra no Bar",
-    "date": "2025-06-04T13:20:29.006Z",
-    "id": "1749043229007"
-  },
-  {
-    "items": [
-      {
-        "id": "2",
-        "name": "Pipocas M",
-        "price": "5",
-        "stock": "12",
-        "quantity": 1
-      }
-    ],
-    "total": 5,
-    "userId": 5,
-    "desc": "Compra no Bar",
-    "date": "2025-06-04T13:22:05.025Z",
-    "id": "1749043325026"
-  },
-  {
-    "items": [
-      {
-        "id": "12",
-        "name": "Ice Tea Pêssego",
-        "price": "2",
-        "stock": "1",
-        "quantity": 1
-      }
-    ],
-    "total": 2,
-    "userId": 5,
-    "desc": "Compra no Bar",
-    "date": "2025-06-04T13:36:48.112Z",
-    "id": "1749044208112"
-  },
-  {
-    "items": [
-      {
-        "id": "11",
-        "name": "Ice Tea Limão",
-        "price": "2",
         "stock": "21",
         "quantity": 1
       }
     ],
-    "total": 2,
-    "userId": 5,
+    "total": 1.5,
+    "userId": 3,
     "desc": "Compra no Bar",
-    "date": "2025-06-04T14:23:33.076Z",
-    "id": "1749047013076"
-  },
-  {
-    "items": [
-      {
-        "id": "11",
-        "name": "Ice Tea Limão",
-        "price": "2",
-        "stock": "20",
-        "quantity": 2
-      }
-    ],
-    "total": 4,
-    "userId": 5,
-    "desc": "Compra no Bar",
-    "date": "2025-06-04T14:29:21.473Z",
-    "id": "1749047361473"
-  },
-  {
-    "items": [
-      {
-        "id": "11",
-        "name": "Ice Tea Limão",
-        "price": "2",
-        "stock": "18",
-        "quantity": 1
-      }
-    ],
-    "total": 2,
-    "userId": 1,
-    "desc": "Compra no Bar",
-    "date": "2025-06-04T14:41:57.643Z",
-    "id": "1749048117643"
-  },
-  {
-    "items": [
-      {
-        "id": "11",
-        "name": "Ice Tea Limão",
-        "price": "2",
-        "stock": "17",
-        "quantity": 1
-      }
-    ],
-    "total": 2,
-    "userId": 5,
-    "desc": "Compra no Bar",
-    "date": "2025-06-04T14:44:17.840Z",
-    "id": "1749048257840"
-  },
-  {
-    "items": [
-      {
-        "id": "8",
-        "name": "Nachos Q",
-        "price": "4",
-        "stock": "12",
-        "quantity": 1
-      }
-    ],
-    "total": 4,
-    "userId": 5,
-    "desc": "Compra no Bar",
-    "date": "2025-06-04T16:58:22.910Z",
-    "id": "1749056302911"
-  },
-  {
-    "items": [
-      {
-        "id": "13",
-        "name": "M&Ms",
-        "price": "2.5",
-        "stock": "16",
-        "quantity": 1
-      }
-    ],
-    "total": 2.5,
-    "userId": 5,
-    "desc": "Compra no Bar",
-    "date": "2025-06-04T18:41:18.538Z",
-    "id": "1749062478539"
-  },
-  {
-    "items": [
-      {
-        "id": "3",
-        "name": "Pipocas P",
-        "price": "3",
-        "stock": "20",
-        "quantity": 1
-      },
-      {
-        "id": "2",
-        "name": "Pipocas M",
-        "price": "5",
-        "stock": "11",
-        "quantity": 1
-      }
-    ],
-    "total": 8,
-    "userId": 5,
-    "desc": "Compra no Bar",
-    "date": "2025-06-04T18:42:13.430Z",
-    "id": "1749062533430"
-  },
-  {
-    "items": [
-      {
-        "id": "3",
-        "name": "Pipocas P",
-        "price": "3",
-        "stock": "19",
-        "quantity": 2
-      },
-      {
-        "id": "7",
-        "name": "Chocolate",
-        "price": "2",
-        "stock": "18",
-        "quantity": 1
-      }
-    ],
-    "total": 8,
-    "userId": 5,
-    "desc": "Compra no Bar",
-    "date": "2025-06-04T18:42:44.801Z",
-    "id": "1749062564801"
-  },
-  {
-    "items": [
-      {
-        "id": "1",
-        "name": "Pipocas G",
-        "price": "10.00",
-        "stock": 10,
-        "quantity": 1
-      },
-      {
-        "id": "13",
-        "name": "M&Ms",
-        "price": "2.5",
-        "stock": "15",
-        "quantity": 1
-      }
-    ],
-    "total": 12.5,
-    "userId": 0,
-    "desc": "Compra no Bar",
-    "date": "2025-06-04T19:58:44.187Z",
-    "id": "1749067124188"
-  },
-  {
-    "items": [
-      {
-        "id": "13",
-        "name": "M&Ms",
-        "price": "2.5",
-        "stock": "14",
-        "quantity": 1
-      }
-    ],
-    "total": 2.5,
-    "userId": 0,
-    "desc": "Compra no Bar",
-    "date": "2025-06-04T19:59:17.123Z",
-    "id": "1749067157123"
-  },
-  {
-    "items": [
-      {
-        "id": "13",
-        "name": "M&Ms",
-        "price": "2.5",
-        "stock": "13",
-        "quantity": 1
-      }
-    ],
-    "total": 2.5,
-    "userId": 0,
-    "desc": "Compra no Bar",
-    "date": "2025-06-04T19:59:50.522Z",
-    "id": "1749067190522"
-  },
-  {
-    "items": [
-      {
-        "id": "13",
-        "name": "M&Ms",
-        "price": "2.5",
-        "stock": "12",
-        "quantity": 1
-      }
-    ],
-    "total": 2.5,
-    "userId": 0,
-    "desc": "Compra no Bar",
-    "date": "2025-06-04T20:00:18.978Z",
-    "id": "1749067218978"
-  },
-  {
-    "items": [
-      {
-        "id": "13",
-        "name": "M&Ms",
-        "price": "2.5",
-        "stock": "11",
-        "quantity": 1
-      }
-    ],
-    "total": 2.5,
-    "userId": 5,
-    "desc": "Compra no Bar",
-    "date": "2025-06-04T20:00:34.248Z",
-    "id": "1749067234248"
+    "date": "2025-06-16T18:01:19.299Z",
+    "nif": null,
+    "id": "1750096879299"
   },
   {
     "items": [
@@ -342,14 +39,107 @@
         "id": "12",
         "name": "Ice Tea Pêssego",
         "price": "2.00",
-        "stock": 3,
+        "stock": "1",
+        "quantity": 1
+      }
+    ],
+    "total": 2,
+    "userId": 3,
+    "desc": "Compra no Bar",
+    "date": "2025-06-16T18:02:35.570Z",
+    "nif": null,
+    "id": "1750096955570"
+  },
+  {
+    "items": [
+      {
+        "id": "10",
+        "name": "Pipocas Doces P",
+        "price": "4",
+        "stock": "8",
+        "quantity": 1
+      }
+    ],
+    "total": 4,
+    "userId": 3,
+    "desc": "Compra no Bar",
+    "date": "2025-06-16T18:21:09.617Z",
+    "nif": "270309136",
+    "id": "1750098069617"
+  },
+  {
+    "items": [
+      {
+        "id": "11",
+        "name": "Ice Tea Limão",
+        "price": "2",
+        "stock": "12",
+        "quantity": 1
+      }
+    ],
+    "total": 2,
+    "userId": 3,
+    "desc": "Compra no Bar",
+    "date": "2025-06-16T18:22:45.902Z",
+    "nif": "270309136",
+    "id": "1750098165902"
+  },
+  {
+    "items": [
+      {
+        "id": "13",
+        "name": "M&Ms",
+        "price": "2.5",
+        "stock": "1",
+        "quantity": 1
+      }
+    ],
+    "total": 2.5,
+    "userId": 3,
+    "desc": "Compra no Bar",
+    "date": "2025-06-16T18:23:41.797Z",
+    "nif": "270309136",
+    "id": "1750098221797"
+  },
+  {
+    "items": [
+      {
+        "id": "11",
+        "name": "Ice Tea Limão",
+        "price": "2",
+        "stock": "11",
         "quantity": 1
       }
     ],
     "total": 2,
     "userId": 0,
     "desc": "Compra no Bar",
-    "date": "2025-06-12T17:59:52.996Z",
-    "id": "1749751192996"
+    "date": "2025-06-16T18:26:06.642Z",
+    "nif": null,
+    "id": "1750098366642"
+  },
+  {
+    "items": [
+      {
+        "id": "11",
+        "name": "Ice Tea Limão",
+        "price": "2",
+        "stock": "10",
+        "quantity": 2
+      },
+      {
+        "id": "6",
+        "name": "Sumo Laranja",
+        "price": "2.5",
+        "stock": "14",
+        "quantity": 2
+      }
+    ],
+    "total": 9,
+    "userId": 3,
+    "desc": "Compra no Bar",
+    "date": "2025-06-16T18:27:10.130Z",
+    "nif": "270309136",
+    "id": "1750098430130"
   }
 ]

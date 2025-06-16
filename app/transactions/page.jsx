@@ -89,7 +89,7 @@ export default function Transactions() {
                             return (
                                 <div
                                     key={t.id}
-                                    className="bg-[#292933] rounded-lg shadow-lg p-4 flex flex-col items-center min-h-[80px] w-full"
+                                    className="bg-[#292933] rounded-lg shadow-lg p-4 flex flex-col items-center min-h-[120px] w-full"
                                     style={{ maxWidth: 220 }}
                                 >
                                     <div className="flex items-center gap-2 mb-1">
@@ -118,6 +118,10 @@ export default function Transactions() {
                                     </div>
                                     <div className="text-white text-base text-center">
                                         {t.desc || "Compra"}
+                                    </div>
+                                    <div className="text-white text-sm mt-2">
+                                        <span className="font-semibold">NIF: </span>
+                                        {t.nif ? t.nif : "Consumidor final"}
                                     </div>
                                 </div>
                             );

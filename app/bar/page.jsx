@@ -16,7 +16,7 @@ export default function Bar() {
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [quantities, setQuantities] = useState({});
-  const [cart, setCart] = useState([]); // Produtos adicionados ao carrinho
+  const [cart, setCart] = useState([]);
   const [showEmailForm, setShowEmailForm] = useState(false);
   const [clientEmail, setClientEmail] = useState("");
   const [showEditModal, setShowEditModal] = useState(false);
@@ -30,12 +30,17 @@ export default function Bar() {
   const [createStock, setCreateStock] = useState("");
   const [createPrice, setCreatePrice] = useState("");
   const createPriceRef = useRef();
+  const [showNifForm, setShowNifForm] = useState(false);
+  const [clientNif, setClientNif] = useState("");
+  const [showGuestNifForm, setShowGuestNifForm] = useState(false);
+  const [guestNif, setGuestNif] = useState("");
   const pageSize = 12;
 
   useEffect(() => {
     async function fetchProducts() {
       try {
         setLoading(true);
+        console.log((user));
         const response = await fetch("/api/bar");
         if (!response.ok) throw new Error("Erro ao carregar os produtos.");
         const data = await response.json();
@@ -98,48 +103,88 @@ export default function Bar() {
   );
 
   const handleOpenForm = () => {
-    // Mostra o popup para funcionário OU admin
     if (userRole === "employee" || userRole === "admin") {
       setShowEmailForm(true);
+    } else if (userRole === "customer") {
+      setClientNif(user?.nif || "");
+      setShowNifForm(true);
     } else {
+      // guest
       if (total === 0) return;
-      // Para guest, envia um email especial
-      handleBuy("guest@guest.com");
+      setShowGuestNifForm(true);
+    }
+  };
+
+  // Função para compra de customer (com NIF opcional)
+  async function handleBuyWithNif(nif) {
+    if (total === 0) return;
+    let nifStr = nif;
+
+    // Se não for vazio, valida formato
+    if (!/^\d{9}$/.test(nifStr)) {
+      toast.error("Insira um NIF válido (9 dígitos) ou deixe em branco.");
+      return;
+    }
+
+    try {
+
+      const res = await fetch("/api/transactions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: user.email,
+          cart,
+          desc: "Compra no Bar",
+          nif: nifStr
+        }),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || "Erro ao registar transação.");
+      }
+      toast.success("Compra efetuada com sucesso. Verifique o seu email.");
+      router.push("/");
+    } catch (err) {
+      toast.error(err.message || "Erro ao registar transação.");
+    } finally {
+      setLoading(false);
     }
   }
 
-  // Função para criar uma nova transação
-  async function handleBuy(finalEmail) {
+  // Função para compra de guest (com NIF opcional)
+  async function handleBuyGuestWithNif(nif) {
     if (total === 0) return;
-
-    let emailToUse = finalEmail;
-
-    if (emailToUse) {
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailToUse)) {
-        toast.error("Insira um email válido.");
+    let nifStr = nif;
+    if (!nifStr || typeof nifStr !== "string" || !nifStr.trim()) {
+      nifStr = null;
+    } else {
+      nifStr = nifStr.trim();
+      if (!/^\d{9}$/.test(nifStr)) {
+        toast.error("Insira um NIF válido (9 dígitos) ou deixe em branco.");
         return;
       }
-
-      try {
-        const res = await fetch("/api/transactions", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: emailToUse.trim().toLowerCase(), cart, desc: "Compra no Bar" }),
-        });
-        if (!res.ok) {
-          const data = await res.json().catch(() => ({}));
-          throw new Error(data.error || "Erro ao registar transação.");
-        };
-        toast.success("Compra efetuada com sucesso.");
-        router.push("/home");
-      } catch (err) {
-        toast.error(err.message || "Erro ao registar transação.");
-      } finally {
-        setLoading(false);
-      }    
-    } else {
-      toast.error("Não tem permissão para efetuar compras no bar.");
-      return;
+    }
+    try {
+      const res = await fetch("/api/transactions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: "guest@guest.com",
+          cart,
+          desc: "Compra no Bar",
+          nif: nifStr
+        }),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || "Erro ao registar transação.");
+      }
+      toast.success("Compra efetuada com sucesso.");
+      router.push("/");
+    } catch (err) {
+      toast.error(err.message || "Erro ao registar transação.");
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -310,8 +355,8 @@ export default function Bar() {
                           type="button"
                         >
                           <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
-                            <path d="M4 21h17" stroke="#fff" strokeWidth="2" strokeLinecap="round"/>
-                            <path d="M17.7 6.29a1 1 0 0 1 0 1.41l-9.3 9.3-3.4.7.7-3.4 9.3-9.3a1 1 0 0 1 1.41 0l1.29 1.29a1 1 0 0 1 0 1.41z" stroke="#fff" strokeWidth="2"/>
+                            <path d="M4 21h17" stroke="#fff" strokeWidth="2" strokeLinecap="round" />
+                            <path d="M17.7 6.29a1 1 0 0 1 0 1.41l-9.3 9.3-3.4.7.7-3.4 9.3-9.3a1 1 0 0 1 1.41 0l1.29 1.29a1 1 0 0 1 0 1.41z" stroke="#fff" strokeWidth="2" />
                           </svg>
                         </button>
                         <button
@@ -334,10 +379,10 @@ export default function Bar() {
                           type="button"
                         >
                           <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
-                            <path d="M3 6h18" stroke="#fff" strokeWidth="2" strokeLinecap="round"/>
-                            <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" stroke="#fff" strokeWidth="2"/>
-                            <rect x="5" y="6" width="14" height="14" rx="2" stroke="#fff" strokeWidth="2"/>
-                            <path d="M10 11v6M14 11v6" stroke="#fff" strokeWidth="2" strokeLinecap="round"/>
+                            <path d="M3 6h18" stroke="#fff" strokeWidth="2" strokeLinecap="round" />
+                            <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" stroke="#fff" strokeWidth="2" />
+                            <rect x="5" y="6" width="14" height="14" rx="2" stroke="#fff" strokeWidth="2" />
+                            <path d="M10 11v6M14 11v6" stroke="#fff" strokeWidth="2" strokeLinecap="round" />
                           </svg>
                         </button>
                       </div>
@@ -354,8 +399,8 @@ export default function Bar() {
                   >
                     <div className="flex flex-col items-center justify-center h-full w-full">
                       <svg width="48" height="48" fill="none" viewBox="0 0 48 48">
-                        <circle cx="24" cy="24" r="22" stroke="#fff" strokeWidth="2" fill="#232336"/>
-                        <path d="M24 16v16M16 24h16" stroke="#fff" strokeWidth="3" strokeLinecap="round"/>
+                        <circle cx="24" cy="24" r="22" stroke="#fff" strokeWidth="2" fill="#232336" />
+                        <path d="M24 16v16M16 24h16" stroke="#fff" strokeWidth="3" strokeLinecap="round" />
                       </svg>
                     </div>
                   </div>
@@ -379,7 +424,7 @@ export default function Bar() {
                       className={`cursor-pointer px-3 py-1 rounded ${page === n + 1
                         ? "bg-white text-black"
                         : "bg-gray-800 text-white"
-                      }`}
+                        }`}
                     >
                       {n + 1}
                     </button>
@@ -417,11 +462,11 @@ export default function Bar() {
                 </div>
               </div>
             </div>
-           
+
           </div>
         )}
       </div>
-  
+
       {(showEmailForm && (userRole === "employee" || userRole === "admin")) && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
           <div className="bg-[#232336] rounded-xl shadow-lg p-8 flex flex-col items-center min-w-[320px] max-w-[90vw]">
@@ -458,6 +503,90 @@ export default function Bar() {
                     setShowEmailForm(false);
                     setClientEmail("");
                   }}
+                >
+                  Cancelar
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {showNifForm && userRole === "customer" && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
+          <div className="bg-[#232336] rounded-xl shadow-lg p-8 flex flex-col items-center min-w-[320px] max-w-[90vw]">
+            <h2 className="text-white text-xl font-bold mb-4">
+              NIF para Fatura (opcional)
+            </h2>
+            <form
+              className="flex flex-col items-center w-full"
+              onSubmit={e => {
+                e.preventDefault();
+                handleBuyWithNif(clientNif);
+              }}
+            >
+              <input
+                type="text"
+                className="px-3 py-2 rounded border border-gray-400 mb-2 w-full bg-[#232336] text-white"
+                placeholder="NIF (9 dígitos, opcional)"
+                value={clientNif}
+                onChange={e => setClientNif(e.target.value)}
+                maxLength={9}
+                autoFocus
+              />
+              <div className="flex gap-2 mt-2">
+                <button
+                  type="submit"
+                  className="bg-green-600 hover:bg-green-700 text-white font-bold px-8 py-2 rounded-lg cursor-pointer"
+                >
+                  Finalizar Compra
+                </button>
+                <button
+                  type="button"
+                  className="bg-gray-400 hover:bg-gray-500 text-white font-bold px-6 py-2 rounded-lg cursor-pointer"
+                  onClick={() => setShowNifForm(false)}
+                >
+                  Cancelar
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {showGuestNifForm && userRole === "guest" && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
+          <div className="bg-[#232336] rounded-xl shadow-lg p-8 flex flex-col items-center min-w-[320px] max-w-[90vw]">
+            <h2 className="text-white text-xl font-bold mb-4">
+              NIF para Fatura (opcional)
+            </h2>
+            <form
+              className="flex flex-col items-center w-full"
+              onSubmit={e => {
+                e.preventDefault();
+                handleBuyGuestWithNif(guestNif);
+              }}
+            >
+              <input
+                type="text"
+                className="px-3 py-2 rounded border border-gray-400 mb-2 w-full bg-[#232336] text-white"
+                placeholder="NIF (9 dígitos, opcional)"
+                value={guestNif}
+                onChange={e => setGuestNif(e.target.value)}
+                maxLength={9}
+                autoFocus
+              />
+              <div className="flex gap-2 mt-2">
+                <button
+                  type="submit"
+                  className="bg-green-600 hover:bg-green-700 text-white font-bold px-8 py-2 rounded-lg cursor-pointer"
+                >
+                  Finalizar Compra
+                </button>
+                <button
+                  type="button"
+                  className="bg-gray-400 hover:bg-gray-500 text-white font-bold px-6 py-2 rounded-lg cursor-pointer"
+                  onClick={() => setShowGuestNifForm(false)}
                 >
                   Cancelar
                 </button>
