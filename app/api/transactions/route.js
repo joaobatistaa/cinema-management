@@ -6,7 +6,7 @@ import { sendEmail } from "@/src/utils/email";
 
 export async function GET() {
   try {
-    const transactions = getTransactions();
+    const transactions = await getTransactions();
     return NextResponse.json(transactions);
   } catch (error) {
     console.error("Erro ao ler transações:", error);
@@ -21,7 +21,7 @@ export async function POST(request) {
   try {
     const body = await request.json();
     const { email, cart, desc, nif } = body;
-    if (!email) {
+    if (!email || typeof email !== "string" || !email.trim()) {
       return NextResponse.json(
         { error: "Email do cliente é obrigatório" },
         { status: 400 }
@@ -29,16 +29,19 @@ export async function POST(request) {
     }
     let user = null;
     let userId = null;
-    if (email === "guest@guest.com") {
-      userId = 0;
-    } else {
-      user = await getUserByEmail(email);
-      if (!user) {
+    // Valida se o email existe em users.json
+    user = await getUserByEmail(email.trim());
+    if (!user) {
+      // Só aceita se for o email especial de guest
+      if (email.trim().toLowerCase() === "guest@guest.com") {
+        userId = 0;
+      } else {
         return NextResponse.json(
-          { error: "Utilizador não encontrado" },
+          { error: "Utilizador não encontrado. Para clientes sem conta, utilize o email guest@guest.com." },
           { status: 404 }
         );
       }
+    } else {
       userId = user.id;
     }
     // Atualiza stock, mas não bloqueia a transação se falhar
@@ -68,13 +71,12 @@ export async function POST(request) {
         userId,
         desc,
         date: new Date().toISOString(),
-        nif: nifToSave, // agora só vai null se não for válido
+        nif: nifToSave,
       };
       await addTransaction(transaction);
 
-      
       // Enviar email ao cliente com os detalhes da transação (exceto id)
-      if (email !== "guest@guest.com") {
+      if (userId !== 0) {
         let details = `
           <h2>Detalhes da sua transação</h2>
           <p><strong>Data:</strong> ${new Date(transaction.date).toLocaleString("pt-PT")}</p>

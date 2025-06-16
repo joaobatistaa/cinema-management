@@ -19,6 +19,7 @@ export default function Bar() {
   const [cart, setCart] = useState([]);
   const [showEmailForm, setShowEmailForm] = useState(false);
   const [clientEmail, setClientEmail] = useState("");
+  const [clientNifForEmployee, setClientNifForEmployee] = useState(""); 
   const [showEditModal, setShowEditModal] = useState(false);
   const [editProduct, setEditProduct] = useState(null);
   const [editName, setEditName] = useState("");
@@ -170,6 +171,63 @@ export default function Bar() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           email: "guest@guest.com",
+          cart,
+          desc: "Compra no Bar",
+          nif: nifStr
+        }),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || "Erro ao registar transação.");
+      }
+      toast.success("Compra efetuada com sucesso.");
+      router.push("/");
+    } catch (err) {
+      toast.error(err.message || "Erro ao registar transação.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  // Função para compra de employee/admin (com email e NIF opcional)
+  async function handleBuyEmployee(email, nif) {
+    if (total === 0) return;
+    if (!email || typeof email !== "string" || !email.trim()) {
+      toast.error("Insira um email válido do cliente.");
+      return;
+    }
+    const emailTrimmed = email.trim().toLowerCase();
+    // Validação extra: só aceita email existente ou guest@guest.com
+    let isValid = false;
+    try {
+      const res = await fetch("/api/users/by-email?email=" + encodeURIComponent(emailTrimmed));
+      if (res.ok) {
+        const user = await res.json();
+        isValid = !!user && !!user.id;
+      }
+    } catch {
+      // ignore
+    }
+    if (!isValid && emailTrimmed !== "guest@guest.com") {
+      toast.error("Utilizador não encontrado. Para clientes sem conta, utilize o email guest@guest.com.");
+      return;
+    }
+    let nifStr = nif;
+    if (!nifStr || typeof nifStr !== "string" || !nifStr.trim()) {
+      nifStr = null;
+    } else {
+      nifStr = nifStr.trim();
+      if (!/^\d{9}$/.test(nifStr)) {
+        toast.error("Insira um NIF válido (9 dígitos) ou deixe em branco.");
+        return;
+      }
+    }
+    try {
+      const res = await fetch("/api/transactions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: emailTrimmed,
           cart,
           desc: "Compra no Bar",
           nif: nifStr
@@ -471,13 +529,13 @@ export default function Bar() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
           <div className="bg-[#232336] rounded-xl shadow-lg p-8 flex flex-col items-center min-w-[320px] max-w-[90vw]">
             <h2 className="text-white text-xl font-bold mb-4">
-              Email do cliente
+              Email e NIF do cliente
             </h2>
             <form
               className="flex flex-col items-center w-full"
               onSubmit={(e) => {
                 e.preventDefault();
-                handleBuy(clientEmail);
+                handleBuyEmployee(clientEmail, clientNifForEmployee);
               }}
             >
               <input
@@ -488,6 +546,14 @@ export default function Bar() {
                 onChange={(e) => setClientEmail(e.target.value)}
                 required
                 autoFocus
+              />
+              <input
+                type="text"
+                className="px-3 py-2 rounded border border-gray-400 mb-2 w-full bg-[#232336] text-white"
+                placeholder="NIF (9 dígitos, opcional)"
+                value={clientNifForEmployee}
+                onChange={e => setClientNifForEmployee(e.target.value)}
+                maxLength={9}
               />
               <div className="flex gap-2 mt-2">
                 <button
@@ -502,6 +568,7 @@ export default function Bar() {
                   onClick={() => {
                     setShowEmailForm(false);
                     setClientEmail("");
+                    setClientNifForEmployee("");
                   }}
                 >
                   Cancelar

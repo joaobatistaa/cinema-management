@@ -3,7 +3,7 @@
     "id": "1",
     "name": "Pipocas G",
     "price": "10.00",
-    "stock": "9"
+    "stock": 7
   },
   {
     "id": "2",
@@ -39,7 +39,7 @@
     "id": "7",
     "name": "Chocolate",
     "price": "2",
-    "stock": "17"
+    "stock": 16
   },
   {
     "id": "8",
@@ -57,13 +57,13 @@
     "id": "11",
     "name": "Ice Tea Limão",
     "price": "2",
-    "stock": "8"
+    "stock": 6
   },
   {
     "id": "12",
     "name": "Ice Tea Pêssego",
     "price": "2.00",
-    "stock": "1"
+    "stock": 10
   },
   {
     "id": "13",
@@ -123,7 +123,7 @@
   {
     "id": 22,
     "name": "cookie",
-    "stock": 5,
+    "stock": 4,
     "price": "10.00",
     "image": ""
   }

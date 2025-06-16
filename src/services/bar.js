@@ -26,9 +26,9 @@ export async function updateProductStock(items) {
   const products = JSON.parse(fileContents);
 
   items.forEach((item) => {
-    const prod = products.find((p) => p.id == item.id);
+    const prod = products.find((p) => String(p.id) === String(item.id));
     if (prod) {
-      prod.stock = String(Math.max(0, Number(prod.stock) - (Number(item.quantity) || 0)));
+      prod.stock = Math.max(0, Number(prod.stock) - (Number(item.quantity) || 0));
     }
   });
 
