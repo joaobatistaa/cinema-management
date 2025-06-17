@@ -1,6 +1,29 @@
 import path from "path";
 import fs from "fs";
 import { NextResponse } from "next/server";
+import { addMovie, updateMovie } from "@/src/services/movies";
+
+export async function POST(request) {
+  try {
+    const data = await request.json();
+    const movie = await addMovie(data);
+    return NextResponse.json(movie, { status: 201 });
+  } catch (error) {
+    return NextResponse.json({ error: "Erro ao adicionar filme" }, { status: 500 });
+  }
+}
+
+export async function PUT(request, context) {
+  try {
+    const { id } = context.params;
+    const data = await request.json();
+    const movie = await updateMovie(id, data);
+    return NextResponse.json(movie);
+  } catch (error) {
+    return NextResponse.json({ error: "Erro ao atualizar filme" }, { status: 500 });
+  }
+}
+import { addMovie, updateMovie } from "@/src/services/movies";
 
 export async function GET(request, context) {
   const params = await context.params;

@@ -15,9 +15,21 @@ export async function getMovies() {
   return JSON.parse(fileContents);
 }
 
+// Helper to check for duplicate movie title
+function isDuplicateTitle(movies, title, excludeId = null) {
+  return movies.some(
+    (m) =>
+      m.title.trim().toLowerCase() === title.trim().toLowerCase() &&
+      (excludeId === null || String(m.id) !== String(excludeId))
+  );
+}
+
 // Adiciona um novo filme
 export async function addMovie(session) {
   const movies = await getMovies();
+  if (isDuplicateTitle(movies, session.title)) {
+    throw new Error("Já existe um filme com esse nome.");
+  }
   const newId =
     movies.length > 0 ? Math.max(...movies.map((s) => s.id)) + 1 : 1;
   const newMovie = { id: newId, ...session };
@@ -37,6 +49,12 @@ export async function removeMovie(id) {
 // Atualiza um filme pelo id
 export async function updateMovie(id, updatedFields) {
   const movies = await getMovies();
+  if (
+    updatedFields.title &&
+    isDuplicateTitle(movies, updatedFields.title, id)
+  ) {
+    throw new Error("Já existe um filme com esse nome.");
+  }
   const updatedMovies = movies.map((m) =>
     String(m.id) === String(id) ? { ...m, ...updatedFields, id: m.id } : m
   );
