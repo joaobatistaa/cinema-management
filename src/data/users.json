@@ -19,18 +19,20 @@
     "nif": null,
     "active": 1,
     "purl": null,
-    "desc": "staff"
+    "desc": "staff",
+    "salario": null
   },
   {
     "id": 3,
-    "role": "customer",
-    "name": "Jorge Mora da Silva",
-    "email": "test@test.com",
-    "password": "$2b$10$7w2lJEU9o.g/3yOW5ylO9uCm3.epZH8GycatXl3A3D6UvBF8LqtE6",
-    "nif": "270309136",
-    "active": 1,
-    "purl": null,
-    "desc": "changed password",
-    "tickets": []
+    "name": "Fausto",
+    "email": "f123@cinema.com",
+    "password": "$2b$10$2WnbKTlN3MR//CwmJ/MZzu1Wwtvr2sBFlE7HbRPlwXwbLW4UahkJS",
+    "nif": "240199343",
+    "salario": "2222",
+    "role": "employee",
+    "active": 0,
+    "desc": "deleted",
+    "tickets": [],
+    "purl": "ZjEyM0BjaW5lbWEuY29tLTE3NTAyMDA1"
   }
 ]
