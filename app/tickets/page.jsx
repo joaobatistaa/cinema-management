@@ -47,6 +47,8 @@ export default function TicketsPage() {
   const [ticketNum, setTicketNum] = useState("");
 
   const [loading, setLoading] = useState(true);
+  const [showQr, setShowQr] = useState(false);
+  const [qrTicketId, setQrTicketId] = useState(null);
 
   const { user } = useAuth();
 
@@ -259,9 +261,10 @@ export default function TicketsPage() {
                     <div className="flex flex-row gap-2 mt-2">
                       <button
                         className="bg-quaternary text-white py-1 px-3 rounded-md cursor-pointer flex-1 text-sm"
-                        onClick={() =>
-                          router.push(`/tickets/qrcode/${ticket.id}`)
-                        }
+                        onClick={() => {
+                          setQrTicketId(ticket.id);
+                          setShowQr(true);
+                        }}
                       >
                         QR CODE
                       </button>
@@ -284,6 +287,67 @@ export default function TicketsPage() {
             ))
           )}
         </div>
+        {/* QR Code Modal */}
+        {showQr && (
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center"
+            style={{
+              backdropFilter: "blur(8px)",
+              background: "rgba(0,0,0,0.1)"
+            }}
+            onClick={() => setShowQr(false)}
+          >
+            <div
+              className="bg-white rounded shadow-lg flex flex-col items-center justify-center p-8"
+              style={{ minWidth: 320, minHeight: 320, position: "relative" }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Botão de fechar (cruz) no canto superior direito */}
+              <button
+                onClick={() => setShowQr(false)}
+                style={{
+                  position: "absolute",
+                  top: 12,
+                  right: 12,
+                  background: "transparent",
+                  border: "none",
+                  cursor: "pointer",
+                  padding: 0
+                }}
+                aria-label="Fechar"
+              >
+                <svg width="28" height="28" viewBox="0 0 28 28">
+                  <circle cx="14" cy="14" r="14" fill="#232323" />
+                  <line
+                    x1="9"
+                    y1="9"
+                    x2="19"
+                    y2="19"
+                    stroke="#fff"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                  />
+                  <line
+                    x1="19"
+                    y1="9"
+                    x2="9"
+                    y2="19"
+                    stroke="#fff"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </button>
+              <img
+                src={`https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(
+                  `ticket-${qrTicketId}`
+                )}`}
+                alt="QR Code"
+                className="w-60 h-60"
+              />
+            </div>
+          </div>
+        )}
         {/* Paginação */}
         <div className="flex justify-center mt-6 items-center space-x-2">
           <button

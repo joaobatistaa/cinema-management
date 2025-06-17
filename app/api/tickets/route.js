@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getTickets, addTicket, filterTickets } from "@/src/services/tickets";
+import { sendEmail } from "@/src/utils/email"; // Certifique-se que existe este utilitário
 
 export async function GET(request) {
   try {
@@ -23,7 +24,37 @@ export async function GET(request) {
 export async function POST(request) {
   try {
     const data = await request.json();
-    const newTicket = addTicket(data);
+    const { email, movie_title, ...dataWithoutEmail } = data;
+    const newTicket = addTicket(dataWithoutEmail);
+
+    if (email) {
+      const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(
+        `ticket-${newTicket.id}`
+      )}`;
+      const html = `
+        <h2>O seu bilhete de cinema</h2>
+        <p>Filme: <b>${movie_title || ""}</b></p>
+        <p>Sessão: <b>${dataWithoutEmail.session_id || ""}</b></p>
+        <p>Lugar: <b>${
+          dataWithoutEmail.seat
+            ? String.fromCharCode(64 + dataWithoutEmail.seat.row) +
+              dataWithoutEmail.seat.col
+            : ""
+        }</b></p>
+        <p>Preço total: <b>${dataWithoutEmail.buy_total}€</b></p>
+        <p>Apresente este QR Code à entrada:</p>
+        <img src="${qrUrl}" alt="QR Code" />
+        <p>Número do bilhete: <b>${newTicket.id}</b></p>
+      `;
+
+      // Usa a função utilitária para enviar email
+      await sendEmail({
+        to: email,
+        subject: "O seu bilhete de cinema",
+        html
+      });
+    }
+
     return NextResponse.json(newTicket, { status: 201 });
   } catch (error) {
     return NextResponse.json(

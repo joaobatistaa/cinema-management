@@ -41,6 +41,7 @@ export default function Bar() {
     async function fetchProducts() {
       try {
         setLoading(true);
+        console.log(user);
         const response = await fetch("/api/bar");
         if (!response.ok) throw new Error("Erro ao carregar os produtos.");
         const data = await response.json();
@@ -598,9 +599,9 @@ export default function Bar() {
                     </span>
                   </div>
                   <button
-                    className="bg-quaternary hover:bg-quinary text-white font-bold px-16 py-2 rounded-lg cursor-pointer"
+                    className="bg-quaternary text-white font-bold px-16 py-2 rounded-lg cursor-pointer"
                     onClick={() => handleOpenForm()}
-                    disabled={total === 0}
+                    disabled={total === 0 || cart.length === 0}
                   >
                     Comprar
                   </button>

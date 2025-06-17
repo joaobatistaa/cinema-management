@@ -11,7 +11,7 @@ function readTickets() {
   return JSON.parse(data);
 }
 
-function writeTickets(tickets) {
+export function writeTickets(tickets) {
   fs.writeFileSync(ticketsFilePath, JSON.stringify(tickets, null, 2));
 }
 

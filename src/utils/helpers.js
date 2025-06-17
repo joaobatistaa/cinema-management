@@ -18,14 +18,43 @@ export function seatLabel(seat) {
 
 export function formatDate(dateStr) {
   if (!dateStr) return "";
-  const [y, m, d] = dateStr.split("T")[0].split("-");
-  return `${d}/${m}/${y}`;
+  try {
+    const date = new Date(dateStr);
+    // Obter a data em Europe/Lisbon
+    const options = {
+      timeZone: "Europe/Lisbon",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit"
+    };
+    const parts = new Intl.DateTimeFormat("pt-PT", options).formatToParts(date);
+    const day = parts.find((p) => p.type === "day")?.value;
+    const month = parts.find((p) => p.type === "month")?.value;
+    const year = parts.find((p) => p.type === "year")?.value;
+    return `${day}/${month}/${year}`;
+  } catch {
+    // fallback antigo
+    const [y, m, d] = dateStr.split("T")[0].split("-");
+    return `${d}/${m}/${y}`;
+  }
 }
 
 export function formatHour(dateStr) {
   if (!dateStr) return "";
-  const time = dateStr.split("T")[1];
-  return time ? time.slice(0, 5) : "";
+  try {
+    const date = new Date(dateStr);
+    // Usa o Intl.DateTimeFormat para garantir timezone de Lisboa
+    return new Intl.DateTimeFormat("pt-PT", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+      timeZone: "Europe/Lisbon"
+    }).format(date);
+  } catch {
+    // fallback antigo
+    const time = dateStr.split("T")[1];
+    return time ? time.slice(0, 5) : "";
+  }
 }
 
 export function truncate(str, n) {

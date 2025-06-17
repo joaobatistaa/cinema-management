@@ -14,8 +14,10 @@ import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import TextField from "@mui/material/TextField";
+import { useAuth } from "@/src/contexts/AuthContext";
 
 export default function BuyTicketPage() {
+  const { user } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
   const sessionId = searchParams.get("session_id");
@@ -159,6 +161,8 @@ export default function BuyTicketPage() {
       const datetime = now.toISOString();
 
       const data = {
+        email: user.email,
+        movie_title: movie?.title || "",
         movie_id: movieId,
         session_id: sessionId,
         room_id: room?.id,
