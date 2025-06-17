@@ -75,7 +75,8 @@ export async function addUser(user) {
       active: 0,
       purl,
       desc: "pending email confirmation",
-      tickets: [], // <-- Adicionado campo tickets vazio
+      tickets: [], 
+      salario: null,
     };
     users.push(newUser);
     await fs.writeFile(filePath, JSON.stringify(users, null, 2), "utf-8");
@@ -88,7 +89,10 @@ export async function addUser(user) {
 // Procura utilizador por email
 export async function getUserByEmail(email) {
   const users = await getUsers();
-  return users.find((u) => u.email === email) || null;
+  // Ignorar utilizadores eliminados (active=0 e desc='deleted')
+  return users.find(
+    (u) => u.email === email && !(u.active === 0 && u.desc === "deleted")
+  ) || null;
 }
 
 // Autentica utilizador (login)
