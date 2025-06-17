@@ -88,8 +88,6 @@ export default function TicketsPage() {
     if (datetime)
       result = result.filter((t) => t.datetime?.startsWith(datetime));
     if (client) {
-      console.log(users);
-
       const matchingUserIds = users
         .filter((u) => u.name?.toLowerCase().includes(client.toLowerCase()))
         .map((u) => String(u.id));
@@ -243,7 +241,7 @@ export default function TicketsPage() {
                       <button
                         className="bg-quaternary text-white py-1 px-3 rounded-md cursor-pointer flex-1 text-sm"
                         onClick={() =>
-                          router.push(`/tickets/qrcode/${ticket.id}`)
+                          router.push(`/tickets/${ticket.id}/edit`)
                         }
                       >
                         EDITAR

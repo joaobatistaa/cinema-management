@@ -19,7 +19,7 @@ export default function Bar() {
   const [cart, setCart] = useState([]);
   const [showEmailForm, setShowEmailForm] = useState(false);
   const [clientEmail, setClientEmail] = useState("");
-  const [clientNifForEmployee, setClientNifForEmployee] = useState(""); 
+  const [clientNifForEmployee, setClientNifForEmployee] = useState("");
   const [showEditModal, setShowEditModal] = useState(false);
   const [editProduct, setEditProduct] = useState(null);
   const [editName, setEditName] = useState("");
@@ -41,7 +41,6 @@ export default function Bar() {
     async function fetchProducts() {
       try {
         setLoading(true);
-        console.log((user));
         const response = await fetch("/api/bar");
         if (!response.ok) throw new Error("Erro ao carregar os produtos.");
         const data = await response.json();
@@ -128,7 +127,6 @@ export default function Bar() {
     }
 
     try {
-
       const res = await fetch("/api/transactions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -137,7 +135,7 @@ export default function Bar() {
           cart,
           desc: "Compra no Bar",
           nif: nifStr
-        }),
+        })
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
@@ -174,7 +172,7 @@ export default function Bar() {
           cart,
           desc: "Compra no Bar",
           nif: nifStr
-        }),
+        })
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
@@ -200,7 +198,9 @@ export default function Bar() {
     // Validação extra: só aceita email existente ou guest@guest.com
     let isValid = false;
     try {
-      const res = await fetch("/api/users/by-email?email=" + encodeURIComponent(emailTrimmed));
+      const res = await fetch(
+        "/api/users/by-email?email=" + encodeURIComponent(emailTrimmed)
+      );
       if (res.ok) {
         const user = await res.json();
         isValid = !!user && !!user.id;
@@ -209,7 +209,9 @@ export default function Bar() {
       // ignore
     }
     if (!isValid && emailTrimmed !== "guest@guest.com") {
-      toast.error("Utilizador não encontrado. Para clientes sem conta, utilize o email guest@guest.com.");
+      toast.error(
+        "Utilizador não encontrado. Para clientes sem conta, utilize o email guest@guest.com."
+      );
       return;
     }
     let nifStr = nif;
@@ -231,7 +233,7 @@ export default function Bar() {
           cart,
           desc: "Compra no Bar",
           nif: nifStr
-        }),
+        })
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
@@ -283,8 +285,8 @@ export default function Bar() {
           id: editProduct.id,
           name: editName.trim(),
           stock: Number(editStock),
-          price: priceValue,
-        }),
+          price: priceValue
+        })
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
@@ -294,7 +296,12 @@ export default function Bar() {
       setProducts((prev) =>
         prev.map((p) =>
           p.id === editProduct.id
-            ? { ...p, name: editName.trim(), stock: Number(editStock), price: priceValue }
+            ? {
+                ...p,
+                name: editName.trim(),
+                stock: Number(editStock),
+                price: priceValue
+              }
             : p
         )
       );
@@ -339,8 +346,8 @@ export default function Bar() {
         body: JSON.stringify({
           name: createName.trim(),
           stock: Number(createStock),
-          price: priceValue,
-        }),
+          price: priceValue
+        })
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
@@ -384,7 +391,11 @@ export default function Bar() {
                 <div
                   key={product.id}
                   className="bg-[#1f1f2e] rounded-lg p-4 text-white text-center shadow"
-                  style={{ height: "140px", overflowY: "auto", position: "relative" }}
+                  style={{
+                    height: "140px",
+                    overflowY: "auto",
+                    position: "relative"
+                  }}
                 >
                   <h3 className="font-bold">{product.name}</h3>
                   <p className="text-orange-400">Stock: {product.stock}</p>
@@ -412,35 +423,89 @@ export default function Bar() {
                           tabIndex={-1}
                           type="button"
                         >
-                          <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
-                            <path d="M4 21h17" stroke="#fff" strokeWidth="2" strokeLinecap="round" />
-                            <path d="M17.7 6.29a1 1 0 0 1 0 1.41l-9.3 9.3-3.4.7.7-3.4 9.3-9.3a1 1 0 0 1 1.41 0l1.29 1.29a1 1 0 0 1 0 1.41z" stroke="#fff" strokeWidth="2" />
+                          <svg
+                            width="20"
+                            height="20"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              d="M4 21h17"
+                              stroke="#fff"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                            />
+                            <path
+                              d="M17.7 6.29a1 1 0 0 1 0 1.41l-9.3 9.3-3.4.7.7-3.4 9.3-9.3a1 1 0 0 1 1.41 0l1.29 1.29a1 1 0 0 1 0 1.41z"
+                              stroke="#fff"
+                              strokeWidth="2"
+                            />
                           </svg>
                         </button>
                         <button
                           title="Eliminar produto"
                           className="bg-red-600 hover:bg-red-700 rounded-full p-1 cursor-pointer"
                           onClick={() => {
-                            if (window.confirm("Tem a certeza que pretende eliminar este produto?")) {
+                            if (
+                              window.confirm(
+                                "Tem a certeza que pretende eliminar este produto?"
+                              )
+                            ) {
                               fetch(`/api/bar?id=${product.id}`, {
                                 method: "DELETE"
                               })
-                                .then(res => {
-                                  if (!res.ok) throw new Error("Erro ao eliminar produto.");
-                                  toast.success("Produto eliminado com sucesso.");
-                                  setProducts((prev) => prev.filter((p) => p.id !== product.id));
+                                .then((res) => {
+                                  if (!res.ok)
+                                    throw new Error(
+                                      "Erro ao eliminar produto."
+                                    );
+                                  toast.success(
+                                    "Produto eliminado com sucesso."
+                                  );
+                                  setProducts((prev) =>
+                                    prev.filter((p) => p.id !== product.id)
+                                  );
                                 })
-                                .catch(() => toast.error("Erro ao eliminar produto."));
+                                .catch(() =>
+                                  toast.error("Erro ao eliminar produto.")
+                                );
                             }
                           }}
                           tabIndex={-1}
                           type="button"
                         >
-                          <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
-                            <path d="M3 6h18" stroke="#fff" strokeWidth="2" strokeLinecap="round" />
-                            <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" stroke="#fff" strokeWidth="2" />
-                            <rect x="5" y="6" width="14" height="14" rx="2" stroke="#fff" strokeWidth="2" />
-                            <path d="M10 11v6M14 11v6" stroke="#fff" strokeWidth="2" strokeLinecap="round" />
+                          <svg
+                            width="20"
+                            height="20"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              d="M3 6h18"
+                              stroke="#fff"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                            />
+                            <path
+                              d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+                              stroke="#fff"
+                              strokeWidth="2"
+                            />
+                            <rect
+                              x="5"
+                              y="6"
+                              width="14"
+                              height="14"
+                              rx="2"
+                              stroke="#fff"
+                              strokeWidth="2"
+                            />
+                            <path
+                              d="M10 11v6M14 11v6"
+                              stroke="#fff"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                            />
                           </svg>
                         </button>
                       </div>
@@ -452,13 +517,34 @@ export default function Bar() {
                 page === Math.ceil(products.length / pageSize) && (
                   <div
                     className="bg-[#232336] rounded-lg p-4 flex flex-col items-center justify-center text-white text-center shadow cursor-pointer hover:bg-[#282846] transition"
-                    style={{ height: "140px", minHeight: "140px", overflowY: "auto" }}
+                    style={{
+                      height: "140px",
+                      minHeight: "140px",
+                      overflowY: "auto"
+                    }}
                     onClick={handleOpenCreateModal}
                   >
                     <div className="flex flex-col items-center justify-center h-full w-full">
-                      <svg width="48" height="48" fill="none" viewBox="0 0 48 48">
-                        <circle cx="24" cy="24" r="22" stroke="#fff" strokeWidth="2" fill="#232336" />
-                        <path d="M24 16v16M16 24h16" stroke="#fff" strokeWidth="3" strokeLinecap="round" />
+                      <svg
+                        width="48"
+                        height="48"
+                        fill="none"
+                        viewBox="0 0 48 48"
+                      >
+                        <circle
+                          cx="24"
+                          cy="24"
+                          r="22"
+                          stroke="#fff"
+                          strokeWidth="2"
+                          fill="#232336"
+                        />
+                        <path
+                          d="M24 16v16M16 24h16"
+                          stroke="#fff"
+                          strokeWidth="3"
+                          strokeLinecap="round"
+                        />
                       </svg>
                     </div>
                   </div>
@@ -479,10 +565,11 @@ export default function Bar() {
                     <button
                       key={n}
                       onClick={() => setPage(n + 1)}
-                      className={`cursor-pointer px-3 py-1 rounded ${page === n + 1
-                        ? "bg-white text-black"
-                        : "bg-gray-800 text-white"
-                        }`}
+                      className={`cursor-pointer px-3 py-1 rounded ${
+                        page === n + 1
+                          ? "bg-white text-black"
+                          : "bg-gray-800 text-white"
+                      }`}
                     >
                       {n + 1}
                     </button>
@@ -520,12 +607,11 @@ export default function Bar() {
                 </div>
               </div>
             </div>
-
           </div>
         )}
       </div>
 
-      {(showEmailForm && (userRole === "employee" || userRole === "admin")) && (
+      {showEmailForm && (userRole === "employee" || userRole === "admin") && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
           <div className="bg-[#232336] rounded-xl shadow-lg p-8 flex flex-col items-center min-w-[320px] max-w-[90vw]">
             <h2 className="text-white text-xl font-bold mb-4">
@@ -552,7 +638,7 @@ export default function Bar() {
                 className="px-3 py-2 rounded border border-gray-400 mb-2 w-full bg-[#232336] text-white"
                 placeholder="NIF (9 dígitos, opcional)"
                 value={clientNifForEmployee}
-                onChange={e => setClientNifForEmployee(e.target.value)}
+                onChange={(e) => setClientNifForEmployee(e.target.value)}
                 maxLength={9}
               />
               <div className="flex gap-2 mt-2">
@@ -587,7 +673,7 @@ export default function Bar() {
             </h2>
             <form
               className="flex flex-col items-center w-full"
-              onSubmit={e => {
+              onSubmit={(e) => {
                 e.preventDefault();
                 handleBuyWithNif(clientNif);
               }}
@@ -597,7 +683,7 @@ export default function Bar() {
                 className="px-3 py-2 rounded border border-gray-400 mb-2 w-full bg-[#232336] text-white"
                 placeholder="NIF (9 dígitos, opcional)"
                 value={clientNif}
-                onChange={e => setClientNif(e.target.value)}
+                onChange={(e) => setClientNif(e.target.value)}
                 maxLength={9}
                 autoFocus
               />
@@ -629,7 +715,7 @@ export default function Bar() {
             </h2>
             <form
               className="flex flex-col items-center w-full"
-              onSubmit={e => {
+              onSubmit={(e) => {
                 e.preventDefault();
                 handleBuyGuestWithNif(guestNif);
               }}
@@ -639,7 +725,7 @@ export default function Bar() {
                 className="px-3 py-2 rounded border border-gray-400 mb-2 w-full bg-[#232336] text-white"
                 placeholder="NIF (9 dígitos, opcional)"
                 value={guestNif}
-                onChange={e => setGuestNif(e.target.value)}
+                onChange={(e) => setGuestNif(e.target.value)}
                 maxLength={9}
                 autoFocus
               />
@@ -669,13 +755,16 @@ export default function Bar() {
             <h2 className="text-white text-2xl font-bold mb-6 text-center">
               ALTERAR PRODUTO
             </h2>
-            <form className="flex flex-col gap-4 w-[320px]" onSubmit={handleConfirmEdit}>
+            <form
+              className="flex flex-col gap-4 w-[320px]"
+              onSubmit={handleConfirmEdit}
+            >
               <div>
                 <label className="block text-white mb-1">NOME</label>
                 <input
                   className="w-full px-3 py-2 rounded border border-gray-400 bg-transparent text-white"
                   value={editName}
-                  onChange={e => setEditName(e.target.value)}
+                  onChange={(e) => setEditName(e.target.value)}
                   required
                 />
               </div>
@@ -687,7 +776,7 @@ export default function Bar() {
                     min={0}
                     className="w-full px-3 py-2 rounded border border-gray-400 bg-transparent text-white"
                     value={editStock}
-                    onChange={e => setEditStock(e.target.value)}
+                    onChange={(e) => setEditStock(e.target.value)}
                     required
                   />
                 </div>
@@ -697,7 +786,7 @@ export default function Bar() {
                     ref={editPriceRef}
                     className="w-full px-3 py-2 rounded border border-gray-400 bg-transparent text-white"
                     value={editPrice}
-                    onChange={e => setEditPrice(e.target.value)}
+                    onChange={(e) => setEditPrice(e.target.value)}
                     required
                   />
                 </div>
@@ -726,13 +815,16 @@ export default function Bar() {
             <h2 className="text-white text-2xl font-bold mb-6 text-center">
               CRIAR PRODUTO
             </h2>
-            <form className="flex flex-col gap-4 w-[320px]" onSubmit={handleConfirmCreate}>
+            <form
+              className="flex flex-col gap-4 w-[320px]"
+              onSubmit={handleConfirmCreate}
+            >
               <div>
                 <label className="block text-white mb-1">NOME</label>
                 <input
                   className="w-full px-3 py-2 rounded border border-gray-400 bg-transparent text-white"
                   value={createName}
-                  onChange={e => setCreateName(e.target.value)}
+                  onChange={(e) => setCreateName(e.target.value)}
                   required
                 />
               </div>
@@ -744,7 +836,7 @@ export default function Bar() {
                     min={0}
                     className="w-full px-3 py-2 rounded border border-gray-400 bg-transparent text-white"
                     value={createStock}
-                    onChange={e => setCreateStock(e.target.value)}
+                    onChange={(e) => setCreateStock(e.target.value)}
                     required
                   />
                 </div>
@@ -754,7 +846,7 @@ export default function Bar() {
                     ref={createPriceRef}
                     className="w-full px-3 py-2 rounded border border-gray-400 bg-transparent text-white"
                     value={createPrice}
-                    onChange={e => setCreatePrice(e.target.value)}
+                    onChange={(e) => setCreatePrice(e.target.value)}
                     required
                   />
                 </div>

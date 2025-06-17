@@ -3,7 +3,12 @@ import { promises as fs } from "fs";
 import path from "path";
 
 const roomsFilePath = path.join(process.cwd(), "src", "data", "rooms.json");
-const sessionsFilePath = path.join(process.cwd(), "src", "data", "sessions.json");
+const sessionsFilePath = path.join(
+  process.cwd(),
+  "src",
+  "data",
+  "sessions.json"
+);
 const ticketsFilePath = path.join(process.cwd(), "src", "data", "tickets.json");
 
 export async function DELETE(request, { params }) {
@@ -24,9 +29,7 @@ export async function DELETE(request, { params }) {
     const futureSessionIds = sessions
       .filter(
         (s) =>
-          String(s.room) === String(roomId) &&
-          s.date &&
-          new Date(s.date) > now
+          String(s.room) === String(roomId) && s.date && new Date(s.date) > now
       )
       .map((s) => String(s.id));
 
@@ -39,7 +42,10 @@ export async function DELETE(request, { params }) {
     );
     if (hasFutureTickets) {
       return NextResponse.json(
-        { error: "Não é possível eliminar salas com bilhetes futuros associados." },
+        {
+          error:
+            "Não é possível eliminar salas com bilhetes futuros associados."
+        },
         { status: 400 }
       );
     }
@@ -54,13 +60,19 @@ export async function DELETE(request, { params }) {
     const rooms = JSON.parse(roomsRaw);
     const idx = rooms.findIndex((r) => String(r.id) === String(roomId));
     if (idx === -1) {
-      return NextResponse.json({ error: "Sala não encontrada" }, { status: 404 });
+      return NextResponse.json(
+        { error: "Sala não encontrada" },
+        { status: 404 }
+      );
     }
     rooms.splice(idx, 1);
     await fs.writeFile(roomsFilePath, JSON.stringify(rooms, null, 2), "utf-8");
     return NextResponse.json({ success: true });
   } catch (error) {
-    return NextResponse.json({ error: "Erro ao eliminar sala" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Erro ao eliminar sala" },
+      { status: 500 }
+    );
   }
 }
 
@@ -68,7 +80,7 @@ export async function GET(request, { params }) {
   const { id } = await params;
 
   try {
-    const fileContents = await fs.readFile(filePath, "utf-8");
+    const fileContents = await fs.readFile(roomsFilePath, "utf-8");
     const rooms = JSON.parse(fileContents);
     const room = rooms.find((room) => room.id === parseInt(id, 10));
     if (!room) {
@@ -98,7 +110,7 @@ export async function PUT(request, { params }) {
 
   try {
     const updatedRoom = await request.json();
-    const fileContents = await fs.readFile(filePath, "utf-8");
+    const fileContents = await fs.readFile(roomsFilePath, "utf-8");
     const rooms = JSON.parse(fileContents);
     const roomIndex = rooms.findIndex((room) => room.id === parseInt(id, 10));
     if (roomIndex === -1) {

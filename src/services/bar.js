@@ -16,7 +16,6 @@ const filePath = path.join(process.cwd(), "src", "data", "products.json");
 // gets the products from the file
 export async function getProducts() {
   const fileContents = await fs.readFile(filePath, "utf-8");
-  console.log(fileContents);
   return JSON.parse(fileContents);
 }
 
@@ -28,7 +27,10 @@ export async function updateProductStock(items) {
   items.forEach((item) => {
     const prod = products.find((p) => String(p.id) === String(item.id));
     if (prod) {
-      prod.stock = Math.max(0, Number(prod.stock) - (Number(item.quantity) || 0));
+      prod.stock = Math.max(
+        0,
+        Number(prod.stock) - (Number(item.quantity) || 0)
+      );
     }
   });
 
@@ -47,7 +49,7 @@ export async function updateProduct({ id, name, stock, price }) {
     ...products[idx],
     name,
     stock,
-    price,
+    price
   };
 
   await fs.writeFile(filePath, JSON.stringify(products, null, 2));
@@ -74,13 +76,16 @@ export async function addProduct({ name, stock, price }) {
   const products = JSON.parse(fileContents);
 
   // Gera novo id incremental
-  const newId = products.length > 0 ? Math.max(...products.map((p) => Number(p.id))) + 1 : 1;
+  const newId =
+    products.length > 0
+      ? Math.max(...products.map((p) => Number(p.id))) + 1
+      : 1;
   const newProduct = {
     id: newId,
     name,
     stock,
     price,
-    image: "" 
+    image: ""
   };
 
   products.push(newProduct);

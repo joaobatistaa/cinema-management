@@ -1,8 +1,15 @@
 import { NextResponse } from "next/server";
-import { getTickets, addTicket } from "@/src/services/tickets";
+import { getTickets, addTicket, filterTickets } from "@/src/services/tickets";
 
-export async function GET() {
+export async function GET(request) {
   try {
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get("id");
+    if (id) {
+      // Busca apenas o bilhete com o id fornecido
+      const filtered = filterTickets({ id });
+      return NextResponse.json(filtered);
+    }
     const tickets = getTickets();
     return NextResponse.json(tickets);
   } catch (error) {

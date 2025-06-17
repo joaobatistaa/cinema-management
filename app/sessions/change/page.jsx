@@ -3,12 +3,13 @@
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
-import { useAuth } from "@/src/contexts/AuthContext";
 
-export default function Sessions() {
+export default function ChangeSession() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const movieId = searchParams.get("movie");
+  const ticketId = searchParams.get("ticket_id");
+  const currentSessionId = searchParams.get("current_session_id");
   const [sessions, setSessions] = useState([]);
   const [movie, setMovie] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -57,26 +58,23 @@ export default function Sessions() {
         const movieData = await resMovie.json();
         setMovie(movieData);
 
-        // Selecionar a primeira sessão válida (data >= hoje e hora > agora se for hoje)
+        // Selecionar a sessão atual se fornecida
         if (sessionsData.length > 0) {
-          const now = new Date();
-          let firstValidSession = sessionsData.find((s) => {
-            const sessionDate = new Date(s.date);
-            const sessionDay = sessionDate.toISOString().split("T")[0];
-            const todayStr = getTodayStr();
-            if (sessionDay > todayStr) return true;
-            if (sessionDay === todayStr && sessionDate > now) return true;
-            return false;
-          });
-
-          let firstValidDate = "";
-          if (firstValidSession) {
-            firstValidDate = firstValidSession.date.split("T")[0];
-          } else {
-            // Se não houver sessão válida, mostra a data mais próxima (primeira do array)
-            firstValidDate = sessionsData[0].date.split("T")[0];
+          let initialSession = null;
+          if (currentSessionId) {
+            initialSession = sessionsData.find(
+              (s) => String(s.id) === String(currentSessionId)
+            );
           }
-          setSelectedDate(firstValidDate);
+          if (!initialSession) {
+            // fallback para primeira válida
+            const now = new Date();
+            initialSession =
+              sessionsData.find((s) => new Date(s.date) > now) ||
+              sessionsData[0];
+          }
+          setSelectedSession(initialSession);
+          setSelectedDate(initialSession?.date?.split("T")[0] || "");
         }
       } catch {
         setSessions([]);
@@ -393,6 +391,17 @@ export default function Sessions() {
     }
   }
 
+  function handleConfirmChange() {
+    if (!selectedSession || !ticketId) {
+      toast.error("Selecione uma sessão para alterar.");
+      return;
+    }
+    // Redireciona para a edição do bilhete com a nova sessão
+    router.push(
+      `/tickets/${ticketId}/edit?session_id=${selectedSession.id}&movie_id=${movieId}`
+    );
+  }
+
   return (
     <div className="h-full w-full flex flex-col">
       <div className="relative w-full flex-1 flex flex-col">
@@ -407,20 +416,10 @@ export default function Sessions() {
           </div>
           <div className="flex justify-center">
             <h1 className="text-4xl font-semibold text-white text-center tracking-wider whitespace-nowrap max-w-6xl">
-              SESSÕES
-              {movie && movie.title ? ` - ${movie.title.toUpperCase()}` : ""}
+              ALTERAR SESSÃO
             </h1>
           </div>
-          <div className="flex justify-end">
-            {userRole === "admin" && (
-              <button
-                className="bg-quaternary text-lg text-white px-6 py-3 rounded font-medium ml-auto cursor-pointer"
-                onClick={() => setShowCreateModal(true)}
-              >
-                NOVA SESSÃO
-              </button>
-            )}
-          </div>
+          <div />
         </div>
         <div className="flex flex-row items-center px-8 mt-14 mb-8">
           <label
@@ -644,9 +643,9 @@ export default function Sessions() {
               </div>
               <button
                 className="bg-quaternary text-white font-bold px-16 py-4 rounded-lg text-lg mt-2 cursor-pointer"
-                onClick={handleBuyTicket}
+                onClick={handleConfirmChange}
               >
-                COMPRAR BILHETE
+                CONFIRMAR ALTERAÇÃO
               </button>
               {error && showError && (
                 <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 bg-[#f8d7da] text-[#a94442] px-6 py-2 rounded shadow-lg z-50 transition-opacity duration-300">

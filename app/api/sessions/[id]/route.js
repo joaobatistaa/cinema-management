@@ -4,7 +4,7 @@ import path from "path";
 const filePath = path.join(process.cwd(), "src", "data", "sessions.json");
 
 export async function DELETE(request, { params }) {
-  const { id } = params;
+  const { id } = await params;
   try {
     const fileContents = await fs.readFile(filePath, "utf-8");
     const sessions = JSON.parse(fileContents);
@@ -40,7 +40,7 @@ export async function DELETE(request, { params }) {
 }
 
 export async function GET(request, { params }) {
-  const { id } = params;
+  const { id } = await params;
   try {
     const fileContents = await fs.readFile(filePath, "utf-8");
     const sessions = JSON.parse(fileContents);
@@ -71,7 +71,7 @@ export async function GET(request, { params }) {
 }
 
 export async function PUT(request, { params }) {
-  const { id } = params;
+  const { id } = await params;
   try {
     const updatedSession = await request.json();
     const fileContents = await fs.readFile(filePath, "utf-8");

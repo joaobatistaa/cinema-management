@@ -37,8 +37,13 @@ export default function MovieDetail() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-screen text-white">
-        A carregar...
+      <div className="flex items-center justify-center h-full w-full">
+        <div className="flex flex-col justify-center items-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-quinary mb-4"></div>
+          <span className="text-white text-lg font-semibold">
+            A carregar...
+          </span>
+        </div>
       </div>
     );
   }

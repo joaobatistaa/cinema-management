@@ -14,6 +14,15 @@ import {
 import toast from "react-hot-toast";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogActions from "@mui/material/DialogActions";
+import Button from "@mui/material/Button";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import TextField from "@mui/material/TextField";
 
 async function fetchMovies() {
   const res = await fetch("/api/movies");
@@ -32,8 +41,17 @@ async function fetchRooms() {
 }
 async function fetchSession(sessionId) {
   if (!sessionId) return null;
-  const res = await fetch(`/api/sessions/${sessionId}`);
-  if (!res.ok) return null;
+  // Corrigir para aceitar id string ou number
+  const res = await fetch(`/api/sessions/${encodeURIComponent(sessionId)}`);
+  if (!res.ok) {
+    // Tentar novamente com id numérico se falhar
+    const numId = Number(sessionId);
+    if (!isNaN(numId)) {
+      const res2 = await fetch(`/api/sessions/${numId}`);
+      if (res2.ok) return await res2.json();
+    }
+    return null;
+  }
   return await res.json();
 }
 
@@ -50,6 +68,13 @@ export default function TicketDetailsPage() {
   const [rooms, setRooms] = useState([]);
   const [session, setSession] = useState(null);
   const [barPage, setBarPage] = useState(0);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [refundMethod, setRefundMethod] = useState("mbway");
+  const [refundInfo, setRefundInfo] = useState({
+    mbway: "",
+    card: "",
+    paypal: ""
+  });
   const BAR_PAGE_SIZE = 2;
 
   // Calcular valores
@@ -64,16 +89,15 @@ export default function TicketDetailsPage() {
   useEffect(() => {
     async function fetchAll() {
       try {
-        // Busca apenas o bilhete em questão
         const ticketRes = await fetch(`/api/tickets?id=${id}`);
         if (!ticketRes.ok) throw new Error("Erro ao carregar bilhete");
         const ticketData = await ticketRes.json();
+
         const ticketObj = Array.isArray(ticketData)
           ? ticketData[0]
           : ticketData;
         setTicket(ticketObj);
 
-        // Busca sessão do bilhete
         let sessionObj = null;
         if (ticketObj?.session_id) {
           sessionObj = await fetchSession(ticketObj.session_id);
@@ -105,13 +129,58 @@ export default function TicketDetailsPage() {
     `ticket-${ticket?.id}`
   )}`;
 
+  async function handleCancelTicket() {
+    // Validação simples dos campos obrigatórios
+    if (
+      (refundMethod === "mbway" && !refundInfo.mbway) ||
+      (refundMethod === "card" && !refundInfo.card) ||
+      (refundMethod === "paypal" && !refundInfo.paypal)
+    ) {
+      toast.error("Preencha os dados do método de reembolso.");
+      return;
+    }
+    try {
+      const res = await fetch(`/api/tickets/${ticket.id}`, {
+        method: "DELETE"
+      });
+      if (!res.ok) throw new Error("Erro ao cancelar bilhete");
+      router.replace("/tickets");
+      toast.success(
+        `O valor foi reembolsado para o método de pagamento (${refundMethodLabel(
+          refundMethod
+        )})`
+      );
+    } catch (err) {
+      toast.error("Erro ao cancelar bilhete.");
+    }
+  }
+
+  function refundMethodLabel(method) {
+    if (method === "mbway") return "MB WAY";
+    if (method === "card") return "Cartão Crédito/Débito";
+    if (method === "paypal") return "PayPal";
+    return "";
+  }
+
+  // Verifica se pode cancelar (mínimo 48h antes da sessão)
+  function canCancel() {
+    if (!session?.date) return false;
+    const sessionDate = new Date(session.date);
+    const now = new Date();
+    const diffMs = sessionDate - now;
+    const diffHours = diffMs / (1000 * 60 * 60);
+    return diffHours >= 48;
+  }
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-full w-full">
-        <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-quinary mb-4"></div>
-        <span className="text-white text-lg font-semibold">
-          A carregar bilhete...
-        </span>
+        <div className="flex flex-col justify-center items-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-quinary mb-4"></div>
+          <span className="text-white text-lg font-semibold">
+            A carregar bilhete...
+          </span>
+        </div>
       </div>
     );
   }
@@ -300,9 +369,13 @@ export default function TicketDetailsPage() {
           <div className="flex flex-col items-center gap-6 w-full mb-8">
             <button
               className="bg-quaternary text-white px-8 py-3 rounded text-lg font-semibold w-60 cursor-pointer"
-              onClick={() => {
-                toast.error("Funcionalidade de cancelamento não implementada.");
-              }}
+              onClick={() => setOpenDialog(true)}
+              disabled={!canCancel()}
+              title={
+                canCancel()
+                  ? ""
+                  : "Só é possível cancelar até 48 horas antes da sessão"
+              }
             >
               Cancelar Bilhete
             </button>
@@ -314,6 +387,95 @@ export default function TicketDetailsPage() {
             </button>
           </div>
         </div>
+
+        {/* Dialog de confirmação de cancelamento */}
+        <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+          <DialogTitle>Confirmar Cancelamento</DialogTitle>
+          <DialogContent>
+            <div className="mb-2">
+              Tem a certeza que pretende cancelar este bilhete? O valor será
+              reembolsado para o método de pagamento selecionado.
+            </div>
+            <RadioGroup
+              value={refundMethod}
+              onChange={(e) => setRefundMethod(e.target.value)}
+            >
+              <FormControlLabel
+                value="mbway"
+                control={<Radio />}
+                label="MB WAY"
+              />
+              <FormControlLabel
+                value="card"
+                control={<Radio />}
+                label="Cartão Crédito/Débito"
+              />
+              <FormControlLabel
+                value="paypal"
+                control={<Radio />}
+                label="PayPal"
+              />
+            </RadioGroup>
+            {/* Campos para info adicional */}
+            {refundMethod === "mbway" && (
+              <TextField
+                autoFocus
+                margin="dense"
+                label="Número de telemóvel MB WAY"
+                type="tel"
+                fullWidth
+                variant="standard"
+                value={refundInfo.mbway}
+                onChange={(e) =>
+                  setRefundInfo((info) => ({ ...info, mbway: e.target.value }))
+                }
+              />
+            )}
+            {refundMethod === "card" && (
+              <TextField
+                autoFocus
+                margin="dense"
+                label="Dados do Cartão (últimos 4 dígitos)"
+                type="text"
+                fullWidth
+                variant="standard"
+                value={refundInfo.card}
+                onChange={(e) =>
+                  setRefundInfo((info) => ({ ...info, card: e.target.value }))
+                }
+              />
+            )}
+            {refundMethod === "paypal" && (
+              <TextField
+                autoFocus
+                margin="dense"
+                label="Email PayPal"
+                type="email"
+                fullWidth
+                variant="standard"
+                value={refundInfo.paypal}
+                onChange={(e) =>
+                  setRefundInfo((info) => ({ ...info, paypal: e.target.value }))
+                }
+              />
+            )}
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setOpenDialog(false)} color="primary">
+              Não
+            </Button>
+            <Button
+              onClick={async () => {
+                setOpenDialog(false);
+                await handleCancelTicket();
+              }}
+              color="error"
+              variant="contained"
+            >
+              Sim, cancelar
+            </Button>
+          </DialogActions>
+        </Dialog>
         {/* Direita: imagem do filme e QR code */}
         <div className="flex flex-col items-center justify-start flex-[1] min-w-[260px] max-w-[340px] pt-8 pr-8">
           <div className="w-56 h-72 bg-gray-200 rounded-xl overflow-hidden flex items-center justify-center mb-6">

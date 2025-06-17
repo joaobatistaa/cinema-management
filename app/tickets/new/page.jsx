@@ -5,6 +5,15 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { CircularProgress } from "@mui/material";
 import toast from "react-hot-toast";
 import { formatDate, formatHour } from "@/src/utils/helpers";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogActions from "@mui/material/DialogActions";
+import Button from "@mui/material/Button";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import TextField from "@mui/material/TextField";
 
 export default function BuyTicketPage() {
   const router = useRouter();
@@ -24,6 +33,13 @@ export default function BuyTicketPage() {
   const [currentPage, setCurrentPage] = useState(0);
   const itemsPerPage = 6;
   const [quantities, setQuantities] = useState({});
+  const [openDialog, setOpenDialog] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState("mbway");
+  const [paymentInfo, setPaymentInfo] = useState({
+    mbway: "",
+    card: "",
+    paypal: ""
+  });
 
   const handleQuantityChange = (itemId, delta) => {
     setQuantities((prev) => ({
@@ -124,8 +140,17 @@ export default function BuyTicketPage() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    if (!selectedSeat) {
-      toast.error("Selecione um lugar.");
+    setOpenDialog(true);
+  }
+
+  async function handleConfirmPurchase() {
+    // Validação dos campos obrigatórios do método de pagamento
+    if (
+      (paymentMethod === "mbway" && !paymentInfo.mbway) ||
+      (paymentMethod === "card" && !paymentInfo.card) ||
+      (paymentMethod === "paypal" && !paymentInfo.paypal)
+    ) {
+      toast.error("Preencha os dados do método de pagamento.");
       return;
     }
     setSaving(true);
@@ -152,7 +177,14 @@ export default function BuyTicketPage() {
           }),
         ticket_price: session?.price,
         bar_total: barTotal,
-        buy_total: session?.price + barTotal
+        buy_total: session?.price + barTotal,
+        payment_method: paymentMethod,
+        payment_info:
+          paymentMethod === "mbway"
+            ? paymentInfo.mbway
+            : paymentMethod === "card"
+            ? paymentInfo.card
+            : paymentInfo.paypal
       };
 
       const response = await fetch("/api/tickets", {
@@ -166,6 +198,7 @@ export default function BuyTicketPage() {
       }
 
       toast.success("Bilhete comprado com sucesso!");
+      setOpenDialog(false);
       router.replace("/tickets");
     } catch (err) {
       toast.error("Erro ao comprar bilhete.");
@@ -502,13 +535,105 @@ export default function BuyTicketPage() {
               <button
                 type="submit"
                 disabled={saving || !selectedSeat}
-                className="bg-quaternary text-white px-4 py-3 rounded font-medium flex items-center justify-center tracking-wider cursor-pointer"
+                className={`bg-quaternary text-white px-4 py-3 rounded font-medium flex items-center justify-center tracking-wider ${
+                  !selectedSeat
+                    ? "opacity-50 cursor-not-allowed"
+                    : "cursor-pointer"
+                }`}
               >
                 {saving ? "A GUARDAR..." : "CONFIRMAR COMPRA"}
               </button>
             </div>
           </form>
         )}
+        {/* Dialog de pagamento */}
+        <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+          <DialogTitle>Escolha o método de pagamento</DialogTitle>
+          <DialogContent>
+            <RadioGroup
+              value={paymentMethod}
+              onChange={(e) => setPaymentMethod(e.target.value)}
+            >
+              <FormControlLabel
+                value="mbway"
+                control={<Radio />}
+                label="MB WAY"
+              />
+              <FormControlLabel
+                value="card"
+                control={<Radio />}
+                label="Cartão Débito/VISA"
+              />
+              <FormControlLabel
+                value="paypal"
+                control={<Radio />}
+                label="PayPal"
+              />
+            </RadioGroup>
+            {paymentMethod === "mbway" && (
+              <TextField
+                autoFocus
+                margin="dense"
+                label="Número de telemóvel MB WAY"
+                type="tel"
+                fullWidth
+                variant="standard"
+                value={paymentInfo.mbway}
+                onChange={(e) =>
+                  setPaymentInfo((info) => ({ ...info, mbway: e.target.value }))
+                }
+              />
+            )}
+            {paymentMethod === "card" && (
+              <TextField
+                autoFocus
+                margin="dense"
+                label="Dados do Cartão (últimos 4 dígitos)"
+                type="text"
+                fullWidth
+                variant="standard"
+                value={paymentInfo.card}
+                onChange={(e) =>
+                  setPaymentInfo((info) => ({ ...info, card: e.target.value }))
+                }
+              />
+            )}
+            {paymentMethod === "paypal" && (
+              <TextField
+                autoFocus
+                margin="dense"
+                label="Email PayPal"
+                type="email"
+                fullWidth
+                variant="standard"
+                value={paymentInfo.paypal}
+                onChange={(e) =>
+                  setPaymentInfo((info) => ({
+                    ...info,
+                    paypal: e.target.value
+                  }))
+                }
+              />
+            )}
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setOpenDialog(false)} color="primary">
+              Cancelar
+            </Button>
+            <Button
+              onClick={handleConfirmPurchase}
+              color="success"
+              variant="contained"
+              disabled={
+                (paymentMethod === "mbway" && !paymentInfo.mbway) ||
+                (paymentMethod === "card" && !paymentInfo.card) ||
+                (paymentMethod === "paypal" && !paymentInfo.paypal)
+              }
+            >
+              Confirmar Compra
+            </Button>
+          </DialogActions>
+        </Dialog>
       </div>
     </div>
   );
