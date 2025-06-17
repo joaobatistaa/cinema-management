@@ -22,7 +22,7 @@ export const PERMISSIONS = {
   viewBar: [ROLES.ADMIN, ROLES.CUSTOMER, ROLES.EMPLOYEE, ROLES.GUEST],
 
   // CONSULTAS
-  viewConsultas: [ROLES.EMPLOYEE, ROLES.ADMIN],
+  viewAccounts: [ROLES.EMPLOYEE, ROLES.ADMIN],
 
   // TRANSACTIONS
   viewTraansactions: [ROLES.CUSTOMER],  

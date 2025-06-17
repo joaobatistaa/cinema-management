@@ -511,7 +511,7 @@ export default function Bar() {
                     </span>
                   </div>
                   <button
-                    className="bg-green-600 hover:bg-green-700 text-white font-bold px-16 py-2 rounded-lg cursor-pointer"
+                    className="bg-quaternary hover:bg-quinary text-white font-bold px-16 py-2 rounded-lg cursor-pointer"
                     onClick={() => handleOpenForm()}
                     disabled={total === 0}
                   >
@@ -704,13 +704,13 @@ export default function Bar() {
               </div>
               <button
                 type="submit"
-                className="w-full mt-6 bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg text-lg cursor-pointer"
+                className="w-full mt-6 bg-quaternary hover:bg-quinary text-white font-bold py-3 rounded-lg text-lg cursor-pointer"
               >
                 CONFIRMAR ALTERAÇÕES
               </button>
               <button
                 type="button"
-                className="w-full mt-2 bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 rounded-lg cursor-pointer"
+                className="w-full mt-2 bg-quinary text-lg text-white px-6 py-3 rounded font-medium cursor-pointer hover:bg-quaternary transition"
                 onClick={() => setShowEditModal(false)}
               >
                 Cancelar

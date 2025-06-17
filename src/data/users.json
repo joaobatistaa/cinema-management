@@ -13,7 +13,7 @@
   {
     "id": 2,
     "role": "employee",
-    "name": "employee",
+    "name": "employee2",
     "email": "employee@employee.com",
     "password": "$2b$10$2XCxyi8bzXfkLN/B9ofq2.gpBHnNeggHtbP1C6nOO1/TLWRXK4.82",
     "nif": null,

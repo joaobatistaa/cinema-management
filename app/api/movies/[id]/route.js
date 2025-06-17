@@ -3,6 +3,7 @@ import fs from "fs";
 import { NextResponse } from "next/server";
 import { addMovie, updateMovie } from "@/src/services/movies";
 
+
 export async function POST(request) {
   try {
     const data = await request.json();
@@ -23,7 +24,6 @@ export async function PUT(request, context) {
     return NextResponse.json({ error: "Erro ao atualizar filme" }, { status: 500 });
   }
 }
-import { addMovie, updateMovie } from "@/src/services/movies";
 
 export async function GET(request, context) {
   const params = await context.params;
