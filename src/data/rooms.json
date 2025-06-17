@@ -6,58 +6,140 @@
     "videoType": "2K",
     "seats": [
       [
-        { "type": "normal" },
+        {
+          "type": "normal"
+        },
         null,
-        { "type": "accessibility" },
-        { "type": "normal" },
-        { "type": "normal" },
-        { "type": "normal" },
-        { "type": "normal" }
+        {
+          "type": "accessibility"
+        },
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        }
       ],
       [
-        { "type": "normal" },
-        { "type": "accessibility" },
-        { "type": "accessibility" },
-        { "type": "normal" },
-        { "type": "normal" },
-        { "type": "normal" },
-        { "type": "normal" }
+        {
+          "type": "normal"
+        },
+        {
+          "type": "accessibility"
+        },
+        {
+          "type": "accessibility"
+        },
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        }
       ],
       [
-        { "type": "normal" },
-        { "type": "normal" },
-        { "type": "accessibility" },
-        { "type": "normal" },
-        { "type": "normal" },
-        { "type": "normal" },
-        { "type": "normal" }
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        },
+        {
+          "type": "accessibility"
+        },
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        }
       ],
       [
-        { "type": "normal" },
-        { "type": "normal" },
-        { "type": "accessibility" },
-        { "type": "normal" },
-        { "type": "normal" },
-        { "type": "normal" },
-        { "type": "normal" }
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        },
+        {
+          "type": "accessibility"
+        },
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        }
       ],
       [
-        { "type": "normal" },
-        { "type": "normal" },
-        { "type": "normal" },
-        { "type": "normal" },
-        { "type": "normal" },
-        { "type": "normal" },
-        { "type": "normal" }
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        }
       ],
       [
-        { "type": "normal" },
-        { "type": "normal" },
-        { "type": "normal" },
-        { "type": "normal" },
-        { "type": "normal" },
-        { "type": "normal" },
-        { "type": "normal" }
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        }
       ]
     ]
   },
@@ -68,44 +150,106 @@
     "videoType": "2K",
     "seats": [
       [
-        { "type": "normal" },
+        {
+          "type": "normal"
+        },
         null,
-        { "type": "normal" },
-        { "type": "normal" },
-        { "type": "normal" },
-        { "type": "normal" },
-        { "type": "normal" },
-        { "type": "normal" }
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        }
       ],
       [
-        { "type": "normal" },
-        { "type": "accessibility" },
-        { "type": "normal" },
-        { "type": "normal" },
-        { "type": "normal" },
-        { "type": "normal" },
-        { "type": "normal" },
-        { "type": "normal" }
+        {
+          "type": "normal"
+        },
+        {
+          "type": "accessibility"
+        },
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        }
       ],
       [
-        { "type": "normal" },
-        { "type": "normal" },
-        { "type": "normal" },
-        { "type": "normal" },
-        { "type": "normal" },
-        { "type": "normal" },
-        { "type": "normal" },
-        { "type": "normal" }
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        }
       ],
       [
-        { "type": "normal" },
-        { "type": "normal" },
-        { "type": "normal" },
-        { "type": "normal" },
-        { "type": "normal" },
-        { "type": "normal" },
-        { "type": "normal" },
-        { "type": "normal" }
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        }
       ]
     ]
   },
@@ -116,34 +260,47 @@
     "videoType": "2K",
     "seats": [
       [
-        { "type": "normal" },
-        { "type": "normal" },
-        { "type": "normal" },
-        { "type": "normal" }
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        }
       ],
       [
-        { "type": "normal" },
-        { "type": "normal" },
-        { "type": "normal" },
-        { "type": "normal" }
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        }
       ],
       [
-        { "type": "normal" },
-        { "type": "normal" },
-        { "type": "normal" },
-        { "type": "normal" }
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        }
       ]
-    ]
-  },
-  {
-    "id": 4,
-    "name": "ATUALIZADO",
-    "soundType": "Dolby Atmos",
-    "videoType": "2K",
-    "seats": [
-      [{ "type": "normal" }, { "type": "normal" }, { "type": "normal" }, null],
-      [{ "type": "normal" }, { "type": "normal" }, { "type": "normal" }, null],
-      [null, { "type": "normal" }, null, { "type": "normal" }]
     ]
   },
   {
@@ -153,22 +310,44 @@
     "videoType": "2K",
     "seats": [
       [
-        { "type": "normal" },
-        { "type": "normal" },
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        },
         null,
-        { "type": "accessibility" }
+        {
+          "type": "accessibility"
+        }
       ],
       [
-        { "type": "normal" },
-        { "type": "normal" },
-        { "type": "normal" },
-        { "type": "accessibility" }
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        },
+        {
+          "type": "accessibility"
+        }
       ],
       [
-        { "type": "accessibility" },
-        { "type": "normal" },
-        { "type": "accessibility" },
-        { "type": "normal" }
+        {
+          "type": "accessibility"
+        },
+        {
+          "type": "normal"
+        },
+        {
+          "type": "accessibility"
+        },
+        {
+          "type": "normal"
+        }
       ]
     ]
   },
@@ -179,100 +358,108 @@
     "videoType": "2K",
     "seats": [
       [
-        { "type": "normal" },
-        { "type": "accessibility" },
-        { "type": "normal" },
-        { "type": "normal" }
+        {
+          "type": "normal"
+        },
+        {
+          "type": "accessibility"
+        },
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        }
       ],
       [
-        { "type": "normal" },
-        { "type": "accessibility" },
-        { "type": "normal" },
-        { "type": "normal" }
+        {
+          "type": "normal"
+        },
+        {
+          "type": "accessibility"
+        },
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        }
       ],
       [
-        { "type": "normal" },
-        { "type": "accessibility" },
-        { "type": "normal" },
-        { "type": "normal" }
+        {
+          "type": "normal"
+        },
+        {
+          "type": "accessibility"
+        },
+        {
+          "type": "normal"
+        },
+        {
+          "type": "normal"
+        }
       ]
     ]
   },
   {
     "id": 7,
-    "name": "teste 7",
+    "name": "ola",
     "soundType": "Dolby Atmos",
     "videoType": "2K",
     "seats": [
       [
-        { "type": "normal" },
-        { "type": "accessibility" },
-        { "type": "normal" },
-        { "type": "normal" }
+        {
+          "type": "normal",
+          "status": 0
+        },
+        {
+          "type": "normal",
+          "status": 0
+        },
+        {
+          "type": "normal",
+          "status": 0
+        },
+        {
+          "type": "normal",
+          "status": 0
+        }
       ],
       [
-        { "type": "normal" },
-        { "type": "accessibility" },
-        { "type": "normal" },
-        { "type": "normal" }
+        {
+          "type": "normal",
+          "status": 0
+        },
+        {
+          "type": "normal",
+          "status": 0
+        },
+        {
+          "type": "normal",
+          "status": 0
+        },
+        {
+          "type": "normal",
+          "status": 0
+        }
       ],
       [
-        { "type": "normal" },
-        { "type": "accessibility" },
-        { "type": "normal" },
-        { "type": "normal" }
-      ]
-    ]
-  },
-  {
-    "id": 8,
-    "name": "teste",
-    "soundType": "Dolby Atmos",
-    "videoType": "2K",
-    "seats": [
-      [
-        { "type": "normal" },
-        { "type": "normal" },
-        { "type": "normal" },
-        { "type": "normal" }
-      ],
-      [
-        { "type": "normal" },
-        { "type": "normal" },
-        { "type": "normal" },
-        { "type": "normal" }
-      ],
-      [
-        { "type": "normal" },
-        { "type": "normal" },
-        { "type": "normal" },
-        { "type": "normal" }
-      ]
-    ]
-  },
-  {
-    "id": 9,
-    "name": "teste22",
-    "soundType": "Dolby Atmos",
-    "videoType": "2K",
-    "seats": [
-      [
-        { "type": "normal" },
-        { "type": "normal" },
-        { "type": "normal" },
-        { "type": "normal" }
-      ],
-      [
-        { "type": "normal" },
-        { "type": "normal" },
-        { "type": "normal" },
-        { "type": "normal" }
-      ],
-      [
-        { "type": "normal" },
-        { "type": "normal" },
-        { "type": "normal" },
-        { "type": "normal" }
+        {
+          "type": "normal",
+          "status": 0
+        },
+        {
+          "type": "normal",
+          "status": 0
+        },
+        {
+          "type": "normal",
+          "status": 0
+        },
+        {
+          "type": "normal",
+          "status": 0
+        }
       ]
     ]
   }
