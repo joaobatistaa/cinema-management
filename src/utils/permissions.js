@@ -25,7 +25,7 @@ export const PERMISSIONS = {
   viewAccounts: [ROLES.EMPLOYEE, ROLES.ADMIN],
 
   // TRANSACTIONS
-  viewTraansactions: [ROLES.CUSTOMER],  
+  viewProfile: [ROLES.CUSTOMER],  
 };
 
 export function hasPermission(role, permission) {
