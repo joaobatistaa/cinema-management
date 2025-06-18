@@ -17,9 +17,9 @@
     "email": "employee@employee.com",
     "password": "$2b$10$2XCxyi8bzXfkLN/B9ofq2.gpBHnNeggHtbP1C6nOO1/TLWRXK4.82",
     "nif": null,
-    "active": 0,
+    "active": 1,
     "purl": null,
-    "desc": "deleted",
+    "desc": "",
     "salario": null
   },
   {
@@ -28,7 +28,7 @@
     "email": "teste@teste.com",
     "password": "$2b$10$r9tnDDKNdrCGXlOBy846ROJ/RmxRGLWDecngqxvEIB9.NlzNGfSC6",
     "nif": "123456677",
-    "salario": null,
+    "salario": "0",
     "role": "employee",
     "active": 1,
     "desc": "",
@@ -37,28 +37,41 @@
   },
   {
     "id": 4,
-    "name": "workerCreated2",
-    "email": "costumer2@costumer2.com",
-    "password": "$2b$10$qvo5UwZv1IvsgMeEr3CzF.LBOh8Y4M6UUHWvlJejFDI5doO7U009K",
-    "nif": "",
+    "name": "aaaaa",
+    "email": "tedte@5rwe.com",
+    "password": "$2b$10$KE3Rc9hLVXDo0oV7d0wsje2nSfxsgu.ScourTjSj76jzxguWRl9o6",
+    "nif": null,
     "salario": null,
     "role": "customer",
     "active": 1,
-    "desc": "email confirmed",
+    "desc": "needs to set new password",
     "tickets": [],
-    "purl": null
+    "purl": "dGVkdGVANXJ3ZS5jb20tMTc1MDI3MjU1"
   },
   {
     "id": 5,
+    "name": "teste",
+    "email": "teste@TESTE.COM",
+    "password": "$2b$10$EFXaFm2o7vvr.uj/oOz2sudPLDDheDoBRB5vv.OH0OhljJPIph9f6",
+    "nif": "111111111",
+    "salario": "2222",
+    "role": "employee",
+    "active": 1,
+    "desc": "needs to set new password",
+    "tickets": [],
+    "purl": "dGVzdGVAVEVTVEUuQ09NLTE3NTAyNzI4"
+  },
+  {
+    "id": 6,
     "name": "cookie",
-    "email": "cookie@cookie.pt",
-    "password": "$2b$10$p52O9X534g9XQYAVDcj6rOVguILdtpsgjjdKJDbG7Aphd26KYuud6",
-    "nif": "201021020",
+    "email": "cookie@email.pt",
+    "password": "$2b$10$hk8wzzo6k6.u.832rhiouuen4IK8Tu5K0K/vMh1pM2YoGP5ld/iyG",
+    "nif": null,
     "salario": null,
     "role": "customer",
-    "active": 0,
-    "desc": "deleted",
+    "active": 1,
+    "desc": "needs to set new password",
     "tickets": [],
-    "purl": null
+    "purl": "Y29va2llQGVtYWlsLnB0LTE3NTAyNzUw"
   }
 ]

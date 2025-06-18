@@ -1,0 +1,44 @@
+[
+  {
+    "id": 1,
+    "userID": "1",
+    "userName": "ADMIN",
+    "date": "2025-06-18T18:43:23.487Z",
+    "description": "Conta editada: cookie@cookie.pt"
+  },
+  {
+    "id": 2,
+    "userID": "1",
+    "userName": "ADMIN",
+    "date": "2025-06-18T18:43:28.462Z",
+    "description": "Conta eliminada: cookie@cookie.pt"
+  },
+  {
+    "id": 3,
+    "userID": "1",
+    "userName": "ADMIN",
+    "date": "2025-06-18T18:44:04.689Z",
+    "description": "Conta criada: teste@tester222.com"
+  },
+  {
+    "id": 4,
+    "userID": "1",
+    "userName": "ADMIN",
+    "date": "2025-06-18T18:49:17.683Z",
+    "description": "Conta criada: tedte@5rwe.com"
+  },
+  {
+    "id": 5,
+    "userID": "1",
+    "userName": "ADMIN",
+    "date": "2025-06-18T18:54:19.300Z",
+    "description": "Conta criada: teste@TESTE.COM"
+  },
+  {
+    "id": 6,
+    "userID": "1",
+    "userName": "ADMIN",
+    "date": "2025-06-18T19:30:21.432Z",
+    "description": "Conta criada: cookie@email.pt"
+  }
+]

@@ -1,24 +1,14 @@
 import { NextResponse } from "next/server";
-import { promises as fs } from "fs";
-import path from "path";
 import bcrypt from "bcryptjs";
 import { generateUniquePurl, getUserByEmail } from "@/src/services/users";
 import { sendEmail } from "@/src/utils/email";
+import { addAuditLog } from "@/src/services/auditLog";
+import { isValidEmail, isValidNif, readUsersFile, writeUsersFile, getNewUserId } from "@/src/services/userList";
 
-const filePath = path.join(process.cwd(), "src", "data", "users.json");
-
-function isValidEmail(email) {
-  return /.+@.+\..+/.test(email);
-}
-
-function isValidNif(nif) {
-  return !nif || /^\d{9}$/.test(nif);
-}
 
 export async function GET() {
   try {
-    const fileContents = await fs.readFile(filePath, "utf-8");
-    const users = JSON.parse(fileContents);
+    const users = await readUsersFile();
     return NextResponse.json(users);
   } catch (error) {
     return NextResponse.json(
@@ -47,14 +37,13 @@ export async function POST(request) {
     if (!isValidNif(userData.nif)) {
       return NextResponse.json({ error: "NIF inválido. Deve ter 9 dígitos." }, { status: 400 });
     }
-    const fileContents = await fs.readFile(filePath, "utf-8");
-    const users = JSON.parse(fileContents);
+    const users = await readUsersFile();
     // Verificação de email único usando getUserByEmail
     const existingUser = await getUserByEmail(userData.email);
     if (existingUser) {
       return NextResponse.json({ error: "Email já registado." }, { status: 400 });
     }
-    const newId = users.length > 0 ? Math.max(...users.map((u) => u.id)) + 1 : 1;
+    const newId = await getNewUserId(users);
     const hashedPassword = await bcrypt.hash(userData.password, 10);
     const purl = await generateUniquePurl(userData.email);
     const newUser = {
@@ -71,7 +60,17 @@ export async function POST(request) {
       purl
     };
     users.push(newUser);
-    await fs.writeFile(filePath, JSON.stringify(users, null, 2), "utf-8");
+    await writeUsersFile(users);
+
+    // Registar ação no audit log
+    // Extrair userID e userName do header (quem faz o pedido)
+    let actorId = request.headers.get("x-user-id") || "unknown";
+    let actorName = request.headers.get("x-user-name") || "unknown";
+    try {
+      await addAuditLog({ userID: actorId, userName: actorName, description: `Conta criada: ${newUser.email}`, date: new Date().toISOString() });
+    } catch (auditErr) {
+      console.error("Erro ao registar no audit log:", auditErr);
+    }
 
     // Enviar email informativo ao novo utilizador
     try {
@@ -102,8 +101,7 @@ export async function PUT(request) {
     if (!id || !updates || typeof updates !== "object") {
       return NextResponse.json({ message: "Dados inválidos." }, { status: 400 });
     }
-    const fileContents = await fs.readFile(filePath, "utf-8");
-    const users = JSON.parse(fileContents);
+    const users = await readUsersFile();
     const idx = users.findIndex(u => u.id === id);
     if (idx === -1) {
       return NextResponse.json({ message: "Utilizador não encontrado." }, { status: 404 });
@@ -136,11 +134,21 @@ export async function PUT(request) {
     let emailText = null;
     const before = { ...users[idx] };
     users[idx] = { ...users[idx], ...updates };
-    await fs.writeFile(filePath, JSON.stringify(users, null, 2), "utf-8");
+    await writeUsersFile(users);
+    // Registar ação no audit log
+    // Extrair userID e userName do header (quem faz o pedid
+    let actorId = request.headers.get("x-user-id") || "unknown";
+    let actorName = request.headers.get("x-user-name") || "unknown";
     // Email: conta reativada
     if (before.active === 0 && before.desc === "deleted" && users[idx].active === 1 && users[idx].desc === "") {
       emailSubject = "Conta reativada";
       emailText = `Olá ${users[idx].name},\n\nA sua conta foi reativada pelo administrador. Pode voltar a aceder ao sistema.`;
+
+      try {
+        await addAuditLog({ userID: actorId, userName: actorName,description: `Conta reativada: ${users[idx].email}`, date: new Date().toISOString() });
+      } catch (auditErr) {
+        console.error("Erro ao registar no audit log:", auditErr);
+      }
     }
 
     // Email: dados editados (mas não reativação nem eliminação)
@@ -150,6 +158,12 @@ export async function PUT(request) {
     ) {
       emailSubject = "Dados da conta atualizados";
       emailText = `Olá ${users[idx].name},\n\nOs dados da sua conta foram atualizados pelo administrador.`;
+
+      try {
+        await addAuditLog({ userID: actorId, userName: actorName,description: `Conta editada: ${users[idx].email}`, date: new Date().toISOString() });
+      } catch (auditErr) {
+        console.error("Erro ao registar no audit log:", auditErr);
+      }
     }
     if (emailSubject && emailText) {
       try {
@@ -174,6 +188,7 @@ export async function PUT(request) {
 
 
 
+
 // DELETE: elimina (soft-delete) um utilizador, colocando active=0 e desc="deleted"
 export async function DELETE(request) {
   // Enviar email também neste fluxo, caso DELETE seja usado diretamente
@@ -183,8 +198,7 @@ export async function DELETE(request) {
     if (!id) {
       return NextResponse.json({ message: "ID do utilizador é obrigatório." }, { status: 400 });
     }
-    const fileContents = await fs.readFile(filePath, "utf-8");
-    const users = JSON.parse(fileContents);
+    const users = await readUsersFile();
     const idx = users.findIndex(u => u.id === id);
     if (idx === -1) {
       return NextResponse.json({ message: "Utilizador não encontrado." }, { status: 404 });
@@ -193,7 +207,16 @@ export async function DELETE(request) {
     const dateStr = now.toISOString().split("T")[0] + ' ' + now.toTimeString().split(' ')[0];
     users[idx].active = 0;
     users[idx].desc = `deleted`;
-    await fs.writeFile(filePath, JSON.stringify(users, null, 2), "utf-8");
+    await writeUsersFile(users);
+    // Registar ação no audit log
+    // Extrair userID e userName do header (quem faz o pedido)
+    let actorId = request.headers.get("x-user-id") || "unknown";
+    let actorName = request.headers.get("x-user-name") || "unknown";
+    try {
+      await addAuditLog({ userID: actorId, userName: actorName,description: `Conta eliminada: ${users[idx].email}`, date: new Date().toISOString() });
+    } catch (auditErr) {
+      console.error("Erro ao registar no audit log:", auditErr);
+    }
     // Enviar email de eliminação
     try {
       await sendEmail({
