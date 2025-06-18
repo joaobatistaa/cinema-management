@@ -53,6 +53,7 @@ export default function AccountsPage() {
   const { user } = useAuth();
   const userRole = user?.role || "guest";
   const [users, setUsers] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showNewUserModal, setShowNewUserModal] = useState(false);
@@ -80,6 +81,11 @@ export default function AccountsPage() {
     if (!newUser.name.trim() || !newUser.email.trim() || !newUser.password.trim() || !newUser.role) {
       toast.error("Preencha todos os campos obrigatórios.");
       return;
+    }
+    // Se for employee logado, força role para customer e salario null
+    if (user.role === "employee") {
+      newUser.role = "customer";
+      newUser.salario = null;
     }
     if (!confirmPassword.trim()) {
       toast.error("Confirme a password.");
@@ -152,23 +158,20 @@ export default function AccountsPage() {
   return (
     <div className="h-full w-full flex flex-col">
       <div className="relative w-full flex-1 flex flex-col">
-        <div className="grid grid-cols-3 items-center px-8 pt-6 pb-2">
-          <div>
+        <div className="px-8 pt-6 pb-2 relative">
+          <div className="w-full flex items-center justify-between gap-4 relative">
             <button
               className="bg-quinary text-lg text-white px-6 py-3 rounded font-medium cursor-pointer"
               onClick={() => router.back()}
             >
               VOLTAR
             </button>
-          </div>
-          <div className="flex justify-center">
-            <h1 className="text-5xl font-semibold text-white text-center tracking-wider">
+            {/* Título centralizado absolutamente */}
+            <h1 className="absolute left-1/2 -translate-x-1/2 text-5xl font-semibold text-white text-center tracking-wider pointer-events-none select-none">
               Contas
             </h1>
-          </div>
-          <div className="flex justify-end">
             <button
-              className="bg-quaternary text-lg text-white px-6 py-3 rounded font-medium ml-auto cursor-pointer"
+              className="bg-quaternary text-lg text-white px-6 py-3 rounded font-medium cursor-pointer"
               onClick={() => {
                 setShowNewUserModal(true);
               }}
@@ -177,13 +180,31 @@ export default function AccountsPage() {
             </button>
           </div>
         </div>
+        {/* Input de pesquisa com ícone de lupa (bem afastado da barra, colado à tabela) */}
+        <div className="w-full flex justify-start mt-12 px-8">
+          <div className="relative">
+            <span className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+              <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+            </span>
+            <input
+              type="text"
+              placeholder="Nome, email, função, estado"
+              className="pl-10 pr-4 py-2 rounded border border-gray-400 bg-transparent text-white focus:outline-none w-72 text-base"
+              value={searchTerm}
+              onChange={e => setSearchTerm(e.target.value)}
+            />
+          </div>
+        </div>
 
         {loading ? (
           <div className="flex justify-center items-center h-[400px]">
             <span className="text-white">Carregando...</span>
           </div>
         ) : (
-          <div className="overflow-x-auto px-8 pb-8 mt-10">
+          <div className="overflow-x-auto px-8 pb-8 mt-6">
             <table className="min-w-full bg-[#232336] rounded-lg overflow-hidden">
               <thead>
                 <tr className="bg-[#1f1f2e] text-white">
@@ -198,7 +219,26 @@ export default function AccountsPage() {
                 </tr>
               </thead>
               <tbody>
-                {users.map((rowUser) => (
+                {users
+                  .filter((rowUser) => {
+                    const term = searchTerm.trim().toLowerCase();
+                    if (!term) return true;
+                    const name = rowUser.name?.toLowerCase() || "";
+                    const email = rowUser.email?.toLowerCase() || "";
+                    const role = (rowUser.role || "").toLowerCase();
+                    // Corrigir costumer/customer
+                    const roleNorm = role === "costumer" ? "customer" : role;
+                    // Estado
+                    const estado = rowUser.active ? "sim" : "não";
+                    // Pesquisa múltiplos termos
+                    return term.split(" ").every(t =>
+                      name.includes(t) ||
+                      email.includes(t) ||
+                      roleNorm.includes(t) ||
+                      estado.includes(t)
+                    );
+                  })
+                  .map((rowUser) => (
                   <tr
                     key={rowUser.id}
                     className="border-b border-[#282846] text-white hover:bg-[#282846] transition text-sm"
@@ -211,127 +251,78 @@ export default function AccountsPage() {
                     <td className="py-1 px-2 text-sm">{rowUser.active ? "Sim" : "Não"}</td>
                     <td className="py-1 px-2 text-sm">{rowUser.desc || ""}</td>
                      <td className="py-1 px-2 text-sm">
-                      {user && user.email !== rowUser.email && (
-  <div className="flex gap-2">
-    {rowUser.active === 0 && rowUser.desc === "deleted" ? (
-      <button
-        title="Reativar utilizador"
-        className="bg-yellow-500 hover:bg-yellow-600 rounded-full p-1 cursor-pointer"
-        onClick={async () => {
-          if (window.confirm("Deseja reativar este utilizador?")) {
-            try {
-              const res = await fetch("/api/users/list", {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                  id: rowUser.id,
-                  updates: { active: 1, desc: "" }
-                })
-              });
-              if (!res.ok) {
-                const data = await res.json().catch(() => ({}));
-                if (res.status === 409) {
-                  toast.error("Já existe uma conta ativa com este email. Não é possível reativar.");
-                  return;
-                }
-                throw new Error(data.message || "Erro ao reativar utilizador.");
-              }
-              toast.success("Utilizador reativado com sucesso.");
-              setUsers((users) => users.map((u) => u.id === rowUser.id ? { ...u, active: 1, desc: "" } : u));
-            } catch (err) {
-              toast.error(err.message || "Erro ao reativar utilizador.");
-            }
-          }
-        }}
-        tabIndex={-1}
-        type="button"
-      >
-        {/* Refresh Icon SVG */}
-        <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
-          <path d="M17.65 6.35A8 8 0 1 0 12 20v-2a6 6 0 1 1 4.24-10.24l-1.89 1.89H22V2.41l-2.12 2.13z" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
-      </button>
-    ) : (
-      <>
+  {user && user.role !== "employee" && user.email !== rowUser.email ? (
+    <div className="flex gap-2">
+      {/* Botão de reativar */}
+      {rowUser.active === 0 && rowUser.desc === "deleted" && (
         <button
-          title="Editar utilizador"
-          className="bg-blue-600 hover:bg-blue-700 rounded-full p-1 cursor-pointer"
-          onClick={() => {
-            if (userRole === "admin") {
-              setEditUser(rowUser);
-              setEditRole(rowUser.role);
-              setEditName(rowUser.name);
-              setEditSalario(rowUser.role === "employee" ? (rowUser.salario || "") : "");
-              setShowEditModal(true);
-              setTimeout(() => {
-                if (editNameRef.current) editNameRef.current.focus();
-              }, 100);
+          title="Reativar utilizador"
+          className="bg-yellow-500 hover:bg-yellow-600 rounded-full p-1 cursor-pointer"
+          onClick={async () => {
+            if (window.confirm("Deseja reativar este utilizador?")) {
+              try {
+                const res = await fetch("/api/users/list", {
+                  method: "PUT",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({
+                    id: rowUser.id,
+                    updates: { active: 1, desc: "" }
+                  })
+                });
+                if (!res.ok) {
+                  const data = await res.json().catch(() => ({}));
+                  if (res.status === 409) {
+                    toast.error("Já existe uma conta ativa com este email. Não é possível reativar.");
+                    return;
+                  }
+                  throw new Error(data.message || "Erro ao reativar utilizador.");
+                }
+                toast.success("Utilizador reativado com sucesso.");
+                setUsers((users) => users.map((u) => u.id === rowUser.id ? { ...u, active: 1, desc: "" } : u));
+              } catch (err) {
+                toast.error(err.message || "Erro ao reativar utilizador.");
+              }
             }
           }}
           tabIndex={-1}
-          type="button"
         >
-          <svg
-            width="20"
-            height="20"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <path
-              d="M4 21h17"
-              stroke="#fff"
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
-            <path
-              d="M17.7 6.29a1 1 0 0 1 0 1.41l-9.3 9.3-3.4.7.7-3.4 9.3-9.3a1 1 0 0 1 1.41 0l1.29 1.29a1 1 0 0 1 0 1.41z"
-              stroke="#fff"
-              strokeWidth="2"
-            />
+          {/* Ícone de reativar */}
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582M20 20v-5h-.581M5.455 19.045A9 9 0 1021 12.003" />
           </svg>
         </button>
-        {userRole === "admin" && (rowUser.role === "employee" || rowUser.role === "customer") && (
-          <button
-            title="Eliminar funcionário"
-            className="bg-red-600 hover:bg-red-700 rounded-full p-1 cursor-pointer"
-            onClick={async () => {
-              if (window.confirm("Tem a certeza que pretende eliminar este funcionário?")) {
-                try {
-                  const res = await fetch("/api/users/list", {
-                    method: "DELETE",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                      id: rowUser.id,
-                      updates: { active: 0, desc: "deleted" }
-                    })
-                  });
-                  if (!res.ok) {
-                    const data = await res.json().catch(() => ({}));
-                    throw new Error(data.message || "Erro ao eliminar funcionário.");
-                  }
-                  toast.success("Utilizador eliminado com sucesso.");
-                  setUsers((users) => users.map((u) => u.id === rowUser.id ? { ...u, active: 0, desc: "deleted" } : u));
-                } catch (err) {
-                  toast.error(err.message || "Erro ao eliminar funcionário.");
-                }
-              }
-            }}
-            tabIndex={-1}
-            type="button"
-          >
-            <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
-              <path d="M3 6h18" stroke="#fff" strokeWidth="2" strokeLinecap="round" />
-              <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" stroke="#fff" strokeWidth="2" />
-              <rect x="5" y="6" width="14" height="14" rx="2" stroke="#fff" strokeWidth="2" />
-              <path d="M10 11v6M14 11v6" stroke="#fff" strokeWidth="2" strokeLinecap="round" />
-            </svg>
-          </button>
-        )}
-      </>
-    )}
-  </div>
-)}
-                    </td>
+      )}
+      {/* Botão de editar */}
+      {rowUser.active !== 0 && (
+        <button
+          title="Editar utilizador"
+          className="bg-blue-500 hover:bg-blue-600 rounded-full p-1 cursor-pointer"
+          onClick={() => handleEditUser(rowUser)}
+          tabIndex={-1}
+        >
+          {/* Ícone de editar */}
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536M9 13l6-6m2 2l2 2m-2-2l-2-2" />
+          </svg>
+        </button>
+      )}
+      {/* Botão de eliminar */}
+      {rowUser.active !== 0 && (
+        <button
+          title="Eliminar utilizador"
+          className="bg-red-500 hover:bg-red-600 rounded-full p-1 cursor-pointer"
+          onClick={() => handleDeleteUser(rowUser)}
+          tabIndex={-1}
+        >
+          {/* Ícone de eliminar */}
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      )}
+    </div>
+  ) : null}
+</td>
                   </tr>
                 ))}
               </tbody>
@@ -487,27 +478,39 @@ export default function AccountsPage() {
               disabled={loadingNewUser}
             />
           </div>
-          <div className="mb-4">
-            <label className="block text-white mb-2">Salário</label>
-            <input
-              type="number"
-              className="w-full px-4 py-2 rounded border border-gray-400 text-white bg-[#181827] focus:outline-none"
-              value={newUser.salario}
-              onChange={(e) => setNewUser((u) => ({ ...u, salario: e.target.value }))}
-              placeholder="Salário"
-              max={9999}
-              disabled={loadingNewUser}
-            />
-          </div>
+          {/* Campo salário só aparece se não for employee criando e se o tipo não for customer */}
+          {user.role !== "employee" && newUser.role === "employee" && (
+            <div className="mb-4">
+              <label className="block text-white mb-2">Salário</label>
+              <input
+                type="number"
+                className="w-full px-4 py-2 rounded border border-gray-400 text-white bg-[#181827] focus:outline-none"
+                value={newUser.salario}
+                onChange={(e) => setNewUser((u) => ({ ...u, salario: e.target.value }))}
+                placeholder="Salário"
+                max={9999}
+                disabled={loadingNewUser}
+              />
+            </div>
+          )}
           <div className="mb-6">
             <label className="block text-white mb-2">Role</label>
-            {newUser.salario && newUser.salario !== "" ? (
+            {/* Se o user logado for employee, só pode criar customer */}
+            {user.role === "employee" ? (
+              <select
+                className="w-full px-4 py-2 rounded border border-gray-400 text-white bg-[#181827] focus:outline-none"
+                value="customer"
+                disabled
+              >
+                <option value="customer">customer</option>
+              </select>
+            ) : newUser.salario && newUser.salario !== "" ? (
               <select
                 className="w-full px-4 py-2 rounded border border-gray-400 text-white bg-[#181827] focus:outline-none"
                 value="employee"
                 disabled
               >
-                <option value="employee">worker</option>
+                <option value="employee">employee</option>
               </select>
             ) : (
               <select
@@ -518,7 +521,7 @@ export default function AccountsPage() {
                 disabled={loadingNewUser}
               >
                 <option value="admin">admin</option>
-                <option value="employee">worker</option>
+                <option value="employee">employee</option>
                 <option value="customer">customer</option>
               </select>
             )}

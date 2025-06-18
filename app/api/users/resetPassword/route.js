@@ -41,6 +41,11 @@ export async function POST(request) {
       return NextResponse.json({ error: "Link inválido ou expirado." }, { status: 404 });
     }
     const user = users[idx];
+    // Verificar se a nova password é igual à antiga
+    const isSame = await bcrypt.compare(password, user.password);
+    if (isSame) {
+      return NextResponse.json({ error: "Password invalida." }, { status: 400 });
+    }
     const hashedPassword = await bcrypt.hash(password, 10);
     users[idx].password = hashedPassword;
     users[idx].purl = null; 

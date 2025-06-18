@@ -30,8 +30,21 @@
     "nif": "123456677",
     "salario": null,
     "role": "customer",
-    "active": 0,
-    "desc": "deleted",
+    "active": 1,
+    "desc": "",
+    "tickets": [],
+    "purl": null
+  },
+  {
+    "id": 4,
+    "name": "workerCreated",
+    "email": "costumer@costumer.com",
+    "password": "$2b$10$qvo5UwZv1IvsgMeEr3CzF.LBOh8Y4M6UUHWvlJejFDI5doO7U009K",
+    "nif": "111111111",
+    "salario": null,
+    "role": "customer",
+    "active": 1,
+    "desc": "changed password",
     "tickets": [],
     "purl": null
   }
