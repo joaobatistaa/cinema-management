@@ -6,6 +6,34 @@ import { useAuth } from "@/src/contexts/AuthContext";
 import toast from "react-hot-toast";
 
 export default function AccountsPage() {
+  // Handler para abrir modal de edição
+  function handleEditUser(user) {
+    setEditUser(user);
+    setEditName(user.name || "");
+    setEditRole(user.role || "");
+    setEditSalario(user.salario || "");
+    setShowEditModal(true);
+  }
+
+  // Handler para eliminar utilizador
+  async function handleDeleteUser(user) {
+    if (!window.confirm("Tem a certeza que pretende eliminar este utilizador?")) return;
+    try {
+      const res = await fetch("/api/users/list", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: user.id, updates: { active: 0, desc: "deleted" } }),
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.message || "Erro ao eliminar utilizador.");
+      }
+      setUsers((users) => users.map((u) => u.id === user.id ? { ...u, active: 0, desc: "deleted" } : u));
+      toast.success("Utilizador eliminado com sucesso.");
+    } catch (err) {
+      toast.error(err.message || "Erro ao eliminar utilizador.");
+    }
+  }
 
   async function handleConfirmEditUser(e) {
     e.preventDefault();
@@ -287,9 +315,11 @@ export default function AccountsPage() {
           tabIndex={-1}
         >
           {/* Ícone de reativar */}
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582M20 20v-5h-.581M5.455 19.045A9 9 0 1021 12.003" />
-          </svg>
+          <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
+  <path d="M4 4v5h5" stroke="#fff" strokeWidth="2" strokeLinecap="round" />
+  <path d="M20 20v-5h-5" stroke="#fff" strokeWidth="2" strokeLinecap="round" />
+  <path d="M5 19a9 9 0 1 0-1-7" stroke="#fff" strokeWidth="2" strokeLinecap="round" fill="none" />
+</svg>
         </button>
       )}
       {/* Botão de editar */}
@@ -301,9 +331,10 @@ export default function AccountsPage() {
           tabIndex={-1}
         >
           {/* Ícone de editar */}
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536M9 13l6-6m2 2l2 2m-2-2l-2-2" />
-          </svg>
+          <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
+  <path d="M4 21h17" stroke="#fff" strokeWidth="2" strokeLinecap="round" />
+  <path d="M17.7 6.29a1 1 0 0 1 0 1.41l-9.3 9.3-3.4.7.7-3.4 9.3-9.3a1 1 0 0 1 1.41 0l1.29 1.29a1 1 0 0 1 0 1.41z" stroke="#fff" strokeWidth="2" />
+</svg>
         </button>
       )}
       {/* Botão de eliminar */}
@@ -315,9 +346,12 @@ export default function AccountsPage() {
           tabIndex={-1}
         >
           {/* Ícone de eliminar */}
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-          </svg>
+          <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
+  <path d="M3 6h18" stroke="#fff" strokeWidth="2" strokeLinecap="round" />
+  <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" stroke="#fff" strokeWidth="2" />
+  <rect x="5" y="6" width="14" height="14" rx="2" stroke="#fff" strokeWidth="2" />
+  <path d="M10 11v6M14 11v6" stroke="#fff" strokeWidth="2" strokeLinecap="round" />
+</svg>
         </button>
       )}
     </div>

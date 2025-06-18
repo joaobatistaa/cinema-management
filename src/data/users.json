@@ -30,8 +30,8 @@
     "nif": "123456677",
     "salario": null,
     "role": "customer",
-    "active": 1,
-    "desc": "",
+    "active": 0,
+    "desc": "deleted",
     "tickets": [],
     "purl": null
   },
