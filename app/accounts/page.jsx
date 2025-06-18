@@ -187,30 +187,30 @@ export default function AccountsPage() {
             <table className="min-w-full bg-[#232336] rounded-lg overflow-hidden">
               <thead>
                 <tr className="bg-[#1f1f2e] text-white">
-                  <th className="py-3 px-4 text-left">ID</th>
-                  <th className="py-3 px-4 text-left">Nome</th>
-                  <th className="py-3 px-4 text-left">Email</th>
-                  <th className="py-3 px-4 text-left">Função</th>
-                  <th className="py-3 px-4 text-left">Salário</th>
-                  <th className="py-3 px-4 text-left">Ativo</th>
-                  <th className="py-3 px-4 text-left">Descrição</th>
-                  <th className="py-3 px-4 text-left">Editar</th>
+                  <th className="py-2 px-2 text-left text-sm">ID</th>
+                  <th className="py-2 px-2 text-left text-sm">Nome</th>
+                  <th className="py-2 px-2 text-left text-sm">Email</th>
+                  <th className="py-2 px-2 text-left text-sm">Função</th>
+                  <th className="py-2 px-2 text-left text-sm">Salário</th>
+                  <th className="py-2 px-2 text-left text-sm">Ativo</th>
+                  <th className="py-2 px-2 text-left text-sm">Descrição</th>
+                  <th className="py-2 px-2 text-left text-sm">Editar</th>
                 </tr>
               </thead>
               <tbody>
                 {users.map((rowUser) => (
                   <tr
                     key={rowUser.id}
-                    className="border-b border-[#282846] text-white hover:bg-[#282846] transition"
+                    className="border-b border-[#282846] text-white hover:bg-[#282846] transition text-sm"
                   >
-                    <td className="py-2 px-4">{rowUser.id}</td>
-                    <td className="py-2 px-4">{rowUser.name}</td>
-                    <td className="py-2 px-4">{rowUser.email}</td>
-                    <td className="py-2 px-4">{rowUser.role}</td>
-                    <td className="py-2 px-4">{rowUser.salario ? rowUser.salario : "-"}</td>
-                    <td className="py-2 px-4">{rowUser.active ? "Sim" : "Não"}</td>
-                    <td className="py-2 px-4">{rowUser.desc || ""}</td>
-                     <td className="py-2 px-4">
+                    <td className="py-1 px-2 text-sm">{rowUser.id}</td>
+                    <td className="py-1 px-2 text-sm">{rowUser.name}</td>
+                    <td className="py-1 px-2 text-sm">{rowUser.email}</td>
+                    <td className="py-1 px-2 text-sm">{rowUser.role}</td>
+                    <td className="py-1 px-2 text-sm">{rowUser.salario ? rowUser.salario : "-"}</td>
+                    <td className="py-1 px-2 text-sm">{rowUser.active ? "Sim" : "Não"}</td>
+                    <td className="py-1 px-2 text-sm">{rowUser.desc || ""}</td>
+                     <td className="py-1 px-2 text-sm">
                       {user && user.email !== rowUser.email && (
   <div className="flex gap-2">
     {rowUser.active === 0 && rowUser.desc === "deleted" ? (
@@ -290,7 +290,7 @@ export default function AccountsPage() {
             />
           </svg>
         </button>
-        {userRole === "admin" && rowUser.role === "employee" && (
+        {userRole === "admin" && (rowUser.role === "employee" || rowUser.role === "customer") && (
           <button
             title="Eliminar funcionário"
             className="bg-red-600 hover:bg-red-700 rounded-full p-1 cursor-pointer"

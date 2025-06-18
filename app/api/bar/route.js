@@ -60,6 +60,9 @@ export async function POST(request) {
     if (!name || stock === undefined || price === undefined) {
       return NextResponse.json({ error: "Dados em falta" }, { status: 400 });
     }
+    if (name.length > 25) {
+      return NextResponse.json({ error: "O nome do produto não pode ter mais de 25 caracteres." }, { status: 400 });
+    }
     const newProduct = await addProduct({ name, stock, price });
     return NextResponse.json(newProduct, { status: 201 });
   } catch (error) {

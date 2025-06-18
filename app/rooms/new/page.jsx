@@ -148,7 +148,8 @@ export default function NewRoomPage() {
                 <input
                   className="w-full px-3 py-1.5 rounded-lg bg-primary text-gray border-1 border-secondary"
                   value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  maxLength={25}
+                  onChange={(e) => setName(e.target.value.slice(0, 25))}
                   required
                 />
               </div>

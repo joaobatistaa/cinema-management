@@ -627,10 +627,10 @@ export default function Bar() {
             >
               <input
                 type="email"
-                className="px-3 py-2 rounded border border-gray-400 mb-2 w-full bg-[#232336] text-white"
-                placeholder="Email do cliente"
+                className="w-full px-4 py-2 border rounded-lg text-gray"
                 value={clientEmail}
-                onChange={(e) => setClientEmail(e.target.value)}
+                maxLength={25}
+                onChange={(e) => setClientEmail(e.target.value.slice(0, 25))}
                 required
                 autoFocus
               />
@@ -763,9 +763,11 @@ export default function Bar() {
               <div>
                 <label className="block text-white mb-1">NOME</label>
                 <input
-                  className="w-full px-3 py-2 rounded border border-gray-400 bg-transparent text-white"
+                  type="text"
+                  className="w-full px-4 py-2 border rounded-lg text-gray"
                   value={editName}
-                  onChange={(e) => setEditName(e.target.value)}
+                  maxLength={25}
+                  onChange={(e) => setEditName(e.target.value.slice(0, 25))}
                   required
                 />
               </div>
@@ -823,9 +825,11 @@ export default function Bar() {
               <div>
                 <label className="block text-white mb-1">NOME</label>
                 <input
-                  className="w-full px-3 py-2 rounded border border-gray-400 bg-transparent text-white"
+                  type="text"
+                  className="w-full px-4 py-2 border rounded-lg text-gray"
                   value={createName}
-                  onChange={(e) => setCreateName(e.target.value)}
+                  maxLength={25}
+                  onChange={(e) => setCreateName(e.target.value.slice(0, 25))}
                   required
                 />
               </div>

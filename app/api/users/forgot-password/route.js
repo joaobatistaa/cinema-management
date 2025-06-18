@@ -12,6 +12,9 @@ export async function POST(request) {
     if (!email) {
       return NextResponse.json({ error: "Email em falta" }, { status: 400 });
     }
+    if (email && email.length > 25) {
+      return NextResponse.json({ error: "O email não pode ter mais de 25 caracteres." }, { status: 400 });
+    }
 
     const normalizedEmail = email.trim().toLowerCase();
     // Usa sempre getUserByEmail para procurar o utilizador

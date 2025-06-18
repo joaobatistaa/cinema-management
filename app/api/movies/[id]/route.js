@@ -18,6 +18,9 @@ export async function PUT(request, context) {
   try {
     const { id } = context.params;
     const data = await request.json();
+    if (data.title && data.title.length > 25) {
+      return NextResponse.json({ error: "O título do filme não pode ter mais de 25 caracteres." }, { status: 400 });
+    }
     const movie = await updateMovie(id, data);
     return NextResponse.json(movie);
   } catch (error) {

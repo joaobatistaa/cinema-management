@@ -44,6 +44,9 @@ export async function POST(request) {
     const newRoom = await request.json();
     const rooms = await getRooms();
 
+    if (newRoom.name && newRoom.name.length > 25) {
+      return NextResponse.json({ message: "O nome da sala não pode ter mais de 25 caracteres." }, { status: 400 });
+    }
     // Validar se o nome da sala já existe
     if (rooms.some((room) => room.name === newRoom.name)) {
       return NextResponse.json(

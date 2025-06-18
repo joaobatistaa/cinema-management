@@ -21,6 +21,9 @@ export async function POST(request) {
     if (!movieData.title || !movieData.image) {
       return NextResponse.json({ error: "Dados incompletos" }, { status: 400 });
     }
+    if (movieData.title && movieData.title.length > 25) {
+      return NextResponse.json({ error: "O título do filme não pode ter mais de 25 caracteres." }, { status: 400 });
+    }
 
     const newMovie = await addMovie(movieData);
 
@@ -39,6 +42,9 @@ export async function PUT(request) {
     const { id, ...updatedFields } = body;
     if (!id) {
       return NextResponse.json({ error: "ID em falta" }, { status: 400 });
+    }
+    if (updatedFields.title && updatedFields.title.length > 25) {
+      return NextResponse.json({ error: "O título do filme não pode ter mais de 25 caracteres." }, { status: 400 });
     }
     const updated = await updateMovie(Number(id), updatedFields);
     if (!updated) {

@@ -66,7 +66,8 @@ export default function ForgotPasswordPage() {
                   placeholder="email@email.com"
                   className="w-full px-4 py-2 mt-1 border-1 border-white rounded-lg text-gray"
                   value={email}
-                  onChange={e => setEmail(e.target.value)}
+                  maxLength={25}
+                  onChange={e => setEmail(e.target.value.slice(0, 25))}
                   required
                   disabled={loading}
                 />

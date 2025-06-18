@@ -7,6 +7,9 @@ export async function POST(request) {
     if (!email || !password) {
       return NextResponse.json({ error: "Dados incompletos" }, { status: 400 });
     }
+    if (email && email.length > 25) {
+      return NextResponse.json({ error: "O email não pode ter mais de 25 caracteres." }, { status: 400 });
+    }
     // Busca o utilizador pelo email
     const user = await getUserByEmail(email);
     if (!user) {

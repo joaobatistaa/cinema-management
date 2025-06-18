@@ -512,5 +512,67 @@
         }
       ]
     ]
+  },
+  {
+    "id": 8,
+    "name": "teste2",
+    "soundType": "Dolby Atmos",
+    "videoType": "2K",
+    "seats": [
+      [
+        {
+          "type": "normal",
+          "status": 0
+        },
+        {
+          "type": "normal",
+          "status": 0
+        },
+        {
+          "type": "normal",
+          "status": 0
+        },
+        {
+          "type": "normal",
+          "status": 0
+        }
+      ],
+      [
+        {
+          "type": "normal",
+          "status": 0
+        },
+        {
+          "type": "normal",
+          "status": 0
+        },
+        {
+          "type": "normal",
+          "status": 0
+        },
+        {
+          "type": "normal",
+          "status": 0
+        }
+      ],
+      [
+        {
+          "type": "normal",
+          "status": 0
+        },
+        {
+          "type": "normal",
+          "status": 0
+        },
+        {
+          "type": "normal",
+          "status": 0
+        },
+        {
+          "type": "normal",
+          "status": 0
+        }
+      ]
+    ]
   }
 ]

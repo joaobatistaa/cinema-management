@@ -85,6 +85,10 @@ export default function RegisterPage() {
                 name="name"
                 placeholder="O seu nome"
                 className="w-full px-4 py-2 mt-1 border-1 border-white rounded-lg text-gray"
+                value={name}
+                onChange={e => setName(e.target.value.slice(0, 25))}
+                required
+                maxLength={25}
               />
             </div>
             <div>
@@ -93,8 +97,9 @@ export default function RegisterPage() {
                 type="email"
                 className="w-full px-4 py-2 mt-1 border-1 border-white rounded-lg text-gray"
                 value={email}
-                onChange={e => setEmail(e.target.value)}
+                onChange={e => setEmail(e.target.value.slice(0, 25))}
                 required
+                maxLength={25}
               />
             </div>
             <div>

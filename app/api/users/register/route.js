@@ -8,6 +8,12 @@ export async function POST(request) {
     if (!userData.name || !userData.email || !userData.password) {
       return NextResponse.json({ error: "Dados incompletos" }, { status: 400 });
     }
+    if (userData.name && userData.name.length > 25) {
+      return NextResponse.json({ error: "O nome não pode ter mais de 25 caracteres." }, { status: 400 });
+    }
+    if (userData.email && userData.email.length > 25) {
+      return NextResponse.json({ error: "O email não pode ter mais de 25 caracteres." }, { status: 400 });
+    }
     // Validação do NIF (opcional, mas se existir tem de ser válido)
     if (userData.nif && !/^\d{9}$/.test(userData.nif)) {
       return NextResponse.json({ error: "NIF inválido. Deve ter 9 dígitos." }, { status: 400 });

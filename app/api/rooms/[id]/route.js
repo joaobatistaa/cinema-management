@@ -119,8 +119,11 @@ export async function PUT(request, { params }) {
         headers: { "Content-Type": "application/json" }
       });
     }
+    if (updatedRoom.name && updatedRoom.name.length > 25) {
+      return NextResponse.json({ error: "O nome da sala não pode ter mais de 25 caracteres." }, { status: 400 });
+    }
     rooms[roomIndex] = { ...rooms[roomIndex], ...updatedRoom };
-    await fs.writeFile(filePath, JSON.stringify(rooms, null, 2), "utf-8");
+    await fs.writeFile(roomsFilePath, JSON.stringify(rooms, null, 2), "utf-8");
     return new Response(
       JSON.stringify({ message: "Sala atualizada com sucesso." }),
       {

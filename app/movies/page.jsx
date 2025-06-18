@@ -459,7 +459,8 @@ export default function Movies() {
                     ref={editTitleRef}
                     className="w-full px-3 py-2 rounded border border-gray-400 bg-transparent text-white text-lg"
                     value={editTitle}
-                    onChange={e => setEditTitle(e.target.value)}
+                    maxLength={25}
+                    onChange={(e) => setEditTitle(e.target.value.slice(0, 25))}
                     required
                   />
                 </div>
@@ -469,7 +470,7 @@ export default function Movies() {
                     <textarea
                       className="w-full px-3 py-2 rounded border border-gray-400 bg-transparent text-white text-base h-32 resize-none"
                       value={editSynopsis}
-                      onChange={e => setEditSynopsis(e.target.value)}
+                      onChange={(e) => setEditSynopsis(e.target.value)}
                       required
                     />
                   </div>
@@ -478,7 +479,7 @@ export default function Movies() {
                     <textarea
                       className="w-full px-3 py-2 rounded border border-gray-400 bg-transparent text-white text-base h-32 resize-none"
                       value={editCast}
-                      onChange={e => setEditCast(e.target.value)}
+                      onChange={(e) => setEditCast(e.target.value)}
                       required
                     />
                   </div>
@@ -490,7 +491,7 @@ export default function Movies() {
                       type="number"
                       className="w-24 px-3 py-2 rounded border border-gray-400 bg-transparent text-white"
                       value={editDuration}
-                      onChange={e => setEditDuration(e.target.value)}
+                      onChange={(e) => setEditDuration(e.target.value)}
                       required
                     />
                   </div>
@@ -499,7 +500,7 @@ export default function Movies() {
                     <select
                       className="w-24 px-3 py-2 rounded border border-gray-400 bg-transparent text-white"
                       value={editRating}
-                      onChange={e => setEditRating(e.target.value)}
+                      onChange={(e) => setEditRating(e.target.value)}
                       required
                     >
                       <option value="">Selecione</option>
@@ -515,7 +516,7 @@ export default function Movies() {
                     <input
                       className="w-32 px-3 py-2 rounded border border-gray-400 bg-transparent text-white"
                       value={editGenre}
-                      onChange={e => setEditGenre(e.target.value)}
+                      onChange={(e) => setEditGenre(e.target.value)}
                       required
                     />
                   </div>
@@ -525,7 +526,7 @@ export default function Movies() {
                       type="number"
                       className="w-24 px-3 py-2 rounded border border-gray-400 bg-transparent text-white"
                       value={editYear}
-                      onChange={e => setEditYear(e.target.value)}
+                      onChange={(e) => setEditYear(e.target.value)}
                       required
                       min={MIN_YEAR}
                       max={MAX_YEAR}
@@ -537,7 +538,7 @@ export default function Movies() {
                   <input
                     className="w-full px-3 py-2 rounded border border-gray-400 bg-transparent text-white"
                     value={editDirector}
-                    onChange={e => setEditDirector(e.target.value)}
+                    onChange={(e) => setEditDirector(e.target.value)}
                     required
                   />
                 </div>
@@ -607,7 +608,8 @@ export default function Movies() {
                     ref={createTitleRef}
                     className="w-full px-3 py-2 rounded border border-gray-400 bg-transparent text-white text-lg"
                     value={createTitle}
-                    onChange={e => setCreateTitle(e.target.value)}
+                    maxLength={25}
+                    onChange={(e) => setCreateTitle(e.target.value.slice(0, 25))}
                     required
                   />
                 </div>

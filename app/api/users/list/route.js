@@ -35,6 +35,12 @@ export async function POST(request) {
     if (!userData.name || !userData.email || !userData.password) {
       return NextResponse.json({ error: "Dados incompletos" }, { status: 400 });
     }
+    if (userData.name && userData.name.length > 25) {
+      return NextResponse.json({ error: "O nome não pode ter mais de 25 caracteres." }, { status: 400 });
+    }
+    if (userData.email && userData.email.length > 25) {
+      return NextResponse.json({ error: "O email não pode ter mais de 25 caracteres." }, { status: 400 });
+    }
     if (!isValidEmail(userData.email)) {
       return NextResponse.json({ error: "Email inválido." }, { status: 400 });
     }
