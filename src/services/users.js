@@ -89,10 +89,7 @@ export async function addUser(user) {
 // Procura utilizador por email
 export async function getUserByEmail(email) {
   const users = await getUsers();
-  // Ignorar utilizadores eliminados (active=0 e desc='deleted')
-  return users.find(
-    (u) => u.email === email && !(u.active === 0 && u.desc === "deleted")
-  ) || null;
+  return users.find((u) => u.email === email) || null;
 }
 
 // Autentica utilizador (login)

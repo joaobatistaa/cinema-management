@@ -8,7 +8,7 @@
     "nif": null,
     "active": 1,
     "purl": null,
-    "desc": "staff"
+    "desc": null
   },
   {
     "id": 2,
@@ -19,20 +19,20 @@
     "nif": null,
     "active": 1,
     "purl": null,
-    "desc": "staff",
+    "desc": null,
     "salario": null
   },
   {
     "id": 3,
-    "name": "Fausto",
-    "email": "f123@cinema.com",
-    "password": "$2b$10$2WnbKTlN3MR//CwmJ/MZzu1Wwtvr2sBFlE7HbRPlwXwbLW4UahkJS",
-    "nif": "240199343",
-    "salario": "2222",
-    "role": "employee",
-    "active": 0,
-    "desc": "deleted",
+    "name": "testeResetPassword",
+    "email": "teste@teste.com",
+    "password": "$2b$10$r9tnDDKNdrCGXlOBy846ROJ/RmxRGLWDecngqxvEIB9.NlzNGfSC6",
+    "nif": "123456677",
+    "salario": null,
+    "role": "customer",
+    "active": 1,
+    "desc": "changed password",
     "tickets": [],
-    "purl": "ZjEyM0BjaW5lbWEuY29tLTE3NTAyMDA1"
+    "purl": null
   }
 ]

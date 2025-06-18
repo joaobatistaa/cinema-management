@@ -11,6 +11,8 @@ export default function LoginPage() {
   const { login } = useAuth();
   const [loading, setLoading] = useState(false);
 
+  const [infoMsg, setInfoMsg] = useState("");
+
   async function handleSubmit(e) {
     e.preventDefault();
 
@@ -30,6 +32,24 @@ export default function LoginPage() {
         body: JSON.stringify({ email, password })
       });
       const data = await res.json();
+      if (res.status === 307 && data.redirectTo) {
+        setInfoMsg("A sua conta foi criada por um administrador. Por favor defina uma nova password para ativar o acesso.");
+        setTimeout(() => {
+          try {
+            const url = new URL(data.redirectTo, window.location.origin);
+            const purl = url.searchParams.get("purl");
+            if (purl) {
+              router.push(`/resetPassword?a=${encodeURIComponent(purl)}`);
+            } else {
+              router.push("/resetPassword");
+            }
+          } catch {
+            router.push("/resetPassword");
+          }
+        }, 2500);
+        setLoading(false);
+        return;
+      }
       if (!res.ok) {
         // Mostra mensagem específica se for necessário confirmar email
         if (res.status === 403 && data.error) {
@@ -64,6 +84,13 @@ export default function LoginPage() {
             <h2 className="text-[50px] font-bold text-center text-white tracking-wider mb-16">
               INICIAR SESSÃO
             </h2>
+            {infoMsg && (
+              <div className="mb-6 w-full flex flex-col items-center">
+                <div className="bg-yellow-500 text-white px-4 py-3 rounded text-center font-medium">
+                  {infoMsg}
+                </div>
+              </div>
+            )}
             <form className="space-y-5 w-full px-4" onSubmit={handleSubmit}>
               <div>
                 <label

@@ -22,6 +22,13 @@ export async function POST(request) {
         { status: 403 }
       );
     }
+    // Se precisa de definir nova password, redirecionar para reset
+    if (user.desc === "needs to set new password" && user.purl) {
+      return NextResponse.json(
+        { redirectTo: `resetPassword?purl=${user.purl}` },
+        { status: 307 }
+      );
+    }
     // Autentica a password (bcrypt)
     const authenticatedUser = await authenticateUser(email, password);
     return NextResponse.json(authenticatedUser, { status: 200 });

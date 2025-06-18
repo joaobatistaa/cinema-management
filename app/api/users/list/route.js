@@ -107,17 +107,6 @@ export async function PUT(request) {
       if (!(updates.active === 1 && (updates.desc === "" || updates.desc === undefined))) {
         return NextResponse.json({ message: "Não é possível editar um utilizador eliminado." }, { status: 403 });
       }
-      // Validação: email não pode estar em uso por outro utilizador ativo
-      const emailEmUso = users.some(
-        (u) =>
-          u.id !== id &&
-          u.email === users[idx].email &&
-          u.active === 1 &&
-          u.desc !== "deleted"
-      );
-      if (emailEmUso) {
-        return NextResponse.json({ message: "Já existe uma conta ativa com este email." }, { status: 409 });
-      }
     }
     // Validação: ao reativar conta bloqueada, o email não pode estar em uso por outro utilizador ativo
     if (
