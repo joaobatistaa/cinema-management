@@ -34,6 +34,7 @@ export default function Sessions() {
   const [createTime, setCreateTime] = useState("");
   const [createLanguage, setCreateLanguage] = useState("");
   const [movies, setMovies] = useState([]);
+  const [buyLoading, setBuyLoading] = useState(false); // <--- adicionar estado de loading
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -49,7 +50,6 @@ export default function Sessions() {
         const resSessions = await fetch(`/api/sessions?movie=${movieId}`);
         let sessionsData = await resSessions.json();
 
-        // Ordena as sessões por data/hora crescente (mais próxima primeiro)
         sessionsData.sort((a, b) => new Date(a.date) - new Date(b.date));
         setSessions(sessionsData);
 
@@ -57,7 +57,6 @@ export default function Sessions() {
         const movieData = await resMovie.json();
         setMovie(movieData);
 
-        // Selecionar a primeira sessão válida (data >= hoje e hora > agora se for hoje)
         if (sessionsData.length > 0) {
           const now = new Date();
           let firstValidSession = sessionsData.find((s) => {
@@ -73,7 +72,6 @@ export default function Sessions() {
           if (firstValidSession) {
             firstValidDate = firstValidSession.date.split("T")[0];
           } else {
-            // Se não houver sessão válida, mostra a data mais próxima (primeira do array)
             firstValidDate = sessionsData[0].date.split("T")[0];
           }
           setSelectedDate(firstValidDate);
@@ -89,7 +87,6 @@ export default function Sessions() {
   }, [movieId]);
 
   useEffect(() => {
-    // Carregar bilhetes para validação
     async function fetchTickets() {
       try {
         const res = await fetch("/api/tickets");
@@ -102,7 +99,6 @@ export default function Sessions() {
   }, [movieId]);
 
   useEffect(() => {
-    // Carregar rooms para validação do número da sala
     async function fetchRooms() {
       try {
         const res = await fetch("/api/rooms");
@@ -143,25 +139,22 @@ export default function Sessions() {
     new Set(sessions.map((s) => s.date && s.date.split("T")[0]))
   );
 
-  // Função utilitária para verificar se a data/hora é agora ou futura
   function isNowOrFuture(dateStr) {
     const now = new Date();
     const d = new Date(dateStr);
     return d >= now;
   }
 
-  // Função utilitária para verificar se a sessão pode ser selecionada
   function canSelectSession(session) {
     const now = new Date();
     const sessionDate = new Date(session.date);
     const sessionDay = sessionDate.toISOString().split("T")[0];
     const todayStr = getTodayStr();
 
-    // Se for hoje, só pode selecionar se a hora for futura
     if (sessionDay === todayStr) {
       return sessionDate > now;
     }
-    // Se for depois de hoje, pode selecionar
+
     return sessionDay > todayStr;
   }
 
@@ -180,12 +173,47 @@ export default function Sessions() {
       toast.error("Selecione uma sessão para comprar o bilhete.");
       return;
     }
-    router.push(
-      `/tickets/new?session_id=${selectedSession.id}&movie_id=${movieId}`
-    );
+
+    setBuyLoading(true);
+
+    fetch(`/api/tickets/session/${selectedSession.id}`)
+      .then((res) => res.json())
+      .then((tickets) => {
+        fetch(`/api/rooms/${selectedSession.room}`)
+          .then((res) => res.json())
+          .then((roomData) => {
+            const seats = roomData?.seats || [];
+            const totalSeats = seats.reduce(
+              (sum, row) =>
+                sum +
+                row.filter((seat) => seat !== null && seat !== undefined)
+                  .length,
+              0
+            );
+            const occupiedCount = tickets.length;
+            if (totalSeats > 0 && occupiedCount >= totalSeats) {
+              toast.error(
+                "Todos os lugares para esta sessão estão ocupados. Não é possível comprar mais bilhetes."
+              );
+              setBuyLoading(false);
+              return;
+            }
+
+            router.push(
+              `/tickets/new?session_id=${selectedSession.id}&movie_id=${movieId}`
+            );
+          })
+          .catch(() => {
+            toast.error("Erro ao verificar lugares da sala.");
+            setBuyLoading(false);
+          });
+      })
+      .catch(() => {
+        toast.error("Erro ao verificar lugares ocupados.");
+        setBuyLoading(false);
+      });
   }
 
-  // Função utilitária para obter a data de hoje no formato yyyy-mm-dd
   function getTodayStr() {
     const today = new Date();
     const yyyy = today.getFullYear();
@@ -194,9 +222,7 @@ export default function Sessions() {
     return `${yyyy}-${mm}-${dd}`;
   }
 
-  // Handler para abrir modal de edição
   function handleEditSessionClick(session) {
-    // Verifica se há bilhetes associados
     const hasTickets = tickets.some(
       (t) => String(t.session_id) === String(session.id)
     );
@@ -212,7 +238,6 @@ export default function Sessions() {
     setShowEditModal(true);
   }
 
-  // Handler para guardar alterações
   async function handleEditSessionSubmit(e) {
     e.preventDefault();
     if (!editRoom || !editDate || !editTime || !editLanguage) {
@@ -224,7 +249,7 @@ export default function Sessions() {
       toast.error(`O número da sala deve estar entre 1 e ${maxRoomId}.`);
       return;
     }
-    // Validação: não permitir editar sessões para o passado
+
     const now = new Date();
     const sessionStart = new Date(`${editDate}T${editTime}`);
     if (sessionStart < now) {
@@ -285,9 +310,7 @@ export default function Sessions() {
     }
   }
 
-  // Handler para eliminar sessão
   async function handleDeleteSession(session) {
-    // Verifica se há bilhetes associados
     const hasTickets = tickets.some(
       (t) => String(t.session_id) === String(session.id)
     );
@@ -325,7 +348,7 @@ export default function Sessions() {
       toast.error(`O número da sala deve estar entre 1 e ${maxRoomId}.`);
       return;
     }
-    // Validação: não permitir criar sessões para o passado
+
     const now = new Date();
     const sessionStart = new Date(`${createDate}T${createTime}`);
     if (sessionStart < now) {
@@ -645,8 +668,9 @@ export default function Sessions() {
               <button
                 className="bg-quaternary text-white font-bold px-16 py-4 rounded-lg text-lg mt-2 cursor-pointer"
                 onClick={handleBuyTicket}
+                disabled={buyLoading}
               >
-                COMPRAR BILHETE
+                {buyLoading ? "A verificar..." : "COMPRAR BILHETE"}
               </button>
               {error && showError && (
                 <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 bg-[#f8d7da] text-[#a94442] px-6 py-2 rounded shadow-lg z-50 transition-opacity duration-300">

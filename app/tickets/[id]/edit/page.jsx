@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useRouter, useParams, useSearchParams } from "next/navigation";
 import { CircularProgress } from "@mui/material";
 import toast from "react-hot-toast";
@@ -55,7 +55,8 @@ export default function EditTicketPage() {
     return total;
   }, [barItems, quantities]);
 
-  // Carregar dados do bilhete e preencher campos
+  const hasShownPastSessionToast = useRef(false);
+
   useEffect(() => {
     async function fetchTicketAndDetails() {
       try {
@@ -74,10 +75,26 @@ export default function EditTicketPage() {
           fetch("/api/bar"),
           fetch(`/api/tickets/session/${ticketObj.session_id}`)
         ]);
+
         const sessionData = await sessionRes.json();
         const movieData = await movieRes.json();
         const barData = await barRes.json();
         setSession(sessionData);
+
+        const sessionDate = new Date(sessionData.date);
+        const now = new Date();
+
+        if (now >= sessionDate) {
+          if (!hasShownPastSessionToast.current) {
+            toast.error(
+              "Não é possível alterar bilhete após o início da sessão."
+            );
+            hasShownPastSessionToast.current = true;
+          }
+          router.replace("/tickets");
+          return;
+        }
+
         setMovie(movieData);
         setBarItems(Array.isArray(barData) ? barData : []);
         setSelectedSessionId(ticketObj.session_id);

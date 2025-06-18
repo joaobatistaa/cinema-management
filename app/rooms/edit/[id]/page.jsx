@@ -43,6 +43,7 @@ const EditRoomPage = () => {
         }
 
         const data = await res.json();
+
         setName(data.name);
         setSoundType(data.soundType);
         setVideoType(data.videoType);
@@ -101,8 +102,7 @@ const EditRoomPage = () => {
             if (!seat) return { type: "normal", status: 0 };
             if (seat.type === "normal" && seat.status === 0)
               return { type: "accessibility", status: 0 };
-            if (seat.type === "accessibility" && seat.status === 0)
-              return null;
+            if (seat.type === "accessibility" && seat.status === 0) return null;
             if (seat === null) return { type: "normal", status: 0 };
             return { type: "normal", status: 0 };
           }

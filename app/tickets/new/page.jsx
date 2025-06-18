@@ -40,8 +40,10 @@ export default function BuyTicketPage() {
   const [paymentInfo, setPaymentInfo] = useState({
     mbway: "",
     card: "",
-    paypal: ""
+    paypal: "",
+    cash: ""
   });
+  const [cancelDays, setCancelDays] = useState(2);
 
   const handleQuantityChange = (itemId, delta) => {
     setQuantities((prev) => ({
@@ -80,9 +82,42 @@ export default function BuyTicketPage() {
           fetch("/api/bar"),
           fetch(`/api/tickets/session/${sessionId}`)
         ]);
+
         const movieData = await movieRes.json();
         const sessionData = await sessionRes.json();
         const barData = await barRes.json();
+
+        // Buscar settings para max_cancel_days da API
+        try {
+          const settingsRes = await fetch("/api/settings");
+          if (settingsRes.ok) {
+            const settingsData = await settingsRes.json();
+            if (settingsData && settingsData.max_cancel_days) {
+              setCancelDays(settingsData.max_cancel_days);
+            }
+          }
+        } catch {}
+
+        if (!movieData || !sessionData) {
+          toast.error("Filme ou sessão não encontrados.");
+          return;
+        }
+
+        if (!sessionData || !sessionData.date) {
+          toast.error("Sessão inválida ou não encontrada.");
+          return;
+        }
+
+        if (!Array.isArray(barData)) {
+          toast.error("Dados do bar inválidos.");
+          return;
+        }
+
+        if (!sessionData.room) {
+          toast.error("Sessão não associada a uma sala.");
+          return;
+        }
+
         setMovie(movieData);
         setSession(sessionData);
         setBarItems(Array.isArray(barData) ? barData : []);
@@ -90,13 +125,18 @@ export default function BuyTicketPage() {
         if (sessionData && sessionData.room) {
           const roomRes = await fetch(`/api/rooms/${sessionData.room}`);
           const roomData = await roomRes.json();
+
+          if (!roomData.seats || roomData.seats.length === 0) {
+            toast.error("Sala sem cadeiras definidas.");
+            return;
+          }
+
           setRoom(roomData);
           setSeats(roomData.seats || []);
           setRows(roomData.seats?.length || 0);
           setCols(roomData.seats?.[0]?.length || 0);
         }
 
-        // Buscar lugares ocupados para esta sessão usando a nova API
         const tickets = await ticketsRes.json();
         const occupied = tickets.map((t) => `${t.seat?.row}-${t.seat?.col}`);
         setOccupiedSeats(occupied);
@@ -107,7 +147,6 @@ export default function BuyTicketPage() {
     fetchDetails();
   }, [movieId, sessionId]);
 
-  // Remove status, only use type. Check occupation by tickets.
   function isSeatOccupied(rowIdx, colIdx) {
     const seatKey = `${rowIdx + 1}-${colIdx + 1}`;
     return occupiedSeats.includes(seatKey);
@@ -151,6 +190,7 @@ export default function BuyTicketPage() {
       (paymentMethod === "mbway" && !paymentInfo.mbway) ||
       (paymentMethod === "card" && !paymentInfo.card) ||
       (paymentMethod === "paypal" && !paymentInfo.paypal)
+      // pagamento em dinheiro não precisa de validação extra
     ) {
       toast.error("Preencha os dados do método de pagamento.");
       return;
@@ -160,8 +200,14 @@ export default function BuyTicketPage() {
       const now = new Date();
       const datetime = now.toISOString();
 
+      let user_id = -1;
+      if (user?.role === "customer") {
+        user_id = user?.id;
+      }
+
       const data = {
         email: user.email,
+        user_id,
         movie_title: movie?.title || "",
         movie_id: movieId,
         session_id: sessionId,
@@ -188,7 +234,11 @@ export default function BuyTicketPage() {
             ? paymentInfo.mbway
             : paymentMethod === "card"
             ? paymentInfo.card
-            : paymentInfo.paypal
+            : paymentMethod === "paypal"
+            ? paymentInfo.paypal
+            : paymentMethod === "cash"
+            ? "Dinheiro"
+            : ""
       };
 
       const response = await fetch("/api/tickets", {
@@ -417,7 +467,7 @@ export default function BuyTicketPage() {
                 </div>
               </div>
               {/* Previsualização da sala à direita */}
-              <div className="flex-1 flex justify-center items-start w-full max-w-full">
+              <div className="flex-1 flex-col justify-center items-start w-full max-w-full">
                 <div
                   className="bg-room-map rounded-lg shadow flex flex-col items-center justify-start"
                   style={{
@@ -533,6 +583,12 @@ export default function BuyTicketPage() {
                     </div>
                   </div>
                 </div>
+                <div className="flex justify-center mt-2">
+                  <span className="text-white text-sm text-center">
+                    Pode cancelar o bilhete até {cancelDays} dia
+                    {cancelDays > 1 && "(s)"} antes do início da sessão.
+                  </span>
+                </div>
               </div>
             </div>
             <div className="flex justify-center w-full max-w-full">
@@ -573,6 +629,14 @@ export default function BuyTicketPage() {
                 control={<Radio />}
                 label="PayPal"
               />
+              {/* Só mostra a opção dinheiro para admin ou employee */}
+              {(user?.role === "admin" || user?.role === "employee") && (
+                <FormControlLabel
+                  value="cash"
+                  control={<Radio />}
+                  label="Dinheiro"
+                />
+              )}
             </RadioGroup>
             {paymentMethod === "mbway" && (
               <TextField
@@ -619,6 +683,7 @@ export default function BuyTicketPage() {
                 }
               />
             )}
+            {/* Dinheiro não precisa de campo extra */}
           </DialogContent>
           <DialogActions>
             <Button onClick={() => setOpenDialog(false)} color="primary">

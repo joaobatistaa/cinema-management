@@ -39,6 +39,11 @@ async function fetchRooms() {
   if (!res.ok) return [];
   return await res.json();
 }
+async function fetchSettings() {
+  const res = await fetch("/api/settings");
+  if (!res.ok) return [];
+  return await res.json();
+}
 async function fetchSession(sessionId) {
   if (!sessionId) return null;
   // Corrigir para aceitar id string ou number
@@ -75,6 +80,7 @@ export default function TicketDetailsPage() {
     card: "",
     paypal: ""
   });
+  const [cancelDays, setCancelDays] = useState(2);
   const BAR_PAGE_SIZE = 2;
 
   // Calcular valores
@@ -104,14 +110,16 @@ export default function TicketDetailsPage() {
         }
         setSession(sessionObj);
 
-        const [moviesRes, usersRes, roomsRes] = await Promise.all([
+        const [moviesRes, usersRes, roomsRes, settingsRes] = await Promise.all([
           fetchMovies(),
           fetchUsers(),
-          fetchRooms()
+          fetchRooms(),
+          fetchSettings()
         ]);
         setMovies(moviesRes);
         setUsers(usersRes);
         setRooms(roomsRes);
+        setCancelDays(settingsRes.max_cancel_days);
       } catch (err) {
         toast.error(err.message || "Erro ao carregar dados");
       } finally {
@@ -130,7 +138,6 @@ export default function TicketDetailsPage() {
   )}`;
 
   async function handleCancelTicket() {
-    // Validação simples dos campos obrigatórios
     if (
       (refundMethod === "mbway" && !refundInfo.mbway) ||
       (refundMethod === "card" && !refundInfo.card) ||
@@ -139,6 +146,7 @@ export default function TicketDetailsPage() {
       toast.error("Preencha os dados do método de reembolso.");
       return;
     }
+
     try {
       const res = await fetch(`/api/tickets/${ticket.id}`, {
         method: "DELETE"
@@ -159,17 +167,18 @@ export default function TicketDetailsPage() {
     if (method === "mbway") return "MB WAY";
     if (method === "card") return "Cartão Crédito/Débito";
     if (method === "paypal") return "PayPal";
+    if (method === "cash") return "Dinheiro";
     return "";
   }
 
-  // Verifica se pode cancelar (mínimo 48h antes da sessão)
+  // Verifica se pode cancelar (usando settings)
   function canCancel() {
     if (!session?.date) return false;
     const sessionDate = new Date(session.date);
     const now = new Date();
     const diffMs = sessionDate - now;
-    const diffHours = diffMs / (1000 * 60 * 60);
-    return diffHours >= 48;
+    const diffDays = diffMs / (1000 * 60 * 60 * 24);
+    return diffDays >= cancelDays;
   }
 
   if (loading) {
@@ -240,7 +249,10 @@ export default function TicketDetailsPage() {
             </div>
             <div>
               <span className="text-lg font-semibold">
-                💺 Lugar: {seatLabel(ticket.seat)}
+                💺 Lugar:{" "}
+                <span className="text-lg font-semibold text-primary">
+                  {seatLabel(ticket.seat)}
+                </span>
               </span>
             </div>
             <div>
@@ -254,10 +266,19 @@ export default function TicketDetailsPage() {
             {user && (user.role === "admin" || user.role === "employee") && (
               <div>
                 <span className="text-lg font-semibold">
-                  🧍 Cliente: {getClientName(ticket.client_id, users)}
-                  {" ( "}
-                  {ticket.client_id}
-                  {" )"}
+                  🧍 Cliente:{" "}
+                  <span className="text-lg font-semibold text-primary">
+                    {ticket.user_id === -1
+                      ? "Vendido na bilheteira"
+                      : getClientName(ticket.user_id, users)}
+                    {ticket.user_id !== -1 && (
+                      <>
+                        {" ("}
+                        {ticket.user_id}
+                        {")"}
+                      </>
+                    )}
+                  </span>
                 </span>
               </div>
             )}
@@ -368,13 +389,15 @@ export default function TicketDetailsPage() {
         <div className="flex flex-col items-center justify-end flex-[1]">
           <div className="flex flex-col items-center gap-6 w-full mb-8">
             <button
-              className="bg-quaternary text-white px-8 py-3 rounded text-lg font-semibold w-60 cursor-pointer"
+              className="bg-quaternary text-white px-8 py-3 rounded text-lg font-semibold w-60 cursor-pointer flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
               onClick={() => setOpenDialog(true)}
               disabled={!canCancel()}
               title={
                 canCancel()
                   ? ""
-                  : "Só é possível cancelar até 48 horas antes da sessão"
+                  : `Só é possível cancelar até ${cancelDays} dia${
+                      cancelDays > 1 ? "s" : ""
+                    } antes da sessão`
               }
             >
               Cancelar Bilhete
@@ -415,8 +438,14 @@ export default function TicketDetailsPage() {
                 control={<Radio />}
                 label="PayPal"
               />
+              {(user?.role === "admin" || user?.role === "employee") && (
+                <FormControlLabel
+                  value="cash"
+                  control={<Radio />}
+                  label="Dinheiro"
+                />
+              )}
             </RadioGroup>
-            {/* Campos para info adicional */}
             {refundMethod === "mbway" && (
               <TextField
                 autoFocus

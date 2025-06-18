@@ -33,8 +33,8 @@ export async function PUT(request, context) {
   return NextResponse.json(tickets[idx]);
 }
 
-export async function DELETE(request, context) {
-  const { id } = context.params;
+export async function DELETE(request, { params }) {
+  const { id } = await params;
   const tickets = JSON.parse(fs.readFileSync(filePath, "utf-8"));
   const idx = tickets.findIndex((t) => String(t.id) === String(id));
   if (idx === -1) {

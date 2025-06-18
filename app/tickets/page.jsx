@@ -1,6 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+  Button
+} from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/src/contexts/AuthContext";
 import toast from "react-hot-toast";
@@ -12,6 +20,7 @@ import {
   seatLabel,
   truncate
 } from "@/src/utils/helpers";
+import SettingsIcon from "@mui/icons-material/Settings";
 
 async function fetchMovies() {
   const res = await fetch("/api/movies");
@@ -28,6 +37,16 @@ async function fetchRooms() {
   if (!res.ok) return [];
   return await res.json();
 }
+async function fetchSessions() {
+  const res = await fetch("/api/sessions");
+  if (!res.ok) return [];
+  return await res.json();
+}
+async function fetchSettings() {
+  const res = await fetch("/api/settings");
+  if (!res.ok) return [];
+  return await res.json();
+}
 
 const PAGE_SIZE = 8;
 
@@ -40,6 +59,7 @@ export default function TicketsPage() {
   const [movies, setMovies] = useState([]);
   const [users, setUsers] = useState([]);
   const [rooms, setRooms] = useState([]);
+  const [sessions, setSessions] = useState([]);
 
   const [movie, setMovie] = useState("");
   const [datetime, setDatetime] = useState("");
@@ -50,16 +70,31 @@ export default function TicketsPage() {
   const [showQr, setShowQr] = useState(false);
   const [qrTicketId, setQrTicketId] = useState(null);
 
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [cancelDays, setCancelDays] = useState(2);
+  const [settingsLoading, setSettingsLoading] = useState(false);
+  const [settingsError, setSettingsError] = useState("");
+  const [newCancelDays, setNewCancelDays] = useState(cancelDays);
+
   const { user } = useAuth();
 
   useEffect(() => {
     async function fetchAll() {
       try {
-        const [ticketsRes, moviesRes, usersRes, roomsRes] = await Promise.all([
+        const [
+          ticketsRes,
+          moviesRes,
+          usersRes,
+          roomsRes,
+          settingsRes,
+          sessionsRes
+        ] = await Promise.all([
           fetch("/api/tickets"),
           fetchMovies(),
           fetchUsers(),
-          fetchRooms()
+          fetchRooms(),
+          fetchSettings(),
+          fetchSessions()
         ]);
         if (!ticketsRes.ok) throw new Error("Erro ao carregar bilhetes");
         const ticketsData = await ticketsRes.json();
@@ -68,6 +103,8 @@ export default function TicketsPage() {
         setMovies(moviesRes);
         setUsers(usersRes);
         setRooms(roomsRes);
+        setSessions(sessionsRes);
+        setCancelDays(settingsRes?.max_cancel_days || 2);
       } catch (err) {
         toast.error(err.message || "Erro ao carregar dados");
       } finally {
@@ -76,6 +113,32 @@ export default function TicketsPage() {
     }
     fetchAll();
   }, []);
+
+  useEffect(() => {
+    setNewCancelDays(cancelDays);
+  }, [cancelDays]);
+
+  async function handleSaveSettings() {
+    setSettingsLoading(true);
+    setSettingsError("");
+    try {
+      const res = await fetch("/api/settings", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ max_cancel_days: Number(newCancelDays) })
+      });
+      if (!res.ok) {
+        throw new Error("Erro ao atualizar definições.");
+      }
+      setCancelDays(Number(newCancelDays));
+      setSettingsOpen(false);
+      toast.success("Definições atualizadas com sucesso.");
+    } catch (err) {
+      setSettingsError("Erro ao atualizar definições.");
+    } finally {
+      setSettingsLoading(false);
+    }
+  }
 
   useEffect(() => {
     let result = tickets;
@@ -139,7 +202,24 @@ export default function TicketsPage() {
                 {user?.role === "admin" ? "GESTÃO DOS BILHETES" : "BILHETES"}
               </h1>
             </div>
-            <div className="w-40 flex-shrink-0" />
+            <div className="w-40 flex-shrink-0 flex justify-end items-center">
+              {/* Icone de definições só para admin/employee */}
+              {(user?.role === "admin" || user?.role === "employee") && (
+                <button
+                  title="Definições"
+                  className="text-white hover:text-quinary"
+                  onClick={() => setSettingsOpen(true)}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    padding: 0,
+                    cursor: "pointer"
+                  }}
+                >
+                  <SettingsIcon fontSize="large" />
+                </button>
+              )}
+            </div>
           </div>
           {(user?.role === "admin" || user?.role === "employee") && (
             <div className="grid grid-cols-4 gap-4">
@@ -215,13 +295,19 @@ export default function TicketsPage() {
                 {/* Data no topo, centrada */}
                 <div className="flex justify-center mb-1">
                   <span className="text-base text-white">
-                    📅 {formatDate(ticket.datetime)}
+                    📅{" "}
+                    {formatDate(
+                      sessions.find((s) => s.id === ticket.session_id)?.date
+                    )}
                   </span>
                 </div>
                 {/* Hora e sala lado a lado */}
                 <div className="flex flex-row justify-between items-center mb-1">
                   <span className="text-sm text-white flex items-center gap-1">
-                    🕒 {formatHour(ticket.datetime)}
+                    🕒{" "}
+                    {formatHour(
+                      sessions.find((s) => s.id === ticket.session_id)?.date
+                    )}
                   </span>
                   <span className="text-sm text-white flex items-center gap-1">
                     📍 {truncate(getRoomName(ticket.room_id, rooms), 9)}
@@ -381,6 +467,42 @@ export default function TicketsPage() {
           </button>
         </div>
       </div>
+      <Dialog open={settingsOpen} onClose={() => setSettingsOpen(false)}>
+        <DialogTitle>Definições</DialogTitle>
+        <DialogContent>
+          <div className="flex flex-col gap-3 mt-2">
+            <label className="font-semibold mb-1">
+              Máximo de dias para cancelar bilhete antes da sessão:
+            </label>
+            <TextField
+              type="number"
+              value={newCancelDays}
+              onChange={(e) => setNewCancelDays(e.target.value)}
+              inputProps={{ min: 1, max: 30 }}
+              fullWidth
+              variant="standard"
+            />
+            {settingsError && (
+              <span className="text-red-500 text-sm">{settingsError}</span>
+            )}
+          </div>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setSettingsOpen(false)} color="primary">
+            Cancelar
+          </Button>
+          <Button
+            onClick={handleSaveSettings}
+            color="success"
+            variant="contained"
+            disabled={
+              settingsLoading || !newCancelDays || Number(newCancelDays) < 1
+            }
+          >
+            {settingsLoading ? "A guardar..." : "Guardar"}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }

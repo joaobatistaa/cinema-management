@@ -275,7 +275,8 @@
       ],
       [
         {
-          "type": "normal"
+          "type": "normal",
+          "status": 0
         },
         {
           "type": "normal"
