@@ -211,7 +211,9 @@ export default function BuyTicketPage() {
         movie_title: movie?.title || "",
         movie_id: movieId,
         session_id: sessionId,
+        session_datetime: session?.date,
         room_id: room?.id,
+        room_name: room?.name,
         seat: selectedSeat,
         datetime,
         bar_items: Object.entries(quantities)
@@ -244,7 +246,12 @@ export default function BuyTicketPage() {
       const response = await fetch("/api/tickets", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+          "x-user-id": user.id,
+          "x-user-name": user.name
+        }
       });
 
       if (!response.ok) {

@@ -149,7 +149,12 @@ export default function TicketDetailsPage() {
 
     try {
       const res = await fetch(`/api/tickets/${ticket.id}`, {
-        method: "DELETE"
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "x-user-id": user.id,
+          "x-user-name": user.name
+        }
       });
       if (!res.ok) throw new Error("Erro ao cancelar bilhete");
       router.replace("/tickets");

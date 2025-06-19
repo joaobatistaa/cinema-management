@@ -5,11 +5,13 @@ import { useRouter, useParams, useSearchParams } from "next/navigation";
 import { CircularProgress } from "@mui/material";
 import toast from "react-hot-toast";
 import { formatDate, formatHour } from "@/src/utils/helpers";
+import { useAuth } from "@/src/contexts/AuthContext";
 
 export default function EditTicketPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { id } = useParams();
+  const { user } = useAuth();
   const [saving, setSaving] = useState(false);
   const [ticket, setTicket] = useState(null);
   const [movie, setMovie] = useState(null);
@@ -290,7 +292,11 @@ export default function EditTicketPage() {
       // PUT ou PATCH para atualizar o bilhete
       const response = await fetch(`/api/tickets/${ticket.id}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "x-user-id": user.id,
+          "x-user-name": user.name
+        },
         body: JSON.stringify(data)
       });
 
@@ -643,7 +649,7 @@ export default function EditTicketPage() {
               <button
                 type="submit"
                 disabled={saving || !selectedSeat}
-                className="bg-quaternary text-white px-4 py-3 rounded font-medium flex items-center justify-center tracking-wider cursor-pointer"
+                className="bg-quaternary text-white px-4 py-3 rounded font-medium flex items-center justify-center tracking-wider cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {saving ? "A GUARDAR..." : "GUARDAR ALTERAÇÕES"}
               </button>

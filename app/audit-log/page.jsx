@@ -69,38 +69,49 @@ export default function AuditLogPage() {
             {loading ? (
               <div className="text-center py-12 text-xl">A carregar...</div>
             ) : logs.length === 0 ? (
-              <div className="text-center py-12 text-lg">Sem registos de auditoria.</div>
+              <div className="text-center py-12 text-lg">
+                Sem registos de auditoria.
+              </div>
             ) : (
-              <div className="overflow-x-auto px-8 pb-8 mt-10">
-                <table className="min-w-full bg-[#232336] rounded-lg overflow-hidden">
+              <div className="overflow-x-auto overflow-y-auto max-h-[550px] px-8 pb-8 mt-10 w-full">
+                <table className="min-w-full bg-[#232336]">
                   <thead>
                     <tr className="bg-[#1f1f2e] text-white">
                       <th className="py-2 px-2 text-left text-sm">ID</th>
-                      <th className="py-2 px-2 text-left text-sm">Utilizador</th>
-                      <th className="py-2 px-2 text-left text-sm">ID Utilizador</th>
+                      <th className="py-2 px-2 text-left text-sm">
+                        Utilizador
+                      </th>
+                      <th className="py-2 px-2 text-left text-sm">
+                        ID Utilizador
+                      </th>
                       <th className="py-2 px-2 text-left text-sm">Descrição</th>
                       <th className="py-2 px-2 text-left text-sm">Data</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {logs.map((log) => (
-                      <tr
-                        key={log.id}
-                        className="border-b border-[#282846] text-white hover:bg-[#282846] transition text-sm"
-                      >
-                        <td className="py-1 px-2 text-sm">{log.id}</td>
-                        <td className="py-1 px-2 text-sm">{log.userName}</td>
-                        <td className="py-1 px-2 text-sm">{log.userID}</td>
-                        <td className="py-1 px-2 text-sm">{log.description}</td>
-                        <td className="py-1 px-2 text-sm">{new Date(log.date).toLocaleString()}</td>
-                      </tr>
-                    ))}
+                    {logs
+                      .slice()
+                      .sort((a, b) => new Date(b.date) - new Date(a.date))
+                      .map((log) => (
+                        <tr
+                          key={log.id}
+                          className="border-b border-[#282846] text-white hover:bg-[#282846] transition text-sm"
+                        >
+                          <td className="py-1 px-2 text-sm">{log.id}</td>
+                          <td className="py-1 px-2 text-sm">{log.userName}</td>
+                          <td className="py-1 px-2 text-sm">{log.userID}</td>
+                          <td className="py-1 px-2 text-sm">
+                            {log.description}
+                          </td>
+                          <td className="py-1 px-2 text-sm">
+                            {new Date(log.date).toLocaleString()}
+                          </td>
+                        </tr>
+                      ))}
                   </tbody>
                 </table>
               </div>
             )}
-
-          
           </div>
         </div>
       </div>

@@ -1,6 +1,7 @@
 import path from "path";
 import fs from "fs";
 import { NextResponse } from "next/server";
+import { addAuditLog } from "@/src/services/auditLog";
 
 const filePath = path.join(process.cwd(), "src", "data", "settings.json");
 
@@ -33,6 +34,23 @@ export async function PUT(request) {
     }
     const settings = { max_cancel_days };
     fs.writeFileSync(filePath, JSON.stringify(settings, null, 2));
+
+    // Registar ação no audit log
+    // Extrair userID e userName do header (quem faz o pedido)
+    let actorId = request.headers.get("x-user-id") || "unknown";
+    let actorName = request.headers.get("x-user-name") || "unknown";
+
+    try {
+      await addAuditLog({
+        userID: actorId,
+        userName: actorName,
+        description: `O número máximo de dias antes da sessão para cancelar o bilhete foi alterado para ${max_cancel_days} dia(s)`,
+        date: new Date().toISOString()
+      });
+    } catch (auditErr) {
+      console.error("Erro ao registar no audit log:", auditErr);
+    }
+
     return NextResponse.json(settings);
   } catch (err) {
     return NextResponse.json(

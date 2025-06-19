@@ -124,7 +124,11 @@ export default function TicketsPage() {
     try {
       const res = await fetch("/api/settings", {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "x-user-id": user.id,
+          "x-user-name": user.name
+        },
         body: JSON.stringify({ max_cancel_days: Number(newCancelDays) })
       });
       if (!res.ok) {
