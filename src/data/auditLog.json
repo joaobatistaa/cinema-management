@@ -201,5 +201,12 @@
     "userName": "ola2",
     "date": "2025-06-19T19:22:41.253Z",
     "description": "Pedido de recuperação de senha"
+  },
+  {
+    "id": 30,
+    "userID": 1,
+    "userName": "ADMIN",
+    "date": "2025-06-19T21:11:42.201Z",
+    "description": "Bilhete com o ID 17 foi alterado. Bar: Itens adicionados: Pipocas P (x1).  Sessão: Sessão alterada do dia 03/07/2025 às 14:00 para o dia 03/07/2025 às 18:00."
   }
 ]

@@ -368,19 +368,25 @@
     "id": 17,
     "user_id": -1,
     "movie_id": "3",
-    "session_id": "15",
-    "room_id": 6,
+    "session_id": "17",
+    "room_id": 7,
     "seat": {
       "row": 3,
       "col": 1
     },
-    "datetime": "2025-06-19T01:34:22.050Z",
+    "datetime": "2025-06-19T21:11:41.451Z",
     "bar_items": [
       {
         "id": "2",
         "name": "Pipocas M",
         "price": "5",
         "quantity": 2
+      },
+      {
+        "id": "3",
+        "name": "Pipocas P",
+        "price": "3",
+        "quantity": 1
       },
       {
         "id": "4",
@@ -408,8 +414,8 @@
       }
     ],
     "ticket_price": 7,
-    "bar_total": 31.5,
-    "buy_total": 38.5,
+    "bar_total": 34.5,
+    "buy_total": 41.5,
     "payment_method": "cash",
     "payment_info": "Dinheiro"
   }
