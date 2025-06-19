@@ -7,12 +7,13 @@ const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const router = useRouter();
-  const [user, setUser] = useState(undefined);
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const stored = localStorage.getItem("user");
     if (stored) setUser(JSON.parse(stored));
-    else setUser(null);
+    setLoading(false);
   }, []);
 
   useEffect(() => {
@@ -20,20 +21,20 @@ export function AuthProvider({ children }) {
     else if (user === null) localStorage.removeItem("user");
   }, [user]);
 
-  function login(userData) {
-    // Se for customer, carrega o NIF do utilizador (se existir)
+  async function login(userData) {
     if (userData && userData.role === "customer" && userData.id) {
-      fetch(`/api/users`)
-        .then((res) => res.json())
-        .then((users) => {
-          const found = users.find((u) => String(u.id) === String(userData.id));
-          if (found && found.nif) {
-            setUser({ ...userData, nif: found.nif });
-          } else {
-            setUser(userData);
-          }
-        })
-        .catch(() => setUser(userData));
+      try {
+        const res = await fetch(`/api/users`);
+        const users = await res.json();
+        const found = users.find((u) => String(u.id) === String(userData.id));
+        if (found && found.nif) {
+          setUser({ ...userData, nif: found.nif });
+        } else {
+          setUser(userData);
+        }
+      } catch {
+        setUser(userData);
+      }
     } else {
       setUser(userData);
     }
@@ -45,7 +46,7 @@ export function AuthProvider({ children }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );

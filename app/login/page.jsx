@@ -33,7 +33,9 @@ export default function LoginPage() {
       });
       const data = await res.json();
       if (res.status === 307 && data.redirectTo) {
-        setInfoMsg("A sua conta foi criada por um administrador. Por favor defina uma nova password para ativar o acesso.");
+        setInfoMsg(
+          "A sua conta foi criada por um administrador. Por favor defina uma nova password para ativar o acesso."
+        );
         setTimeout(() => {
           try {
             const url = new URL(data.redirectTo, window.location.origin);
@@ -51,7 +53,6 @@ export default function LoginPage() {
         return;
       }
       if (!res.ok) {
-        // Mostra mensagem específica se for necessário confirmar email
         if (res.status === 403 && data.error) {
           toast.error(data.error);
         } else {
@@ -60,11 +61,10 @@ export default function LoginPage() {
         setLoading(false);
         return;
       }
+
       await login(data);
       toast.success("Sessão iniciada com sucesso!");
-      router.refresh(); // Refresh the router to ensure proper state
-      router.push("/home");
-    } catch {
+    } catch (err) {
       toast.error("Erro ao iniciar sessão");
     } finally {
       setLoading(false);
