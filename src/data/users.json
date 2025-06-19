@@ -63,14 +63,14 @@
   },
   {
     "id": 6,
-    "name": "cookie",
+    "name": "cookie2",
     "email": "cookie@email.pt",
     "password": "$2b$10$hk8wzzo6k6.u.832rhiouuen4IK8Tu5K0K/vMh1pM2YoGP5ld/iyG",
     "nif": null,
     "salario": null,
     "role": "customer",
     "active": 1,
-    "desc": "needs to set new password",
+    "desc": "",
     "tickets": [],
     "purl": "Y29va2llQGVtYWlsLnB0LTE3NTAyNzUw"
   }

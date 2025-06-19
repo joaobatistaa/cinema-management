@@ -18,9 +18,40 @@ export default function AccountsPage() {
     setShowEditModal(true);
   }
 
+  // Handler para reativar utilizador
+  async function handleReactivateUser(userToReactivate) {
+    if (!window.confirm("Deseja reativar este utilizador?")) return;
+    
+    try {
+      const res = await fetch("/api/users/list", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: userToReactivate.id,
+          updates: { active: 1, desc: "" },
+          userId: user.id,
+          userName: user.name
+        })
+      });
+      
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        if (res.status === 409) {
+          toast.error("Já existe uma conta ativa com este email. Não é possível reativar.");
+          return;
+        }
+        throw new Error(data.message || "Erro ao reativar utilizador.");
+      }
+      
+      toast.success("Utilizador reativado com sucesso.");
+      setUsers((users) => users.map((u) => u.id === userToReactivate.id ? { ...u, active: 1, desc: "" } : u));
+    } catch (err) {
+      toast.error(err.message || "Erro ao reativar utilizador.");
+    }
+  }
+
   // Handler para eliminar utilizador
   async function handleDeleteUser(victim) {
-    console.log(user);
     if (!window.confirm("Tem a certeza que pretende eliminar este utilizador?")) return;
     if (victim === undefined) {
       toast.error("Aguarde, sessão a carregar.");
@@ -33,12 +64,7 @@ export default function AccountsPage() {
     try {
       const res = await fetch("/api/users/list", {
         method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          "x-user-id": user.id,
-          "x-user-name": user.name
-        },
-        body: JSON.stringify({ id: victim.id, updates: { active: 0, desc: "deleted" } }),
+        body: JSON.stringify({ id: victim.id, updates: { active: 0, desc: "deleted" }, userId: user.id, userName: user.name }),
       });
       if (!res.ok) {
         const data = await res.json();
@@ -94,14 +120,12 @@ export default function AccountsPage() {
       } else {
         updates.salario = null;
       }
+      const body = JSON.stringify({ id: editUser.id, updates, userId: user.id, userName: user.name });
+      console.log(body);
       const res = await fetch("/api/users/list", {
         method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          "x-user-id": user.id,
-          "x-user-name": user.name
-        },
-        body: JSON.stringify({ id: editUser.id, updates }),
+        headers: { "Content-Type": "application/json" },
+        body,
       });
       if (!res.ok) {
         const data = await res.json();
@@ -347,32 +371,7 @@ export default function AccountsPage() {
                                   <button
                                     title="Reativar utilizador"
                                     className="bg-yellow-500 hover:bg-yellow-600 rounded-full p-1 cursor-pointer"
-                                    onClick={async () => {
-                                      if (window.confirm("Deseja reativar este utilizador?")) {
-                                        try {
-                                          const res = await fetch("/api/users/list", {
-                                            method: "PUT",
-                                            headers: { "Content-Type": "application/json" },
-                                            body: JSON.stringify({
-                                              id: rowUser.id,
-                                              updates: { active: 1, desc: "" }
-                                            })
-                                          });
-                                          if (!res.ok) {
-                                            const data = await res.json().catch(() => ({}));
-                                            if (res.status === 409) {
-                                              toast.error("Já existe uma conta ativa com este email. Não é possível reativar.");
-                                              return;
-                                            }
-                                            throw new Error(data.message || "Erro ao reativar utilizador.");
-                                          }
-                                          toast.success("Utilizador reativado com sucesso.");
-                                          setUsers((users) => users.map((u) => u.id === rowUser.id ? { ...u, active: 1, desc: "" } : u));
-                                        } catch (err) {
-                                          toast.error(err.message || "Erro ao reativar utilizador.");
-                                        }
-                                      }
-                                    }}
+                                    onClick={() => handleReactivateUser(rowUser)}
                                     tabIndex={-1}
                                   >
                                     {/* Ícone de reativar */}

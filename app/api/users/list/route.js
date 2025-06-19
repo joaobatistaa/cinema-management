@@ -5,7 +5,6 @@ import { sendEmail } from "@/src/utils/email";
 import { addAuditLog } from "@/src/services/auditLog";
 import { isValidEmail, isValidNif, readUsersFile, writeUsersFile, getNewUserId } from "@/src/services/userList";
 
-
 export async function GET() {
   try {
     const users = await readUsersFile();
@@ -97,22 +96,32 @@ export async function POST(request) {
 
 export async function PUT(request) {
   try {
-    const { id, updates } = await request.json();
+    const { id, updates, userId, userName } = await request.json();
+
+    console.log("id", id);
+    console.log("updates", updates);
+    console.log("userId", userId);
+    console.log("userName", userName);
+
     if (!id || !updates || typeof updates !== "object") {
       return NextResponse.json({ message: "Dados inválidos." }, { status: 400 });
     }
+
     const users = await readUsersFile();
     const idx = users.findIndex(u => u.id === id);
+
     if (idx === -1) {
       return NextResponse.json({ message: "Utilizador não encontrado." }, { status: 404 });
     }
-    // Permitir reativação de utilizador eliminado
+
+    // Regras para edição conforme estado atual
     if (users[idx].active === 0 && users[idx].desc === "deleted") {
       if (!(updates.active === 1 && (updates.desc === "" || updates.desc === undefined))) {
         return NextResponse.json({ message: "Não é possível editar um utilizador eliminado." }, { status: 403 });
       }
     }
-    // Validação: ao reativar conta bloqueada, o email não pode estar em uso por outro utilizador ativo
+
+    // Impedir email duplicado em caso de reativação
     if (
       updates.active === 1 &&
       users[idx].active === 0 &&
@@ -129,29 +138,32 @@ export async function PUT(request) {
         return NextResponse.json({ message: "Já existe uma conta ativa com este email." }, { status: 409 });
       }
     }
-    // Determinar tipo de alteração para email
-    let emailSubject = null;
-    let emailText = null;
+
     const before = { ...users[idx] };
     users[idx] = { ...users[idx], ...updates };
     await writeUsersFile(users);
-    // Registar ação no audit log
-    // Extrair userID e userName do header (quem faz o pedid
-    let actorId = request.headers.get("x-user-id") || "unknown";
-    let actorName = request.headers.get("x-user-name") || "unknown";
+
+    let emailSubject = null;
+    let emailText = null;
+
     // Email: conta reativada
     if (before.active === 0 && before.desc === "deleted" && users[idx].active === 1 && users[idx].desc === "") {
       emailSubject = "Conta reativada";
       emailText = `Olá ${users[idx].name},\n\nA sua conta foi reativada pelo administrador. Pode voltar a aceder ao sistema.`;
 
       try {
-        await addAuditLog({ userID: actorId, userName: actorName,description: `Conta reativada: ${users[idx].email}`, date: new Date().toISOString() });
+        await addAuditLog({
+          userID: userId,
+          userName: userName ,
+          description: `Conta reativada: ${users[idx].email}`,
+          date: new Date().toISOString()
+        });
       } catch (auditErr) {
         console.error("Erro ao registar no audit log:", auditErr);
       }
     }
 
-    // Email: dados editados (mas não reativação nem eliminação)
+    // Email: dados atualizados (sem ser reativação ou eliminação)
     else if (
       (users[idx].active === 1 && users[idx].desc !== "deleted") &&
       (updates.name || updates.role || updates.salario || updates.nif)
@@ -160,11 +172,17 @@ export async function PUT(request) {
       emailText = `Olá ${users[idx].name},\n\nOs dados da sua conta foram atualizados pelo administrador.`;
 
       try {
-        await addAuditLog({ userID: actorId, userName: actorName,description: `Conta editada: ${users[idx].email}`, date: new Date().toISOString() });
+        await addAuditLog({
+          userID: userId || "unknown",
+          userName: userName || "unknown",
+          description: `Conta editada: ${users[idx].email}`,
+          date: new Date().toISOString()
+        });
       } catch (auditErr) {
         console.error("Erro ao registar no audit log:", auditErr);
       }
     }
+
     if (emailSubject && emailText) {
       try {
         await sendEmail({
@@ -173,10 +191,10 @@ export async function PUT(request) {
           text: emailText,
         });
       } catch (err) {
-        // Apenas log, não bloquear resposta
         console.error("Erro ao enviar email de alteração de conta:", err);
       }
     }
+
     return NextResponse.json(users[idx]);
   } catch (error) {
     return NextResponse.json(
@@ -188,35 +206,42 @@ export async function PUT(request) {
 
 
 
-
 // DELETE: elimina (soft-delete) um utilizador, colocando active=0 e desc="deleted"
 export async function DELETE(request) {
-  // Enviar email também neste fluxo, caso DELETE seja usado diretamente
-
   try {
-    const { id } = await request.json();
+    const { id, userId, userName } = await request.json();
+
     if (!id) {
       return NextResponse.json({ message: "ID do utilizador é obrigatório." }, { status: 400 });
     }
+
     const users = await readUsersFile();
     const idx = users.findIndex(u => u.id === id);
+
     if (idx === -1) {
       return NextResponse.json({ message: "Utilizador não encontrado." }, { status: 404 });
     }
+
     const now = new Date();
     const dateStr = now.toISOString().split("T")[0] + ' ' + now.toTimeString().split(' ')[0];
+
     users[idx].active = 0;
-    users[idx].desc = `deleted`;
+    users[idx].desc = "deleted";
+
     await writeUsersFile(users);
-    // Registar ação no audit log
-    // Extrair userID e userName do header (quem faz o pedido)
-    let actorId = request.headers.get("x-user-id") || "unknown";
-    let actorName = request.headers.get("x-user-name") || "unknown";
+
+    // Registar no audit log
     try {
-      await addAuditLog({ userID: actorId, userName: actorName,description: `Conta eliminada: ${users[idx].email}`, date: new Date().toISOString() });
+      await addAuditLog({
+        userID: userId || "unknown",
+        userName: userName || "unknown",
+        description: `Conta eliminada: ${users[idx].email}`,
+        date: now.toISOString()
+      });
     } catch (auditErr) {
       console.error("Erro ao registar no audit log:", auditErr);
     }
+
     // Enviar email de eliminação
     try {
       await sendEmail({
@@ -227,6 +252,7 @@ export async function DELETE(request) {
     } catch (err) {
       console.error("Erro ao enviar email de eliminação:", err);
     }
+
     return NextResponse.json(users[idx]);
   } catch (error) {
     return NextResponse.json(
