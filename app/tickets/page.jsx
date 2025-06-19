@@ -21,6 +21,8 @@ import {
   truncate
 } from "@/src/utils/helpers";
 import SettingsIcon from "@mui/icons-material/Settings";
+import BlockIcon from "@mui/icons-material/Block";
+import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
 
 async function fetchMovies() {
   const res = await fetch("/api/movies");
@@ -75,6 +77,12 @@ export default function TicketsPage() {
   const [settingsLoading, setSettingsLoading] = useState(false);
   const [settingsError, setSettingsError] = useState("");
   const [newCancelDays, setNewCancelDays] = useState(cancelDays);
+  const [selectedMovieId, setSelectedMovieId] = useState("");
+
+  const [scannerOpen, setScannerOpen] = useState(false);
+  const [scanTicketId, setScanTicketId] = useState("");
+  const [scanResult, setScanResult] = useState(null);
+  const [scanLoading, setScanLoading] = useState(false);
 
   const { user } = useAuth();
 
@@ -117,6 +125,75 @@ export default function TicketsPage() {
   useEffect(() => {
     setNewCancelDays(cancelDays);
   }, [cancelDays]);
+
+  async function toggleMovieActive(movieId, currentActive) {
+    try {
+      const res = await fetch(`/api/movies/${movieId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ active: currentActive ? 0 : 1 })
+      });
+      if (!res.ok) throw new Error("Erro ao atualizar estado do filme.");
+
+      setMovies((prev) =>
+        prev.map((m) =>
+          m.id === movieId ? { ...m, active: currentActive ? 0 : 1 } : m
+        )
+      );
+      toast.success(
+        currentActive
+          ? "Venda desativada para este filme."
+          : "Venda ativada para este filme."
+      );
+    } catch (err) {
+      toast.error(
+        err.message || "Erro ao atualizar o estado da venda do filme."
+      );
+    }
+  }
+
+  async function handleValidateTicket() {
+    setScanResult(null);
+    setScanLoading(true);
+    try {
+      const res = await fetch(`/api/tickets/${scanTicketId}`);
+      if (!res.ok) throw new Error("Bilhete não encontrado.");
+      const ticket = await res.json();
+      if (ticket.valid !== 1) {
+        setScanResult({
+          success: false,
+          message: "Este bilhete já foi usado ou não é válido."
+        });
+        setScanLoading(false);
+        return;
+      }
+      // Atualizar o bilhete para valid = 0
+      const updateRes = await fetch(`/api/tickets/${scanTicketId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ valid: 0 })
+      });
+      if (!updateRes.ok) throw new Error("Erro ao validar bilhete.");
+      setScanResult({
+        success: true,
+        message: "Entrada validada com sucesso!"
+      });
+      // Atualizar localmente
+      setTickets((prev) =>
+        prev.map((t) =>
+          t.id === Number(scanTicketId) ? { ...t, valid: 0 } : t
+        )
+      );
+    } catch (err) {
+      setScanResult({
+        success: false,
+        message: err.message || "Erro ao validar bilhete."
+      });
+    } finally {
+      setScanLoading(false);
+    }
+  }
+
   async function handleSaveSettings() {
     setSettingsLoading(true);
     setSettingsError("");
@@ -124,7 +201,7 @@ export default function TicketsPage() {
       const res = await fetch("/api/settings", {
         method: "PUT",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json"
         },
         body: JSON.stringify({
           max_cancel_days: Number(newCancelDays),
@@ -132,11 +209,11 @@ export default function TicketsPage() {
           actorName: user.name
         })
       });
-  
+
       if (!res.ok) {
         throw new Error("Erro ao atualizar definições.");
       }
-  
+
       setCancelDays(Number(newCancelDays));
       setSettingsOpen(false);
       toast.success("Definições atualizadas com sucesso.");
@@ -146,7 +223,6 @@ export default function TicketsPage() {
       setSettingsLoading(false);
     }
   }
-  
 
   useEffect(() => {
     let result = tickets;
@@ -211,21 +287,43 @@ export default function TicketsPage() {
               </h1>
             </div>
             <div className="w-40 flex-shrink-0 flex justify-end items-center">
-              {/* Icone de definições só para admin/employee */}
               {(user?.role === "admin" || user?.role === "employee") && (
-                <button
-                  title="Definições"
-                  className="text-white hover:text-quinary"
-                  onClick={() => setSettingsOpen(true)}
-                  style={{
-                    background: "none",
-                    border: "none",
-                    padding: 0,
-                    cursor: "pointer"
-                  }}
-                >
-                  <SettingsIcon fontSize="large" />
-                </button>
+                <>
+                  {/* Ícone do scanner */}
+                  <button
+                    title="Validar entrada de bilhete"
+                    className="text-white hover:text-quinary mr-2"
+                    onClick={() => {
+                      setScannerOpen(true);
+                      setScanTicketId("");
+                      setScanResult(null);
+                    }}
+                    style={{
+                      background: "none",
+                      border: "none",
+                      padding: 0,
+                      cursor: "pointer"
+                    }}
+                  >
+                    <QrCodeScannerIcon fontSize="large" />
+                  </button>
+                  {/* Ícone das definições */}
+                  {user?.role === "admin" && (
+                    <button
+                      title="Definições"
+                      className="text-white hover:text-quinary"
+                      onClick={() => setSettingsOpen(true)}
+                      style={{
+                        background: "none",
+                        border: "none",
+                        padding: 0,
+                        cursor: "pointer"
+                      }}
+                    >
+                      <SettingsIcon fontSize="large" />
+                    </button>
+                  )}
+                </>
               )}
             </div>
           </div>
@@ -493,6 +591,63 @@ export default function TicketsPage() {
             {settingsError && (
               <span className="text-red-500 text-sm">{settingsError}</span>
             )}
+            <div className="mt-6">
+              <label className="font-semibold mb-2 block">
+                Ativar/Desativar venda para um filme:
+              </label>
+              <select
+                className="border rounded px-2 py-1"
+                value={selectedMovieId}
+                onChange={(e) => setSelectedMovieId(e.target.value)}
+              >
+                <option value="">Selecione um filme</option>
+                {movies.map((movie) => (
+                  <option key={movie.id} value={movie.id}>
+                    {movie.title}
+                  </option>
+                ))}
+              </select>
+              {selectedMovieId && (
+                <div className="flex items-center justify-between bg-gray-100 rounded px-3 py-2 mt-3">
+                  <span className="text-base text-gray-800">
+                    {movies.find((m) => m.id === selectedMovieId)?.title}
+                  </span>
+                  <button
+                    title={
+                      movies.find((m) => m.id === selectedMovieId)?.active
+                        ? "Desativar venda para este filme"
+                        : "Ativar venda para este filme"
+                    }
+                    className={`ml-2 ${
+                      movies.find((m) => m.id === selectedMovieId)?.active
+                        ? "text-green-600"
+                        : "text-red-600"
+                    }`}
+                    style={{
+                      background: "none",
+                      border: "none",
+                      padding: 0,
+                      cursor: "pointer"
+                    }}
+                    onClick={() =>
+                      toggleMovieActive(
+                        selectedMovieId,
+                        movies.find((m) => m.id === selectedMovieId)?.active
+                      )
+                    }
+                  >
+                    <BlockIcon
+                      fontSize="medium"
+                      color={
+                        movies.find((m) => m.id === selectedMovieId)?.active
+                          ? "success"
+                          : "error"
+                      }
+                    />
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </DialogContent>
         <DialogActions>
@@ -508,6 +663,44 @@ export default function TicketsPage() {
             }
           >
             {settingsLoading ? "A guardar..." : "Guardar"}
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog open={scannerOpen} onClose={() => setScannerOpen(false)}>
+        <DialogTitle>Validar Entrada de Bilhete</DialogTitle>
+        <DialogContent>
+          <div className="flex flex-col gap-3 mt-2">
+            <TextField
+              label="Nº do Bilhete"
+              type="number"
+              value={scanTicketId}
+              onChange={(e) => setScanTicketId(e.target.value)}
+              fullWidth
+              variant="standard"
+              disabled={scanLoading}
+            />
+            <Button
+              onClick={handleValidateTicket}
+              color="success"
+              variant="contained"
+              disabled={!scanTicketId || scanLoading}
+            >
+              {scanLoading ? "A validar..." : "Validar"}
+            </Button>
+            {scanResult && (
+              <span
+                className={`text-sm font-semibold ${
+                  scanResult.success ? "text-green-600" : "text-red-600"
+                }`}
+              >
+                {scanResult.message}
+              </span>
+            )}
+          </div>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setScannerOpen(false)} color="primary">
+            Fechar
           </Button>
         </DialogActions>
       </Dialog>

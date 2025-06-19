@@ -146,7 +146,7 @@ export default function TicketDetailsPage() {
       toast.error("Preencha os dados do método de reembolso.");
       return;
     }
-  
+
     try {
       const res = await fetch(`/api/tickets/${ticket.id}`, {
         method: "DELETE",
@@ -157,12 +157,13 @@ export default function TicketDetailsPage() {
           refundMethod,
           refundInfo,
           actorId: user.id,
-          actorName: user.name
+          actorName: user.name,
+          barItems: ticket.bar_items
         })
       });
-  
+
       if (!res.ok) throw new Error("Erro ao cancelar bilhete");
-  
+
       router.replace("/tickets");
       toast.success(
         `O valor foi reembolsado para o método de pagamento (${refundMethodLabel(
@@ -173,7 +174,7 @@ export default function TicketDetailsPage() {
       toast.error("Erro ao cancelar bilhete.");
     }
   }
-  
+
   function refundMethodLabel(method) {
     if (method === "mbway") return "MB WAY";
     if (method === "card") return "Cartão Crédito/Débito";

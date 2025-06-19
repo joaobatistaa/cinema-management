@@ -87,7 +87,6 @@ export default function BuyTicketPage() {
         const sessionData = await sessionRes.json();
         const barData = await barRes.json();
 
-        // Buscar settings para max_cancel_days da API
         try {
           const settingsRes = await fetch("/api/settings");
           if (settingsRes.ok) {
@@ -194,17 +193,17 @@ export default function BuyTicketPage() {
       toast.error("Preencha os dados do método de pagamento.");
       return;
     }
-  
+
     setSaving(true);
     try {
       const now = new Date();
       const datetime = now.toISOString();
-  
+
       let user_id = -1;
       if (user?.role === "customer") {
         user_id = user?.id;
       }
-  
+
       const data = {
         email: user.email,
         user_id,
@@ -241,12 +240,12 @@ export default function BuyTicketPage() {
             : paymentMethod === "cash"
             ? "Dinheiro"
             : "",
-        
+
         // 👇 Adiciona os dados do ator diretamente no body
         actorId: user.id,
         actorName: user.name
       };
-  
+
       const response = await fetch("/api/tickets", {
         method: "POST",
         headers: {
@@ -254,11 +253,11 @@ export default function BuyTicketPage() {
         },
         body: JSON.stringify(data)
       });
-  
+
       if (!response.ok) {
         throw new Error("Erro ao criar bilhete");
       }
-  
+
       toast.success("Bilhete comprado com sucesso!");
       setOpenDialog(false);
       router.replace("/tickets");
@@ -268,20 +267,65 @@ export default function BuyTicketPage() {
       setSaving(false);
     }
   }
-  
 
   // Calcula o total do bar sempre que quantities ou barItems mudam
-  const barTotal = React.useMemo(() => {
-    let total = 0;
-    barItems.forEach((item) => {
-      const qty = quantities[item.id] || 0;
-      const price = Number(
-        String(item.price).replace(",", ".").replace("€", "")
-      );
-      total += qty * price;
-    });
-    return total;
-  }, [barItems, quantities]);
+  const { barTotal, discountTotal, barItemsWithDiscount } =
+    React.useMemo(() => {
+      let total = 0;
+      let discount = 0;
+      const packGroups = {};
+
+      // Agrupa itens por pack válido
+      barItems.forEach((item) => {
+        if (item.pack !== null && item.pack !== undefined) {
+          if (!packGroups[item.pack]) packGroups[item.pack] = [];
+          packGroups[item.pack].push(item);
+        }
+      });
+
+      // Função para verificar se todos os itens do pack estão selecionados (>0)
+      function allPackItemsSelected(pack) {
+        return (
+          packGroups[pack] &&
+          packGroups[pack].length > 1 &&
+          packGroups[pack].every((i) => (quantities[i.id] || 0) > 0)
+        );
+      }
+
+      const itemsWithDiscount = barItems.map((item) => {
+        const qty = quantities[item.id] || 0;
+        let price = Number(
+          String(item.price).replace(",", ".").replace("€", "")
+        );
+        let isPack = false;
+        let discountedPrice = price;
+
+        // Só aplica desconto se TODOS os itens do pack estiverem selecionados
+        if (
+          item.pack !== null &&
+          item.pack !== undefined &&
+          allPackItemsSelected(item.pack)
+        ) {
+          isPack = true;
+          discountedPrice = price * 0.8;
+          discount += qty * (price * 0.2);
+        }
+
+        total += qty * discountedPrice;
+        return {
+          ...item,
+          isPack,
+          discountedPrice,
+          qty
+        };
+      });
+
+      return {
+        barTotal: total,
+        discountTotal: discount,
+        barItemsWithDiscount: itemsWithDiscount
+      };
+    }, [barItems, quantities]);
 
   return (
     <div className="h-full w-full flex flex-col overflow-x-hidden overflow-y-auto">
@@ -374,8 +418,25 @@ export default function BuyTicketPage() {
                               +
                             </button>
                           </div>
-                          <span className="font-medium text-center text-green-400 w-[50px] min-w-[50px] max-w-[50px] text-[0.85rem]">
-                            {item.price} €
+                          <span className="font-medium text-center w-[50px] min-w-[50px] max-w-[50px] text-[0.85rem] flex flex-col items-center">
+                            {barItemsWithDiscount.find((i) => i.id === item.id)
+                              ?.isPack ? (
+                              <>
+                                <span className="line-through text-red-400">
+                                  {Number(item.price).toFixed(2)} €
+                                </span>
+                                <span className="text-green-400 font-bold">
+                                  {barItemsWithDiscount
+                                    .find((i) => i.id === item.id)
+                                    ?.discountedPrice.toFixed(2)}{" "}
+                                  €
+                                </span>
+                              </>
+                            ) : (
+                              <span className="text-green-400">
+                                {Number(item.price).toFixed(2)} €
+                              </span>
+                            )}
                           </span>
                         </div>
                       );

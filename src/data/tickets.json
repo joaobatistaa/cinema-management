@@ -1,31 +1,7 @@
 [
   {
-    "id": 1,
-    "user_id": -1,
-    "movie_id": "2",
-    "session_id": "7",
-    "room_id": 7,
-    "seat": {
-      "row": 2,
-      "col": 1
-    },
-    "datetime": "2025-06-18T21:56:20.534Z",
-    "bar_items": [
-      {
-        "id": "5",
-        "name": "Água",
-        "price": "1.5",
-        "quantity": 1
-      }
-    ],
-    "ticket_price": 7,
-    "bar_total": 1.5,
-    "buy_total": 8.5,
-    "payment_method": "cash",
-    "payment_info": "Dinheiro"
-  },
-  {
     "id": 2,
+    "valid": 1,
     "user_id": -1,
     "movie_id": "3",
     "session_id": "14",
@@ -44,6 +20,7 @@
   },
   {
     "id": 3,
+    "valid": 1,
     "user_id": -1,
     "movie_id": "2",
     "session_id": "7",
@@ -62,6 +39,7 @@
   },
   {
     "id": 4,
+    "valid": 1,
     "user_id": -1,
     "movie_id": "2",
     "session_id": "7",
@@ -80,6 +58,7 @@
   },
   {
     "id": 5,
+    "valid": 1,
     "user_id": -1,
     "movie_id": "2",
     "session_id": "7",
@@ -97,50 +76,8 @@
     "payment_info": "Dinheiro"
   },
   {
-    "id": 6,
-    "user_id": -1,
-    "movie_id": "2",
-    "session_id": "7",
-    "room_id": 7,
-    "seat": {
-      "row": 2,
-      "col": 2
-    },
-    "datetime": "2025-06-19T01:22:08.592Z",
-    "bar_items": [
-      {
-        "id": "2",
-        "name": "Pipocas M",
-        "price": "5",
-        "quantity": 1
-      },
-      {
-        "id": "3",
-        "name": "Pipocas P",
-        "price": "3",
-        "quantity": 1
-      },
-      {
-        "id": "4",
-        "name": "Coca-Cola",
-        "price": "2",
-        "quantity": 5
-      },
-      {
-        "id": "6",
-        "name": "Sumo Laranja",
-        "price": "2.5",
-        "quantity": 4
-      }
-    ],
-    "ticket_price": 7,
-    "bar_total": 28,
-    "buy_total": 35,
-    "payment_method": "cash",
-    "payment_info": "Dinheiro"
-  },
-  {
     "id": 9,
+    "valid": 1,
     "user_id": -1,
     "movie_id": "2",
     "session_id": "7",
@@ -158,25 +95,8 @@
     "payment_info": "Dinheiro"
   },
   {
-    "id": 10,
-    "user_id": -1,
-    "movie_id": "2",
-    "session_id": "7",
-    "room_id": 7,
-    "seat": {
-      "row": 2,
-      "col": 3
-    },
-    "datetime": "2025-06-18T22:39:54.580Z",
-    "bar_items": [],
-    "ticket_price": 7,
-    "bar_total": 0,
-    "buy_total": 7,
-    "payment_method": "cash",
-    "payment_info": "Dinheiro"
-  },
-  {
     "id": 11,
+    "valid": 1,
     "user_id": -1,
     "movie_id": "2",
     "session_id": "7",
@@ -195,6 +115,7 @@
   },
   {
     "id": 12,
+    "valid": 1,
     "user_id": -1,
     "movie_id": "2",
     "session_id": "7",
@@ -213,6 +134,7 @@
   },
   {
     "id": 13,
+    "valid": 1,
     "user_id": -1,
     "movie_id": "2",
     "session_id": "7",
@@ -231,6 +153,7 @@
   },
   {
     "id": 14,
+    "valid": 1,
     "user_id": -1,
     "movie_id": "2",
     "session_id": "7",
@@ -279,62 +202,8 @@
     "payment_info": "Dinheiro"
   },
   {
-    "id": 15,
-    "user_id": -1,
-    "movie_id": "2",
-    "session_id": "7",
-    "room_id": 7,
-    "seat": {
-      "row": 3,
-      "col": 2
-    },
-    "datetime": "2025-06-19T00:57:14.655Z",
-    "bar_items": [
-      {
-        "id": "1",
-        "name": "Pipocas G",
-        "price": "10.00",
-        "quantity": 1
-      },
-      {
-        "id": "2",
-        "name": "Pipocas M",
-        "price": "5",
-        "quantity": 1
-      },
-      {
-        "id": "3",
-        "name": "Pipocas P",
-        "price": "3",
-        "quantity": 1
-      },
-      {
-        "id": "4",
-        "name": "Coca-Cola",
-        "price": "2",
-        "quantity": 1
-      },
-      {
-        "id": "5",
-        "name": "Água",
-        "price": "1.5",
-        "quantity": 1
-      },
-      {
-        "id": "6",
-        "name": "Sumo Laranja",
-        "price": "2.5",
-        "quantity": 1
-      }
-    ],
-    "ticket_price": 7,
-    "bar_total": 24,
-    "buy_total": 31,
-    "payment_method": "cash",
-    "payment_info": "Dinheiro"
-  },
-  {
     "id": 16,
+    "valid": 1,
     "user_id": -1,
     "movie_id": "3",
     "session_id": "17",
@@ -366,6 +235,7 @@
   },
   {
     "id": 17,
+    "valid": 1,
     "user_id": -1,
     "movie_id": "3",
     "session_id": "17",
@@ -416,6 +286,32 @@
     "ticket_price": 7,
     "bar_total": 34.5,
     "buy_total": 41.5,
+    "payment_method": "cash",
+    "payment_info": "Dinheiro"
+  },
+  {
+    "id": 18,
+    "valid": 0,
+    "user_id": -1,
+    "movie_id": "3",
+    "session_id": "15",
+    "room_id": 6,
+    "seat": {
+      "row": 3,
+      "col": 1
+    },
+    "datetime": "2025-06-19T22:23:09.065Z",
+    "bar_items": [
+      {
+        "id": "1",
+        "name": "Pipocas G",
+        "price": "10.00",
+        "quantity": 1
+      }
+    ],
+    "ticket_price": 7,
+    "bar_total": 10,
+    "buy_total": 17,
     "payment_method": "cash",
     "payment_info": "Dinheiro"
   }

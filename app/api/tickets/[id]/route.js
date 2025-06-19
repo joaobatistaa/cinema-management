@@ -5,9 +5,10 @@ import { addAuditLog } from "@/src/services/auditLog";
 
 const filePath = path.join(process.cwd(), "src", "data", "tickets.json");
 const sessionsPath = path.join(process.cwd(), "src", "data", "sessions.json");
+const productsPath = path.join(process.cwd(), "src", "data", "products.json");
 
-export async function GET(request, context) {
-  const { id } = context.params;
+export async function GET(request, { params }) {
+  const { id } = await params;
   const tickets = JSON.parse(fs.readFileSync(filePath, "utf-8"));
   const ticket = tickets.find((t) => String(t.id) === String(id));
   if (!ticket) {
@@ -61,7 +62,7 @@ function diffBarItems(oldItems, newItems) {
 }
 
 export async function PUT(request, { params }) {
-  const { id } = params;
+  const { id } = await params;
   const tickets = JSON.parse(fs.readFileSync(filePath, "utf-8"));
   const idx = tickets.findIndex((t) => String(t.id) === String(id));
 
@@ -87,36 +88,41 @@ export async function PUT(request, { params }) {
   tickets[idx] = { ...tickets[idx], ...ticketData, id: tickets[idx].id };
   fs.writeFileSync(filePath, JSON.stringify(tickets, null, 2));
 
-  const newItems = ticketData.bar_items;
-
-  const { added, removed, quantityChanged } = diffBarItems(oldItems, newItems);
-
   let mensagemBar = "";
 
-  if (added.length > 0) {
-    mensagemBar +=
-      "Itens adicionados: " +
-      added.map((i) => `${i.name} (x${i.quantity})`).join(", ") +
-      ". ";
-  }
+  if (ticketData?.bar_items) {
+    const newItems = ticketData.bar_items;
 
-  if (removed.length > 0) {
-    mensagemBar +=
-      "Itens removidos: " +
-      removed.map((i) => `${i.name} (x${i.quantity})`).join(", ") +
-      ". ";
-  }
+    const { added, removed, quantityChanged } = diffBarItems(
+      oldItems,
+      newItems
+    );
 
-  if (quantityChanged.length > 0) {
-    mensagemBar +=
-      "Itens com quantidade alterada: " +
-      quantityChanged
-        .map((change) => {
-          const sinal = change.type === "increase" ? "+" : "-";
-          return `${change.item.name} (${sinal}${change.change})`;
-        })
-        .join(", ") +
-      ".";
+    if (added.length > 0) {
+      mensagemBar +=
+        "Itens adicionados: " +
+        added.map((i) => `${i.name} (x${i.quantity})`).join(", ") +
+        ". ";
+    }
+
+    if (removed.length > 0) {
+      mensagemBar +=
+        "Itens removidos: " +
+        removed.map((i) => `${i.name} (x${i.quantity})`).join(", ") +
+        ". ";
+    }
+
+    if (quantityChanged.length > 0) {
+      mensagemBar +=
+        "Itens com quantidade alterada: " +
+        quantityChanged
+          .map((change) => {
+            const sinal = change.type === "increase" ? "+" : "-";
+            return `${change.item.name} (${sinal}${change.change})`;
+          })
+          .join(", ") +
+        ".";
+    }
   }
 
   if (!mensagemBar) {
@@ -125,35 +131,47 @@ export async function PUT(request, { params }) {
 
   let mensagemSessao = "";
 
-  if (oldSessionId == ticketData.session_id) {
-    mensagemSessao = "Nenhuma alteração na sessão.";
-  } else {
-    const sessions = JSON.parse(fs.readFileSync(sessionsPath, "utf-8"));
-    const sessionOld = sessions.find((t) => String(t.id) == String(oldSessionId));
-    const sessionNew = sessions.find((t) => String(t.id) == String(ticketData.session_id));
+  if (ticketData?.session_id) {
+    if (oldSessionId == ticketData.session_id) {
+      mensagemSessao = "Nenhuma alteração na sessão.";
+    } else {
+      const sessions = JSON.parse(fs.readFileSync(sessionsPath, "utf-8"));
+      const sessionOld = sessions.find(
+        (t) => String(t.id) == String(oldSessionId)
+      );
+      const sessionNew = sessions.find(
+        (t) => String(t.id) == String(ticketData.session_id)
+      );
 
-    const sessionDateOld = new Date(sessionOld.date);
-    const sessionDateNew = new Date(sessionNew.date);
+      const sessionDateOld = new Date(sessionOld.date);
+      const sessionDateNew = new Date(sessionNew.date);
 
-    const formattedDateOld = sessionDateOld.toLocaleDateString("pt-BR", {
-      day: "2-digit", month: "2-digit", year: "numeric"
-    });
+      const formattedDateOld = sessionDateOld.toLocaleDateString("pt-BR", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric"
+      });
 
-    const formattedTimeOld = sessionDateOld.toLocaleTimeString("pt-BR", {
-      hour: "2-digit", minute: "2-digit"
-    });
+      const formattedTimeOld = sessionDateOld.toLocaleTimeString("pt-BR", {
+        hour: "2-digit",
+        minute: "2-digit"
+      });
 
-    const formattedDateNew = sessionDateNew.toLocaleDateString("pt-BR", {
-      day: "2-digit", month: "2-digit", year: "numeric"
-    });
+      const formattedDateNew = sessionDateNew.toLocaleDateString("pt-BR", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric"
+      });
 
-    const formattedTimeNew = sessionDateNew.toLocaleTimeString("pt-BR", {
-      hour: "2-digit", minute: "2-digit"
-    });
+      const formattedTimeNew = sessionDateNew.toLocaleTimeString("pt-BR", {
+        hour: "2-digit",
+        minute: "2-digit"
+      });
 
-    mensagemSessao =
-      `Sessão alterada do dia ${formattedDateOld} às ${formattedTimeOld} ` +
-      `para o dia ${formattedDateNew} às ${formattedTimeNew}.`;
+      mensagemSessao =
+        `Sessão alterada do dia ${formattedDateOld} às ${formattedTimeOld} ` +
+        `para o dia ${formattedDateNew} às ${formattedTimeNew}.`;
+    }
   }
 
   try {
@@ -170,10 +188,9 @@ export async function PUT(request, { params }) {
   return NextResponse.json(tickets[idx]);
 }
 
-
 export async function DELETE(request, { params }) {
   try {
-    const { id } = params;
+    const { id } = await params;
 
     const tickets = JSON.parse(fs.readFileSync(filePath, "utf-8"));
     const idx = tickets.findIndex((t) => String(t.id) === String(id));
@@ -190,6 +207,19 @@ export async function DELETE(request, { params }) {
     // Obter os dados do body (DELETE também pode ter body no Next.js)
     const body = await request.json();
     const { actorId = "unknown", actorName = "unknown", refundMethod } = body;
+    console.log(body);
+
+    const barStock = JSON.parse(fs.readFileSync(productsPath, "utf-8"));
+    const barItems = body.barItems;
+
+    barItems.forEach((cancelledItem) => {
+      const stockItem = barStock.find((item) => item.id === cancelledItem.id);
+      if (stockItem) {
+        stockItem.stock += cancelledItem.quantity;
+      }
+    });
+
+    fs.writeFileSync(productsPath, JSON.stringify(barStock, null, 2));
 
     // Registar ação no audit log
     const descricao = `Bilhete com o ID ${id} cancelado${

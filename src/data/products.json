@@ -3,116 +3,133 @@
     "id": "1",
     "name": "Pipocas G",
     "price": "10.00",
-    "stock": 7
+    "stock": 8,
+    "pack": 1
   },
   {
     "id": "2",
     "name": "Pipocas M",
     "price": "5",
-    "stock": "10"
+    "stock": "101",
+    "pack": 1
   },
   {
     "id": "3",
     "name": "Pipocas P",
     "price": "3",
-    "stock": 16
+    "stock": 17,
+    "pack": 2
   },
   {
     "id": "4",
     "name": "Coca-Cola",
     "price": "2",
-    "stock": 29
+    "stock": 30,
+    "pack": 2
   },
   {
     "id": "5",
     "name": "Água",
     "price": "1.5",
-    "stock": 19
+    "stock": 21,
+    "pack": null
   },
   {
     "id": "6",
     "name": "Sumo Laranja",
     "price": "2.5",
-    "stock": 10
+    "stock": 11,
+    "pack": null
   },
   {
     "id": "7",
     "name": "Chocolate",
     "price": "2",
-    "stock": 16
+    "stock": 16,
+    "pack": null
   },
   {
     "id": "8",
     "name": "Nachos Q",
     "price": "4",
-    "stock": "11"
+    "stock": 11,
+    "pack": null
   },
   {
     "id": "10",
     "name": "Pipocas Doces P",
     "price": "4",
-    "stock": "8"
+    "stock": 8,
+    "pack": null
   },
   {
     "id": "11",
     "name": "Ice Tea Limão",
     "price": "2",
-    "stock": 6
+    "stock": 6,
+    "pack": null
   },
   {
     "id": "12",
     "name": "Ice Tea Pêssego",
     "price": "2.00",
-    "stock": 8
+    "stock": 8,
+    "pack": null
   },
   {
     "id": "13",
     "name": "M&Ms",
     "price": "2.50",
-    "stock": 8
+    "stock": 8,
+    "pack": null
   },
   {
     "id": "14",
     "name": "KitKat",
     "price": "2",
-    "stock": "15"
+    "stock": 15,
+    "pack": null
   },
   {
     "id": "15",
     "name": "Água Gás",
     "price": "1.8",
-    "stock": "10"
+    "stock": 10,
+    "pack": null
   },
   {
     "id": "16",
     "name": "Pipocas Doces M",
     "price": "6",
-    "stock": "12"
+    "stock": 12,
+    "pack": null
   },
   {
     "id": "17",
     "name": "Nachos Gua",
     "price": "4.5",
-    "stock": "8"
+    "stock": 8,
+    "pack": null
   },
   {
     "id": "18",
     "name": "Twix",
     "price": "2",
-    "stock": "13"
+    "stock": 13,
+    "pack": null
   },
   {
     "id": 21,
     "name": "bananinhas",
-    "stock": 10,
     "price": "2.5",
-    "image": ""
+    "stock": 10,
+    "pack": null
   },
   {
     "id": 22,
     "name": "cookie",
-    "stock": 4,
     "price": "10.00",
-    "image": ""
+    "stock": 4,
+    "pack": null
   }
 ]

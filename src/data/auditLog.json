@@ -509,5 +509,54 @@
     "userName": "ADMIN",
     "date": "2025-06-19T22:11:27.489Z",
     "description": "Início de sessão"
+  },
+  {
+    "id": 74,
+    "userID": 1,
+    "userName": "ADMIN",
+    "date": "2025-06-19T22:23:11.032Z",
+    "description": "Novo bilhete com o ID 18 comprado para o filme Amador na sessão do dia 03/07/2025 às 14:00, na sala teste 6 e lugar C1. Valor gasto no bar: 10€ - Itens do bar (Pipocas G x1). Valor do bilhete: 7€. Valor total: 17€"
+  },
+  {
+    "id": 75,
+    "userID": 1,
+    "userName": "ADMIN",
+    "date": "2025-06-19T22:23:28.613Z",
+    "description": "Bilhete com o ID 10 cancelado com reembolso via cash"
+  },
+  {
+    "id": 76,
+    "userID": 1,
+    "userName": "ADMIN",
+    "date": "2025-06-19T22:24:00.621Z",
+    "description": "Bilhete com o ID 6 cancelado com reembolso via cash"
+  },
+  {
+    "id": 77,
+    "userID": 1,
+    "userName": "ADMIN",
+    "date": "2025-06-19T22:26:32.056Z",
+    "description": "Bilhete com o ID 1 cancelado com reembolso via cash"
+  },
+  {
+    "id": 78,
+    "userID": 1,
+    "userName": "ADMIN",
+    "date": "2025-06-19T22:27:22.712Z",
+    "description": "Bilhete com o ID 15 cancelado com reembolso via cash"
+  },
+  {
+    "id": 79,
+    "userID": "unknown",
+    "userName": "unknown",
+    "date": "2025-06-19T22:54:30.697Z",
+    "description": "Bilhete com o ID 18 foi alterado. Bar: Nenhuma alteração nos itens de bar. Sessão: "
+  },
+  {
+    "id": 80,
+    "userID": "unknown",
+    "userName": "unknown",
+    "date": "2025-06-19T22:54:37.315Z",
+    "description": "Bilhete com o ID 18 foi alterado. Bar: Nenhuma alteração nos itens de bar. Sessão: "
   }
 ]
