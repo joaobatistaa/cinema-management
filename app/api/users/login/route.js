@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { authenticateUser, getUserByEmail } from "@/src/services/users";
+import { addAuditLog } from "@/src/services/auditLog";
 
 export async function POST(request) {
   try {
@@ -34,6 +35,20 @@ export async function POST(request) {
     }
     // Autentica a password (bcrypt)
     const authenticatedUser = await authenticateUser(email, password);
+    
+    // Registrar login no log de auditoria
+    try {
+      await addAuditLog({
+        userID: authenticatedUser.id,
+        userName: authenticatedUser.name || authenticatedUser.email,
+        description: `Início de sessão`,
+        date: new Date().toISOString()
+      });
+    } catch (auditError) {
+      console.error('Erro ao registrar no log de auditoria:', auditError);
+      // Não interrompe o fluxo se o log falhar
+    }
+    
     return NextResponse.json(authenticatedUser, { status: 200 });
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 401 });

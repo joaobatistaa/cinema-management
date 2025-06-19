@@ -21,7 +21,8 @@ export async function GET() {
 export async function PUT(request) {
   try {
     const body = await request.json();
-    const { max_cancel_days } = body;
+    const { max_cancel_days, actorId = "unknown", actorName = "unknown" } = body;
+
     if (
       typeof max_cancel_days !== "number" ||
       isNaN(max_cancel_days) ||
@@ -32,14 +33,11 @@ export async function PUT(request) {
         { status: 400 }
       );
     }
+
     const settings = { max_cancel_days };
     fs.writeFileSync(filePath, JSON.stringify(settings, null, 2));
 
-    // Registar ação no audit log
-    // Extrair userID e userName do header (quem faz o pedido)
-    let actorId = request.headers.get("x-user-id") || "unknown";
-    let actorName = request.headers.get("x-user-name") || "unknown";
-
+    // Registar no audit log
     try {
       await addAuditLog({
         userID: actorId,

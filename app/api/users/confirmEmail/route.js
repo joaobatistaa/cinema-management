@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { promises as fs } from "fs";
 import path from "path";
+import { addAuditLog } from "@/src/services/auditLog";
 
 const filePath = path.join(process.cwd(), "src", "data", "users.json");
 
@@ -51,6 +52,18 @@ export async function POST(request) {
     users[idx].purl = null;
 
     await fs.writeFile(filePath, JSON.stringify(users, null, 2), "utf-8");
+
+    // Add audit log for email confirmation
+    try {
+      await addAuditLog({
+        userID: users[idx].id,
+        userName: users[idx].name ,
+        description: `Email confirmado para o utilizador: ${users[idx].email}`,
+        date: new Date().toISOString()
+      });
+    } catch (auditError) {
+      console.error('Erro ao registrar no log de auditoria:', auditError);
+    }
 
     return NextResponse.json({ success: true });
   } catch (error) {

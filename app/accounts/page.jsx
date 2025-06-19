@@ -121,7 +121,6 @@ export default function AccountsPage() {
         updates.salario = null;
       }
       const body = JSON.stringify({ id: editUser.id, updates, userId: user.id, userName: user.name });
-      console.log(body);
       const res = await fetch("/api/users/list", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },

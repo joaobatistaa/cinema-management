@@ -117,7 +117,6 @@ export default function TicketsPage() {
   useEffect(() => {
     setNewCancelDays(cancelDays);
   }, [cancelDays]);
-
   async function handleSaveSettings() {
     setSettingsLoading(true);
     setSettingsError("");
@@ -126,14 +125,18 @@ export default function TicketsPage() {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          "x-user-id": user.id,
-          "x-user-name": user.name
         },
-        body: JSON.stringify({ max_cancel_days: Number(newCancelDays) })
+        body: JSON.stringify({
+          max_cancel_days: Number(newCancelDays),
+          actorId: user.id,
+          actorName: user.name
+        })
       });
+  
       if (!res.ok) {
         throw new Error("Erro ao atualizar definições.");
       }
+  
       setCancelDays(Number(newCancelDays));
       setSettingsOpen(false);
       toast.success("Definições atualizadas com sucesso.");
@@ -143,6 +146,7 @@ export default function TicketsPage() {
       setSettingsLoading(false);
     }
   }
+  
 
   useEffect(() => {
     let result = tickets;

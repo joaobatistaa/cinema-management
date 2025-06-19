@@ -257,17 +257,19 @@ export default function EditTicketPage() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+  
     if (!selectedSeat) {
       toast.error("Selecione um lugar.");
       return;
     }
+  
     setSaving(true);
+  
     try {
       const now = new Date();
       const datetime = now.toISOString();
-
+  
       const data = {
-        // id: ticket.id, // não enviar id, pois é update
         movie_id: movie?.id,
         session_id: selectedSessionId,
         room_id: room?.id,
@@ -286,24 +288,25 @@ export default function EditTicketPage() {
           }),
         ticket_price: session?.price,
         bar_total: barTotal,
-        buy_total: session?.price + barTotal
+        buy_total: session?.price + barTotal,
+  
+        // ✅ Adiciona actorId e actorName ao body
+        actorId: user.id,
+        actorName: user.name
       };
-
-      // PUT ou PATCH para atualizar o bilhete
+  
       const response = await fetch(`/api/tickets/${ticket.id}`, {
         method: "PUT",
         headers: {
-          "Content-Type": "application/json",
-          "x-user-id": user.id,
-          "x-user-name": user.name
+          "Content-Type": "application/json"
         },
         body: JSON.stringify(data)
       });
-
+  
       if (!response.ok) {
         throw new Error("Erro ao atualizar bilhete");
       }
-
+  
       toast.success("Bilhete atualizado com sucesso!");
       router.replace("/tickets");
     } catch (err) {
@@ -312,6 +315,7 @@ export default function EditTicketPage() {
       setSaving(false);
     }
   }
+  
 
   const handleQuantityChange = (itemId, delta) => {
     setQuantities((prev) => ({

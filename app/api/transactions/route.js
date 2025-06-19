@@ -2,7 +2,8 @@ import { NextResponse } from "next/server";
 import { getTransactions, addTransaction } from "@/src/services/transactions";
 import { updateProductStock } from "@/src/services/bar";
 import { getUserByEmail } from "@/src/services/users";
-import { sendEmail } from "@/src/utils/email"; 
+import { sendEmail } from "@/src/utils/email";
+import { addAuditLog } from "@/src/services/auditLog"; 
 
 export async function GET() {
   try {
@@ -74,6 +75,18 @@ export async function POST(request) {
         nif: nifToSave,
       };
       await addTransaction(transaction);
+
+      // Add audit log for the transaction
+      try {
+        await addAuditLog({
+          userID: body.actorId || 0,
+          userName: body.actorName || 'guest',
+          description: `Nova transação de bar registrada: ${cart.length} itens, total ${transaction.total.toFixed(2)}€`,
+          date: transaction.date
+        });
+      } catch (auditError) {
+        console.error('Erro ao registrar no log de auditoria:', auditError);
+      }
 
       // Enviar email ao cliente com os detalhes da transação (exceto id)
       if (userId !== 0) {

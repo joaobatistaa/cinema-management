@@ -61,9 +61,10 @@ function diffBarItems(oldItems, newItems) {
 }
 
 export async function PUT(request, { params }) {
-  const { id } = await params;
+  const { id } = params;
   const tickets = JSON.parse(fs.readFileSync(filePath, "utf-8"));
   const idx = tickets.findIndex((t) => String(t.id) === String(id));
+
   if (idx === -1) {
     return NextResponse.json(
       { error: "Bilhete não encontrado" },
@@ -75,15 +76,18 @@ export async function PUT(request, { params }) {
   const oldSessionId = tickets[idx].session_id;
 
   const data = await request.json();
-  tickets[idx] = { ...tickets[idx], ...data, id: tickets[idx].id };
+
+  // 🔁 Extrair actorId e actorName do corpo do POST
+  const actorId = data.actorId || "unknown";
+  const actorName = data.actorName || "unknown";
+
+  // ❌ Remover actorId e actorName do objeto que será salvo como bilhete
+  const { actorId: _, actorName: __, ...ticketData } = data;
+
+  tickets[idx] = { ...tickets[idx], ...ticketData, id: tickets[idx].id };
   fs.writeFileSync(filePath, JSON.stringify(tickets, null, 2));
 
-  // Registar ação no audit log
-  // Extrair userID e userName do header (quem faz o pedido)
-  let actorId = request.headers.get("x-user-id") || "unknown";
-  let actorName = request.headers.get("x-user-name") || "unknown";
-
-  const newItems = data.bar_items;
+  const newItems = ticketData.bar_items;
 
   const { added, removed, quantityChanged } = diffBarItems(oldItems, newItems);
 
@@ -121,55 +125,35 @@ export async function PUT(request, { params }) {
 
   let mensagemSessao = "";
 
-  if (oldSessionId == data.session_id) {
+  if (oldSessionId == ticketData.session_id) {
     mensagemSessao = "Nenhuma alteração na sessão.";
   } else {
     const sessions = JSON.parse(fs.readFileSync(sessionsPath, "utf-8"));
-    const sessionOld = sessions.find(
-      (t) => String(t.id) == String(oldSessionId)
-    );
-    const sessionNew = sessions.find(
-      (t) => String(t.id) == String(data.session_id)
-    );
-
-    console.log(sessionOld);
-    console.log(sessionNew);
+    const sessionOld = sessions.find((t) => String(t.id) == String(oldSessionId));
+    const sessionNew = sessions.find((t) => String(t.id) == String(ticketData.session_id));
 
     const sessionDateOld = new Date(sessionOld.date);
     const sessionDateNew = new Date(sessionNew.date);
 
     const formattedDateOld = sessionDateOld.toLocaleDateString("pt-BR", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric"
+      day: "2-digit", month: "2-digit", year: "numeric"
     });
 
     const formattedTimeOld = sessionDateOld.toLocaleTimeString("pt-BR", {
-      hour: "2-digit",
-      minute: "2-digit"
+      hour: "2-digit", minute: "2-digit"
     });
 
     const formattedDateNew = sessionDateNew.toLocaleDateString("pt-BR", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric"
+      day: "2-digit", month: "2-digit", year: "numeric"
     });
 
     const formattedTimeNew = sessionDateNew.toLocaleTimeString("pt-BR", {
-      hour: "2-digit",
-      minute: "2-digit"
+      hour: "2-digit", minute: "2-digit"
     });
 
     mensagemSessao =
-      "Sessão alterada do dia " +
-      formattedDateOld +
-      " às " +
-      formattedTimeOld +
-      " para o dia " +
-      formattedDateNew +
-      " às " +
-      formattedTimeNew +
-      ".";
+      `Sessão alterada do dia ${formattedDateOld} às ${formattedTimeOld} ` +
+      `para o dia ${formattedDateNew} às ${formattedTimeNew}.`;
   }
 
   try {
@@ -186,34 +170,52 @@ export async function PUT(request, { params }) {
   return NextResponse.json(tickets[idx]);
 }
 
+
 export async function DELETE(request, { params }) {
-  const { id } = await params;
-  const tickets = JSON.parse(fs.readFileSync(filePath, "utf-8"));
-  const idx = tickets.findIndex((t) => String(t.id) === String(id));
-  if (idx === -1) {
+  try {
+    const { id } = params;
+
+    const tickets = JSON.parse(fs.readFileSync(filePath, "utf-8"));
+    const idx = tickets.findIndex((t) => String(t.id) === String(id));
+    if (idx === -1) {
+      return NextResponse.json(
+        { error: "Bilhete não encontrado" },
+        { status: 404 }
+      );
+    }
+
+    // Remover o bilhete
+    const removedTicket = tickets.splice(idx, 1)[0];
+
+    // Obter os dados do body (DELETE também pode ter body no Next.js)
+    const body = await request.json();
+    const { actorId = "unknown", actorName = "unknown", refundMethod } = body;
+
+    // Registar ação no audit log
+    const descricao = `Bilhete com o ID ${id} cancelado${
+      refundMethod ? ` com reembolso via ${refundMethod}` : ""
+    }`;
+
+    try {
+      await addAuditLog({
+        userID: actorId,
+        userName: actorName,
+        description: descricao,
+        date: new Date().toISOString()
+      });
+    } catch (auditErr) {
+      console.error("Erro ao registar no audit log:", auditErr);
+    }
+
+    // Gravar alterações
+    fs.writeFileSync(filePath, JSON.stringify(tickets, null, 2));
+
+    return NextResponse.json({ success: true });
+  } catch (err) {
+    console.error("Erro ao cancelar bilhete:", err);
     return NextResponse.json(
-      { error: "Bilhete não encontrado" },
-      { status: 404 }
+      { error: "Erro ao cancelar bilhete" },
+      { status: 500 }
     );
   }
-  tickets.splice(idx, 1);
-
-  // Registar ação no audit log
-  // Extrair userID e userName do header (quem faz o pedido)
-  let actorId = request.headers.get("x-user-id") || "unknown";
-  let actorName = request.headers.get("x-user-name") || "unknown";
-
-  try {
-    await addAuditLog({
-      userID: actorId,
-      userName: actorName,
-      description: `Bilhete com o ID ${id} cancelado`,
-      date: new Date().toISOString()
-    });
-  } catch (auditErr) {
-    console.error("Erro ao registar no audit log:", auditErr);
-  }
-
-  fs.writeFileSync(filePath, JSON.stringify(tickets, null, 2));
-  return NextResponse.json({ success: true });
 }

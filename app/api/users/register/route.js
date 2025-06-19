@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { addUser } from "@/src/services/users";
 import { sendEmail } from "@/src/utils/email";
+import { addAuditLog } from "@/src/services/auditLog";
 
 export async function POST(request) {
   try {
@@ -30,6 +31,18 @@ export async function POST(request) {
     const newUser = await addUser(userData);
     const { password, ...userWithoutPassword } = newUser;
 
+    // Registrar criação de utilizador no log de auditoria
+    try {
+      await addAuditLog({
+        userID: newUser.id,
+        userName: newUser.name,
+        description: `Novo utilizador registado: ${newUser.email} (ID: ${newUser.id})`,
+        date: new Date().toISOString()
+      });
+    } catch (auditError) {
+      console.error('Erro ao registrar no log de auditoria:', auditError);
+    }
+
     // Enviar email de confirmação
     const confirmUrl = `${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/confirmEmail?a=${newUser.purl}`;
     await sendEmail({
@@ -40,6 +53,8 @@ export async function POST(request) {
              <p>Para confirmar o seu email, clique no link abaixo:</p>
              <p><a href="${confirmUrl}">${confirmUrl}</a></p>`
     });
+
+
 
     return NextResponse.json(userWithoutPassword, { status: 201 });
   } catch (error) {

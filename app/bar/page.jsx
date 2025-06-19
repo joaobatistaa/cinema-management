@@ -12,6 +12,12 @@ export default function Bar() {
   const { user } = useAuth();
   const userRole = !user ? "guest" : user.role;
 
+  // Helper function to get actor information
+  const getActorInfo = () => ({
+    actorId: user?.id || 0,
+    actorName: user?.name || 'guest'
+  });
+
   const [products, setProducts] = useState([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
@@ -41,7 +47,6 @@ export default function Bar() {
     async function fetchProducts() {
       try {
         setLoading(true);
-        console.log(user);
         const response = await fetch("/api/bar");
         if (!response.ok) throw new Error("Erro ao carregar os produtos.");
         const data = await response.json();
@@ -135,7 +140,8 @@ export default function Bar() {
           email: user.email,
           cart,
           desc: "Compra no Bar",
-          nif: nifStr
+          nif: nifStr,
+          ...getActorInfo()
         })
       });
       if (!res.ok) {
@@ -172,7 +178,8 @@ export default function Bar() {
           email: "guest@guest.com",
           cart,
           desc: "Compra no Bar",
-          nif: nifStr
+          nif: nifStr,
+          ...getActorInfo()
         })
       });
       if (!res.ok) {
@@ -233,7 +240,8 @@ export default function Bar() {
           email: emailTrimmed,
           cart,
           desc: "Compra no Bar",
-          nif: nifStr
+          nif: nifStr,
+          ...getActorInfo()
         })
       });
       if (!res.ok) {
@@ -286,7 +294,8 @@ export default function Bar() {
           id: editProduct.id,
           name: editName.trim(),
           stock: Number(editStock),
-          price: priceValue
+          price: priceValue,
+          ...getActorInfo()
         })
       });
       if (!res.ok) {
@@ -298,11 +307,11 @@ export default function Bar() {
         prev.map((p) =>
           p.id === editProduct.id
             ? {
-                ...p,
-                name: editName.trim(),
-                stock: Number(editStock),
-                price: priceValue
-              }
+              ...p,
+              name: editName.trim(),
+              stock: Number(editStock),
+              price: priceValue
+            }
             : p
         )
       );
@@ -347,7 +356,8 @@ export default function Bar() {
         body: JSON.stringify({
           name: createName.trim(),
           stock: Number(createStock),
-          price: priceValue
+          price: priceValue,
+          ...getActorInfo()
         })
       });
       if (!res.ok) {
@@ -452,7 +462,8 @@ export default function Bar() {
                                 "Tem a certeza que pretende eliminar este produto?"
                               )
                             ) {
-                              fetch(`/api/bar?id=${product.id}`, {
+                              const { actorId, actorName } = getActorInfo();
+                              fetch(`/api/bar?id=${product.id}&actorId=${actorId}&actorName=${encodeURIComponent(actorName)}`, {
                                 method: "DELETE"
                               })
                                 .then((res) => {
@@ -566,11 +577,10 @@ export default function Bar() {
                     <button
                       key={n}
                       onClick={() => setPage(n + 1)}
-                      className={`cursor-pointer px-3 py-1 rounded ${
-                        page === n + 1
+                      className={`cursor-pointer px-3 py-1 rounded ${page === n + 1
                           ? "bg-white text-black"
                           : "bg-gray-800 text-white"
-                      }`}
+                        }`}
                     >
                       {n + 1}
                     </button>

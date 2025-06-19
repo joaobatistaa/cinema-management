@@ -21,6 +21,11 @@ export default function RoomsManagement() {
   const [page, setPage] = useState(1);
   const [saving, setSaving] = useState(false);
   const [sessions, setSessions] = useState([]);
+  
+  const getActorInfo = () => ({
+    actorId: JSON.parse(localStorage.getItem('user'))?.id || 0,
+    actorName: JSON.parse(localStorage.getItem('user'))?.name || 'guest'
+  });
 
   const totalPages = Math.ceil(roomsData.length / ITEMS_PER_PAGE);
 
@@ -66,8 +71,11 @@ export default function RoomsManagement() {
         return;
       }
       // Agora sim, faz o pedido real de eliminação
+      const { actorId, actorName } = getActorInfo();
       const resDelete = await fetch(`/api/rooms/${roomId}`, {
-        method: "DELETE"
+        method: "DELETE",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ actorId, actorName })
       });
       const dataDelete = await resDelete.json();
       if (!resDelete.ok) {

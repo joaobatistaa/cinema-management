@@ -2,13 +2,9 @@ import { NextResponse } from "next/server";
 import { getUsers } from "@/src/services/users";
 import { promises as fs } from "fs";
 import path from "path";
+import bcrypt from "bcryptjs";
 import { sendEmail } from "@/src/utils/email";
-let bcrypt;
-try {
-  bcrypt = require("bcryptjs");
-} catch (e) {
-  throw new Error("O módulo 'bcryptjs' não está instalado. Execute 'npm install bcryptjs' na raiz do projeto.");
-}
+import { addAuditLog } from "@/src/services/auditLog";
 
 const filePath = path.join(process.cwd(), "src", "data", "users.json");
 
@@ -52,6 +48,18 @@ export async function POST(request) {
     users[idx].desc = "changed password"; 
 
     await fs.writeFile(filePath, JSON.stringify(users, null, 2), "utf-8");
+
+    // Registrar alteração de senha no log de auditoria
+    try {
+      await addAuditLog({
+        userID: users[idx].id,
+        userName: users[idx].name ,
+        description: `Password alterada para o utilizador: ${users[idx].email}`,
+        date: new Date().toISOString()
+      });
+    } catch (auditError) {
+      console.error('Erro ao registrar no log de auditoria:', auditError);
+    }
 
     // Enviar email de notificação de alteração de password
     try {

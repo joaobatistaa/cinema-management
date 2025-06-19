@@ -33,7 +33,7 @@
     "id": "6",
     "name": "Sumo Laranja",
     "price": "2.5",
-    "stock": 11
+    "stock": 10
   },
   {
     "id": "7",
@@ -63,13 +63,13 @@
     "id": "12",
     "name": "Ice Tea Pêssego",
     "price": "2.00",
-    "stock": 9
+    "stock": 8
   },
   {
     "id": "13",
     "name": "M&Ms",
     "price": "2.50",
-    "stock": 10
+    "stock": 8
   },
   {
     "id": "14",
@@ -100,18 +100,6 @@
     "name": "Twix",
     "price": "2",
     "stock": "13"
-  },
-  {
-    "id": "19",
-    "name": "Rebuçados",
-    "price": "1",
-    "stock": "30"
-  },
-  {
-    "id": "20",
-    "name": "Sumo Maçã",
-    "price": "2.5",
-    "stock": "14"
   },
   {
     "id": 21,

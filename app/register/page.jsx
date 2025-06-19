@@ -9,6 +9,7 @@ import { useState } from "react";
 export default function RegisterPage() {
   const router = useRouter();
   const { login } = useAuth();
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [nif, setNif] = useState("");
 

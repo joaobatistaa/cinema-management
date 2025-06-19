@@ -29,6 +29,11 @@ const EditRoomPage = () => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
+  const getActorInfo = () => ({
+    actorId: JSON.parse(localStorage.getItem('user'))?.id || 0,
+    actorName: JSON.parse(localStorage.getItem('user'))?.name || 'guest'
+  });
+
   useEffect(() => {
     async function fetchRoom() {
       try {
@@ -117,6 +122,7 @@ const EditRoomPage = () => {
     e.preventDefault();
     setSaving(true);
     try {
+      const { actorId, actorName } = getActorInfo();
       const res = await fetch(`/api/rooms/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -124,7 +130,9 @@ const EditRoomPage = () => {
           name,
           soundType,
           videoType,
-          seats
+          seats,
+          actorId,
+          actorName
         })
       });
 

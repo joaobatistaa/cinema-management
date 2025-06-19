@@ -5,6 +5,7 @@ import path from "path";
 const filePath = path.join(process.cwd(), "src", "data", "users.json");
 import { sendEmail } from "@/src/utils/email";
 import { generateUniquePurl } from "@/src/services/users";
+import { addAuditLog } from "@/src/services/auditLog";
 
 export async function GET(request) {
   try {
@@ -80,6 +81,23 @@ export async function PUT(request) {
       users[userIdx] = { ...user, name, email: newEmail, nif };
     }
     await fs.writeFile(filePath, JSON.stringify(users, null, 2));
+    
+    // Registrar alteração de perfil no log de auditoria
+    try {
+      let description = `Perfil atualizado: ${name} (ID: ${users[userIdx].id})`;
+      if (emailChanged) {
+        description += ` - Email alterado de ${email} para ${newEmail}`;
+      }
+      await addAuditLog({
+        userID: users[userIdx].id,
+        userName: name,
+        description,
+        date: new Date().toISOString()
+      });
+    } catch (auditError) {
+      console.error('Erro ao registrar no log de auditoria:', auditError);
+    }
+
     if (emailChanged) {
       // Enviar email de confirmação
       const confirmUrl = `${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/confirmEmail?a=${purl}`;

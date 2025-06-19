@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { promises as fs } from "fs";
 import path from "path";
+import { addAuditLog } from "@/src/services/auditLog";
 
 const filePath = path.join(process.cwd(), "src", "data", "rooms.json");
 
@@ -72,6 +73,19 @@ export async function POST(request) {
         { message: "Erro ao guardar a nova sala." },
         { status: 500 }
       );
+    }
+
+    // Add audit log for room creation
+    const { actorId = 0, actorName = 'guest', ...roomData } = newRoom;
+    try {
+      await addAuditLog({
+        userID: actorId,
+        userName: actorName,
+        description: `Nova sala criada: ${roomData.name} (ID: ${newId})`,
+        date: new Date().toISOString()
+      });
+    } catch (auditError) {
+      console.error('Erro ao registrar no log de auditoria:', auditError);
     }
 
     return NextResponse.json(newRoomWithId, { status: 201 });

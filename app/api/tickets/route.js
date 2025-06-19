@@ -24,17 +24,20 @@ export async function GET(request) {
 export async function POST(request) {
   try {
     const data = await request.json();
-    console.log(data);
 
     const {
       email,
       movie_title,
       room_name,
       session_datetime,
-      ...dataWithoutEmail
+      actorId = "unknown",       // ← extrair do corpo da requisição
+      actorName = "unknown",     // ← extrair do corpo da requisição
+      ...dataWithoutEmailAndActor
     } = data;
-    const newTicket = addTicket(dataWithoutEmail);
 
+    const newTicket = addTicket(dataWithoutEmailAndActor);
+
+    // Enviar email com bilhete (se aplicável)
     if (email) {
       const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(
         `ticket-${newTicket.id}`
@@ -42,14 +45,14 @@ export async function POST(request) {
       const html = `
         <h2>O seu bilhete de cinema</h2>
         <p>Filme: <b>${movie_title || ""}</b></p>
-        <p>Sessão: <b>${dataWithoutEmail.session_id || ""}</b></p>
+        <p>Sessão: <b>${dataWithoutEmailAndActor.session_id || ""}</b></p>
         <p>Lugar: <b>${
-          dataWithoutEmail.seat
-            ? String.fromCharCode(64 + dataWithoutEmail.seat.row) +
-              dataWithoutEmail.seat.col
+          dataWithoutEmailAndActor.seat
+            ? String.fromCharCode(64 + dataWithoutEmailAndActor.seat.row) +
+              dataWithoutEmailAndActor.seat.col
             : ""
         }</b></p>
-        <p>Preço total: <b>${dataWithoutEmail.buy_total}€</b></p>
+        <p>Preço total: <b>${dataWithoutEmailAndActor.buy_total}€</b></p>
         <p>Apresente este QR Code à entrada:</p>
         <img src="${qrUrl}" alt="QR Code" />
         <p>Número do bilhete: <b>${newTicket.id}</b></p>
@@ -62,12 +65,8 @@ export async function POST(request) {
       });
     }
 
-    // Registar ação no audit log
-    // Extrair userID e userName do header (quem faz o pedido)
-    let actorId = request.headers.get("x-user-id") || "unknown";
-    let actorName = request.headers.get("x-user-name") || "unknown";
+    // Preparar dados para o log de auditoria
     const sessionDate = new Date(session_datetime);
-
     const formattedDate = sessionDate.toLocaleDateString("pt-BR", {
       day: "2-digit",
       month: "2-digit",
@@ -79,17 +78,18 @@ export async function POST(request) {
       minute: "2-digit"
     });
 
-    const seat = dataWithoutEmail.seat
-      ? String.fromCharCode(64 + dataWithoutEmail.seat.row) +
-        dataWithoutEmail.seat.col
+    const seat = dataWithoutEmailAndActor.seat
+      ? String.fromCharCode(64 + dataWithoutEmailAndActor.seat.row) +
+        dataWithoutEmailAndActor.seat.col
       : "";
 
-    const itemNames = dataWithoutEmail.bar_items
+    const itemNames = dataWithoutEmailAndActor.bar_items
       .map((item) => item.name + " x" + item.quantity)
       .join(", ");
 
-    const logDescription = `Novo bilhete com o ID ${newTicket.id} comprado para o filme ${movie_title} na sessão do dia ${formattedDate} às ${formattedTime}, na sala ${room_name} e lugar ${seat}. Valor gasto no bar: ${dataWithoutEmail.bar_total}€ - Itens do bar (${itemNames}). Valor do bilhete: ${dataWithoutEmail.ticket_price}€. Valor total: ${dataWithoutEmail.buy_total}€`;
+    const logDescription = `Novo bilhete com o ID ${newTicket.id} comprado para o filme ${movie_title} na sessão do dia ${formattedDate} às ${formattedTime}, na sala ${room_name} e lugar ${seat}. Valor gasto no bar: ${dataWithoutEmailAndActor.bar_total}€ - Itens do bar (${itemNames}). Valor do bilhete: ${dataWithoutEmailAndActor.ticket_price}€. Valor total: ${dataWithoutEmailAndActor.buy_total}€`;
 
+    // Adicionar no log de auditoria
     try {
       await addAuditLog({
         userID: actorId,
@@ -109,3 +109,4 @@ export async function POST(request) {
     );
   }
 }
+

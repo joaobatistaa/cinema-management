@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
-import { getUserByEmail, generateUniquePurl, getUsers } from "@/src/services/users";
-import { promises as fs } from "fs";
-import path from "path";
+import { getUsers, getUserByEmail, generateUniquePurl } from "@/src/services/users";
+import { addAuditLog } from "@/src/services/auditLog";
+import fs from 'fs/promises';
+import path from 'path';
 import { sendEmail } from "@/src/utils/email";
 
 const filePath = path.join(process.cwd(), "src", "data", "users.json");
@@ -37,6 +38,18 @@ export async function POST(request) {
     users[idx].purl = newPurl;
     users[idx].desc = "asked new password"; 
     await fs.writeFile(filePath, JSON.stringify(users, null, 2), "utf-8");
+
+    // Registrar pedido de recuperação de senha no log de auditoria
+    try {
+      await addAuditLog({
+        userID: user.id ,
+        userName: user.name,
+        description: `Pedido de recuperação de senha`,
+        date: new Date().toISOString()
+      });
+    } catch (auditError) {
+      console.error('Erro ao registrar no log de auditoria:', auditError);
+    }
 
     try {
       const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";

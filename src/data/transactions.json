@@ -88,5 +88,73 @@
     "date": "2025-06-18T14:33:21.591Z",
     "nif": "111111111",
     "id": "1750257201592"
+  },
+  {
+    "items": [
+      {
+        "id": "12",
+        "name": "Ice Tea Pêssego",
+        "price": "2.00",
+        "stock": 9,
+        "quantity": 1
+      }
+    ],
+    "total": 2,
+    "userId": 0,
+    "desc": "Compra no Bar",
+    "date": "2025-06-19T17:36:39.564Z",
+    "nif": null,
+    "id": "1750354599564"
+  },
+  {
+    "items": [
+      {
+        "id": "6",
+        "name": "Sumo Laranja",
+        "price": "2.5",
+        "stock": 11,
+        "quantity": 1
+      }
+    ],
+    "total": 2.5,
+    "userId": 6,
+    "desc": "Compra no Bar",
+    "date": "2025-06-19T17:46:12.730Z",
+    "nif": "270309136",
+    "id": "1750355172730"
+  },
+  {
+    "items": [
+      {
+        "id": "13",
+        "name": "M&Ms",
+        "price": "2.50",
+        "stock": 10,
+        "quantity": 1
+      }
+    ],
+    "total": 2.5,
+    "userId": 6,
+    "desc": "Compra no Bar",
+    "date": "2025-06-19T17:48:02.447Z",
+    "nif": "270309136",
+    "id": "1750355282447"
+  },
+  {
+    "items": [
+      {
+        "id": "13",
+        "name": "M&Ms",
+        "price": "2.50",
+        "stock": 9,
+        "quantity": 1
+      }
+    ],
+    "total": 2.5,
+    "userId": 0,
+    "desc": "Compra no Bar",
+    "date": "2025-06-19T17:51:21.667Z",
+    "nif": null,
+    "id": "1750355481667"
   }
 ]

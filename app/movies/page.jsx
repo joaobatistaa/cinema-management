@@ -46,6 +46,25 @@ export default function Movies() {
   const pageSize = 10;
   const [tickets, setTickets] = useState([]);
 
+  // Get current user info for audit logging
+  const getActorInfo = () => {
+    if (typeof window === 'undefined') return { actorId: 0, actorName: 'Sistema' };
+    
+    try {
+      const user = JSON.parse(localStorage.getItem('user'));
+      if (user && user.id && user.name) {
+        return { 
+          actorId: user.id, 
+          actorName: user.name 
+        };
+      }
+    } catch (error) {
+      console.error('Error getting user info:', error);
+    }
+    
+    return { actorId: 0, actorName: 'Sistema' };
+  };
+
   // Ano mínimo e máximo permitidos
   const MIN_YEAR = 1900;
   const MAX_YEAR = new Date().getFullYear();
@@ -146,10 +165,12 @@ export default function Movies() {
       return;
     }
     try {
+      const actorInfo = getActorInfo();
       const res = await fetch(`/api/movies`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          ...actorInfo,
           id: editMovie.id,
           title: editTitle.trim(),
           synopsis: editSynopsis.trim(),
@@ -205,10 +226,12 @@ export default function Movies() {
       return;
     }
     try {
+      const actorInfo = getActorInfo();
       const res = await fetch(`/api/movies`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          ...actorInfo,
           title: createTitle.trim(),
           synopsis: createSynopsis.trim(),
           cast: createCast.split("\n").map((s) => s.trim()).filter(Boolean),
@@ -234,26 +257,29 @@ export default function Movies() {
   }
 
   // Função para eliminar filme
-  async function handleDeleteMovie(movieId) {
+  async function handleDeleteMovie(id) {
     // Verifica se há bilhetes associados
     const hasTickets = tickets.some(
-      (t) => String(t.movie_id) === String(movieId)
+      (t) => String(t.movie_id) === String(id)
     );
     if (hasTickets) {
       toast.error("Não é possível eliminar filmes com bilhetes associados.");
       return;
     }
-    if (!window.confirm("Tem a certeza que pretende eliminar este filme?")) return;
+    if (!window.confirm("Tem a certeza que deseja eliminar este filme?")) return;
     try {
-      const res = await fetch(`/api/movies?id=${movieId}`, {
-        method: "DELETE"
+      const actorInfo = getActorInfo();
+      const res = await fetch(`/api/movies?id=${id}`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(actorInfo),
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
         throw new Error(data.error || "Erro ao eliminar filme.");
       }
       toast.success("Filme eliminado com sucesso.");
-      setMovies((prev) => prev.filter((m) => m.id !== movieId));
+      setMovies((prev) => prev.filter((m) => m.id !== id));
     } catch (err) {
       toast.error(err.message || "Erro ao eliminar filme.");
     }

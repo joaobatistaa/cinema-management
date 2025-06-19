@@ -5,5 +5,201 @@
     "userName": "ADMIN",
     "date": "2025-06-19T15:48:35.087Z",
     "description": "Conta reativada: cookie@email.pt"
+  },
+  {
+    "id": 2,
+    "userID": "1",
+    "userName": "ADMIN",
+    "date": "2025-06-19T15:54:38.505Z",
+    "description": "Conta criada: 2222@gmqail.com"
+  },
+  {
+    "id": 3,
+    "userID": 1,
+    "userName": "ADMIN",
+    "date": "2025-06-19T15:56:11.221Z",
+    "description": "Conta criada: 2222@gamgfma.pt"
+  },
+  {
+    "id": 4,
+    "userID": 1,
+    "userName": "ADMIN",
+    "date": "2025-06-19T17:36:39.564Z",
+    "description": "Nova transação de bar registrada: 1 itens, total 2.00€"
+  },
+  {
+    "id": 5,
+    "userID": 1,
+    "userName": "ADMIN",
+    "date": "2025-06-19T17:37:30.434Z",
+    "description": "Produto atualizado: Sumo Maçe (ID: 20) - Stock: 14, Preço: 2.50€"
+  },
+  {
+    "id": 6,
+    "userID": 1,
+    "userName": "ADMIN",
+    "date": "2025-06-19T17:40:31.802Z",
+    "description": "Novo produto criado: cookie2 (ID: 23) - Stock: 20, Preço: 10€"
+  },
+  {
+    "id": 7,
+    "userID": 1,
+    "userName": "ADMIN",
+    "date": "2025-06-19T17:44:13.919Z",
+    "description": "Produto eliminado: cookie2 (ID: 23)"
+  },
+  {
+    "id": 8,
+    "userID": 0,
+    "userName": "guest",
+    "date": "2025-06-19T17:46:12.730Z",
+    "description": "Nova transação de bar registrada: 1 itens, total 2.50€"
+  },
+  {
+    "id": 9,
+    "userID": 6,
+    "userName": "cookie2",
+    "date": "2025-06-19T17:48:02.447Z",
+    "description": "Nova transação de bar registrada: 1 itens, total 2.50€"
+  },
+  {
+    "id": 10,
+    "userID": 0,
+    "userName": "guest",
+    "date": "2025-06-19T17:51:21.667Z",
+    "description": "Nova transação de bar registrada: 1 itens, total 2.50€"
+  },
+  {
+    "id": 11,
+    "userID": 4,
+    "userName": "aaaaa",
+    "date": "2025-06-19T17:56:46.972Z",
+    "description": "Email confirmado para o utilizador: tedte@5rwe.com"
+  },
+  {
+    "id": 12,
+    "userID": 1,
+    "userName": "ADMIN",
+    "date": "2025-06-19T18:31:59.055Z",
+    "description": "Nova sala criada: teste (ID: 9)"
+  },
+  {
+    "id": 13,
+    "userID": 1,
+    "userName": "ADMIN",
+    "date": "2025-06-19T18:32:23.559Z",
+    "description": "Sala atualizada: teste2 (ID: 9)"
+  },
+  {
+    "id": 14,
+    "userID": 1,
+    "userName": "ADMIN",
+    "date": "2025-06-19T18:32:27.660Z",
+    "description": "Sala eliminada: teste2 (ID: 9)"
+  },
+  {
+    "id": 15,
+    "userID": 1,
+    "userName": "ADMIN",
+    "date": "2025-06-19T18:34:00.845Z",
+    "description": "Sala eliminada: teste2 (ID: 8)"
+  },
+  {
+    "id": 16,
+    "userID": 5,
+    "userName": "teste",
+    "date": "2025-06-19T18:39:50.013Z",
+    "description": "Password alterada para o utilizador: teste@TESTE.COM"
+  },
+  {
+    "id": 17,
+    "userID": 9,
+    "userName": "ola",
+    "date": "2025-06-19T18:46:22.062Z",
+    "description": "Novo utilizador registado: a123@maiol.pt (ID: 9)"
+  },
+  {
+    "id": 18,
+    "userID": 9,
+    "userName": "ola",
+    "date": "2025-06-19T18:47:11.457Z",
+    "description": "Email confirmado para o utilizador: a123@maiol.pt"
+  },
+  {
+    "id": 19,
+    "userID": 9,
+    "userName": "ola2",
+    "date": "2025-06-19T18:51:23.832Z",
+    "description": "Perfil atualizado: ola2 (ID: 9)"
+  },
+  {
+    "id": 20,
+    "userID": 9,
+    "userName": "ola2",
+    "date": "2025-06-19T18:51:34.092Z",
+    "description": "Perfil atualizado: ola2 (ID: 9) - Email alterado de a123@maiol.pt para a1223@maiol.pt"
+  },
+  {
+    "id": 21,
+    "userID": 1,
+    "userName": "ADMIN",
+    "date": "2025-06-19T19:05:30.857Z",
+    "description": "Filme atualizado: teste (ID: 4)"
+  },
+  {
+    "id": 22,
+    "userID": 1,
+    "userName": "ADMIN",
+    "date": "2025-06-19T19:06:00.278Z",
+    "description": "Filme criado: aaaaaaa (ID: 5)"
+  },
+  {
+    "id": 23,
+    "userID": 1,
+    "userName": "ADMIN",
+    "date": "2025-06-19T19:06:03.819Z",
+    "description": "Filme excluído: aaaaaaa (ID: 5)"
+  },
+  {
+    "id": 24,
+    "userID": 1,
+    "userName": "ADMIN",
+    "date": "2025-06-19T19:11:53.126Z",
+    "description": "Início de sessão"
+  },
+  {
+    "id": 25,
+    "userID": 1,
+    "userName": "ADMIN",
+    "date": "2025-06-19T19:12:42.496Z",
+    "description": "Início de sessão"
+  },
+  {
+    "id": 26,
+    "userID": 1,
+    "userName": "ADMIN",
+    "date": "2025-06-19T19:15:28.124Z",
+    "description": "Início de sessão"
+  },
+  {
+    "id": 27,
+    "userID": 1,
+    "userName": "ADMIN",
+    "date": "2025-06-19T19:17:19.764Z",
+    "description": "Início de sessão"
+  },
+  {
+    "id": 28,
+    "userID": 1,
+    "userName": "ADMIN",
+    "date": "2025-06-19T19:20:22.707Z",
+    "description": "Início de sessão"
+  },
+  {
+    "id": 29,
+    "userID": 9,
+    "userName": "ola2",
+    "date": "2025-06-19T19:22:41.253Z",
+    "description": "Pedido de recuperação de senha"
   }
 ]

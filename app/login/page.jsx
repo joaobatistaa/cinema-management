@@ -60,7 +60,9 @@ export default function LoginPage() {
         setLoading(false);
         return;
       }
-      login(data);
+      await login(data);
+      toast.success("Sessão iniciada com sucesso!");
+      router.refresh(); // Refresh the router to ensure proper state
       router.push("/home");
     } catch {
       toast.error("Erro ao iniciar sessão");

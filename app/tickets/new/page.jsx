@@ -190,21 +190,21 @@ export default function BuyTicketPage() {
       (paymentMethod === "mbway" && !paymentInfo.mbway) ||
       (paymentMethod === "card" && !paymentInfo.card) ||
       (paymentMethod === "paypal" && !paymentInfo.paypal)
-      // pagamento em dinheiro não precisa de validação extra
     ) {
       toast.error("Preencha os dados do método de pagamento.");
       return;
     }
+  
     setSaving(true);
     try {
       const now = new Date();
       const datetime = now.toISOString();
-
+  
       let user_id = -1;
       if (user?.role === "customer") {
         user_id = user?.id;
       }
-
+  
       const data = {
         email: user.email,
         user_id,
@@ -240,24 +240,25 @@ export default function BuyTicketPage() {
             ? paymentInfo.paypal
             : paymentMethod === "cash"
             ? "Dinheiro"
-            : ""
+            : "",
+        
+        // 👇 Adiciona os dados do ator diretamente no body
+        actorId: user.id,
+        actorName: user.name
       };
-
+  
       const response = await fetch("/api/tickets", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
         headers: {
-          "Content-Type": "application/json",
-          "x-user-id": user.id,
-          "x-user-name": user.name
-        }
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
       });
-
+  
       if (!response.ok) {
         throw new Error("Erro ao criar bilhete");
       }
-
+  
       toast.success("Bilhete comprado com sucesso!");
       setOpenDialog(false);
       router.replace("/tickets");
@@ -267,6 +268,7 @@ export default function BuyTicketPage() {
       setSaving(false);
     }
   }
+  
 
   // Calcula o total do bar sempre que quantities ou barItems mudam
   const barTotal = React.useMemo(() => {

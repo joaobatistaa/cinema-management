@@ -44,22 +44,22 @@
     "salario": null,
     "role": "customer",
     "active": 1,
-    "desc": "needs to set new password",
+    "desc": "email confirmed",
     "tickets": [],
-    "purl": "dGVkdGVANXJ3ZS5jb20tMTc1MDI3MjU1"
+    "purl": null
   },
   {
     "id": 5,
     "name": "teste",
     "email": "teste@TESTE.COM",
-    "password": "$2b$10$EFXaFm2o7vvr.uj/oOz2sudPLDDheDoBRB5vv.OH0OhljJPIph9f6",
+    "password": "$2b$10$3aKgFfNMG7AXBxHCfHZAx.xvkpbb8lTcwZOSaAYT8.2R4Zt7yRceC",
     "nif": "111111111",
     "salario": "2222",
     "role": "employee",
     "active": 1,
-    "desc": "needs to set new password",
+    "desc": "changed password",
     "tickets": [],
-    "purl": "dGVzdGVAVEVTVEUuQ09NLTE3NTAyNzI4"
+    "purl": null
   },
   {
     "id": 6,
@@ -72,6 +72,45 @@
     "active": 1,
     "desc": "",
     "tickets": [],
-    "purl": "Y29va2llQGVtYWlsLnB0LTE3NTAyNzUw"
+    "purl": null
+  },
+  {
+    "id": 7,
+    "name": "aaa",
+    "email": "2222@gmqail.com",
+    "password": "$2b$10$OrOACEYcG7CCwra4evV1reBx4xTeC9mioPTpg628eO8oABJ5naPyy",
+    "nif": null,
+    "salario": null,
+    "role": "customer",
+    "active": 1,
+    "desc": "needs to set new password",
+    "tickets": [],
+    "purl": "MjIyMkBnbXFhaWwuY29tLTE3NTAzNDg0"
+  },
+  {
+    "id": 8,
+    "name": "ddddd",
+    "email": "2222@gamgfma.pt",
+    "password": "$2b$10$kNT7AlK4ffgR6HyxJ/n5NuqXuoEsc8oppnBAbHAkVZboZk1xtb4NG",
+    "nif": null,
+    "salario": null,
+    "role": "customer",
+    "active": 1,
+    "desc": "needs to set new password",
+    "tickets": [],
+    "purl": "MjIyMkBnYW1nZm1hLnB0LTE3NTAzNDg1"
+  },
+  {
+    "id": 9,
+    "role": "customer",
+    "name": "ola2",
+    "email": "a1223@maiol.pt",
+    "password": "$2b$10$LmlE2cv67DXENWf2COvUVubYK5SwBiozeDUCiQ9ez.XQeJfuD/wTq",
+    "nif": null,
+    "active": 1,
+    "purl": "YTEyMjNAbWFpb2wucHQtMTc1MDM2MDk2",
+    "desc": "asked new password",
+    "tickets": [],
+    "salario": null
   }
 ]

@@ -20,6 +20,7 @@ export async function GET() {
 export async function POST(request) {
   try {
     const userData = await request.json();
+
     // Validação básica
     if (!userData.name || !userData.email || !userData.password) {
       return NextResponse.json({ error: "Dados incompletos" }, { status: 400 });
@@ -63,8 +64,8 @@ export async function POST(request) {
 
     // Registar ação no audit log
     // Extrair userID e userName do header (quem faz o pedido)
-    let actorId = request.headers.get("x-user-id") || "unknown";
-    let actorName = request.headers.get("x-user-name") || "unknown";
+    let actorId = userData.actor.id;
+    let actorName = userData.actor.name;
     try {
       await addAuditLog({ userID: actorId, userName: actorName, description: `Conta criada: ${newUser.email}`, date: new Date().toISOString() });
     } catch (auditErr) {
@@ -97,12 +98,7 @@ export async function POST(request) {
 export async function PUT(request) {
   try {
     const { id, updates, userId, userName } = await request.json();
-
-    console.log("id", id);
-    console.log("updates", updates);
-    console.log("userId", userId);
-    console.log("userName", userName);
-
+    
     if (!id || !updates || typeof updates !== "object") {
       return NextResponse.json({ message: "Dados inválidos." }, { status: 400 });
     }

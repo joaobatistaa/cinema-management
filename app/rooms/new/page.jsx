@@ -20,6 +20,11 @@ import { SOUND_TYPES, VIDEO_TYPES } from "@/src/constants/rooms";
 export default function NewRoomPage() {
   const router = useRouter();
   const [name, setName] = useState("");
+  
+  const getActorInfo = () => ({
+    actorId: JSON.parse(localStorage.getItem('user'))?.id || 0,
+    actorName: JSON.parse(localStorage.getItem('user'))?.name || 'guest'
+  });
   const [soundType, setSoundType] = useState(SOUND_TYPES[0]);
   const [videoType, setVideoType] = useState(VIDEO_TYPES[0]);
   const [rows, setRows] = useState(3);
@@ -90,6 +95,7 @@ export default function NewRoomPage() {
     e.preventDefault();
     setSaving(true);
     try {
+      const { actorId, actorName } = getActorInfo();
       const res = await fetch("/api/rooms", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -97,7 +103,9 @@ export default function NewRoomPage() {
           name,
           soundType,
           videoType,
-          seats
+          seats,
+          actorId,
+          actorName
         })
       });
 
