@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import { useAuth } from "@/src/contexts/AuthContext";
 
 export default function Sessions() {
+  const { user } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
   const movieId = searchParams.get("movie");
@@ -282,6 +283,10 @@ export default function Sessions() {
     }
 
     try {
+      const movieForSession = movies?.find?.(
+        (m) => String(m.id) === String(movieId)
+      );
+
       const res = await fetch(`/api/sessions`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -289,7 +294,10 @@ export default function Sessions() {
           id: editSession.id,
           room: editRoom,
           date: `${editDate}T${editTime}`,
-          language: editLanguage
+          language: editLanguage,
+          movieName: movieForSession.title,
+          actorId: user.id,
+          actorName: user.name
         })
       });
       if (!res.ok) {
@@ -321,8 +329,20 @@ export default function Sessions() {
     if (!window.confirm("Tem a certeza que pretende eliminar esta sessão?"))
       return;
     try {
+      const movieForSession = movies?.find?.(
+        (m) => String(m.id) === String(movieId)
+      );
+
       const res = await fetch(`/api/sessions?id=${session.id}`, {
-        method: "DELETE"
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          actorId: user.id,
+          actorName: user.name,
+          movieName: movieForSession.title
+        })
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
@@ -375,20 +395,28 @@ export default function Sessions() {
       const sEnd = new Date(sStart.getTime() + sDuration * 60000);
       return start < sEnd && end > sStart;
     });
+
     if (overlapping) {
       toast.error("Já existe uma sessão nesta sala nesse horário.");
       return;
     }
 
     try {
+      const movieForSession = movies?.find?.(
+        (m) => String(m.id) === String(movieId)
+      );
+
       const res = await fetch(`/api/sessions`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           movieId: movieId,
+          movieName: movieForSession.title,
           room: createRoom,
           date: `${createDate}T${createTime}`,
-          language: createLanguage
+          language: createLanguage,
+          actorId: user.id,
+          actorName: user.name
         })
       });
       if (!res.ok) {

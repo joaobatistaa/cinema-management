@@ -208,5 +208,26 @@
     "userName": "ADMIN",
     "date": "2025-06-19T21:11:42.201Z",
     "description": "Bilhete com o ID 17 foi alterado. Bar: Itens adicionados: Pipocas P (x1).  Sessão: Sessão alterada do dia 03/07/2025 às 14:00 para o dia 03/07/2025 às 18:00."
+  },
+  {
+    "id": 31,
+    "userID": 1,
+    "userName": "ADMIN",
+    "date": "2025-06-19T21:27:11.238Z",
+    "description": "Nova sessão criada para o filme Marcello Mio no dia 23/06/2025 às 22:00 na sala 4 com o idioma PT"
+  },
+  {
+    "id": 32,
+    "userID": 1,
+    "userName": "ADMIN",
+    "date": "2025-06-19T21:33:23.724Z",
+    "description": "Sessão do filme Marcello Mio foi alterada para o dia 22/06/2025 às 21:00 na sala 4 com o idioma EN"
+  },
+  {
+    "id": 33,
+    "userID": 1,
+    "userName": "ADMIN",
+    "date": "2025-06-19T21:37:50.618Z",
+    "description": "Sessão do filme Marcello Mio do dia 22/06/2025 às 21:00 na sala 4 com o idioma EN foi eliminada!"
   }
 ]
