@@ -89,41 +89,59 @@ export default function Bar() {
     page * pageSize
   );
 
-  // Atualiza a quantidade de um produto
-  function handleQuantityChange(productId, delta) {
-    setQuantities((prev) => {
-      const currentQty = prev[productId] || 0;
-      const product = products.find((p) => p.id === productId);
-      const stock = Number(product?.stock ?? 0);
-      const newQty = Math.max(currentQty + delta, 0);
+  const updateQuantity = (productId, delta) => {
+    const product = products.find((p) => p.id === productId);
+    if (!product) return;
 
-      if (delta > 0 && newQty > stock) {
+    const stock = Number(product.stock) || 0;
+    const currentQty = quantities[productId] || 0;
+    const newQty = currentQty + delta;
+
+    // Validate before updating state
+    if (delta > 0) {
+      if (newQty > stock) {
         toast.error("Já não existe stock suficiente para este produto.");
-        return prev;
+        return;
       }
+      if (newQty > currentQty) {
+        // Add sound effect for adding to cart
+        const audio = new Audio('/sounds/add-to-cart.mp3');
+        audio.play().catch(e => console.log('Audio play failed:', e));
+      }
+    }
 
-      // Atualiza o carrinho ao mesmo tempo
-      setCart((oldCart) => {
-        const exists = oldCart.find((item) => item.id === productId);
-        if (newQty === 0) {
-          // Remove do carrinho se quantidade for 0
-          return oldCart.filter((item) => item.id !== productId);
-        }
-        if (exists) {
-          // Atualiza quantidade
-          return oldCart.map((item) =>
-            item.id === productId ? { ...item, quantity: newQty } : item
-          );
-        }
-        // Adiciona novo produto ao carrinho
-        if (product) {
-          return [...oldCart, { ...product, quantity: newQty }];
-        }
-        return oldCart;
-      });
+    // Update state
+    setQuantities(prev => {
+      if (newQty <= 0) {
+        const { [productId]: _, ...rest } = prev;
+        return rest;
+      }
       return { ...prev, [productId]: newQty };
     });
-  }
+
+    // Atualiza o carrinho ao mesmo tempo
+    setCart((oldCart) => {
+      const exists = oldCart.find((item) => item.id === productId);
+      if (newQty === 0) {
+        // Remove do carrinho se quantidade for 0
+        return oldCart.filter((item) => item.id !== productId);
+      }
+      if (exists) {
+        // Atualiza quantidade
+        return oldCart.map((item) =>
+          item.id === productId ? { ...item, quantity: newQty } : item
+        );
+      }
+      // Adiciona novo produto ao carrinho
+      if (product) {
+        return [...oldCart, { ...product, quantity: newQty }];
+      }
+      return oldCart;
+    });
+  };
+
+  const handleAddToCart = (productId) => updateQuantity(productId, 1);
+  const handleRemoveFromCart = (productId) => updateQuantity(productId, -1);
 
   // Total da compra (usando o carrinho)
   const total = cart.reduce(
@@ -454,14 +472,14 @@ export default function Bar() {
                   <p className="text-green-400">{product.price} €</p>
                   <div className="flex justify-center items-center gap-2 mt-2 relative">
                     <button
-                      onClick={() => handleQuantityChange(product.id, -1)}
+                      onClick={() => handleRemoveFromCart(product.id)}
                       className="bg-red-500 rounded-full px-2 text-white text-lg cursor-pointer"
                     >
                       -
                     </button>
                     <span>{quantities[product.id] || 0}</span>
                     <button
-                      onClick={() => handleQuantityChange(product.id, 1)}
+                      onClick={() => handleAddToCart(product.id)}
                       className="bg-green-500 rounded-full px-2 text-white text-lg cursor-pointer"
                     >
                       +

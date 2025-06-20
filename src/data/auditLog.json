@@ -170,5 +170,12 @@
     "userName": "ADMIN",
     "date": "2025-06-20T22:38:25.381Z",
     "description": "Nova transação de bar registrada: 2 itens, total 4.50€"
+  },
+  {
+    "id": 27,
+    "userID": 1,
+    "userName": "ADMIN",
+    "date": "2025-06-20T23:23:23.796Z",
+    "description": "Início de sessão"
   }
 ]
