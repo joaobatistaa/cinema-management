@@ -257,5 +257,40 @@
     "userName": "ADMIN",
     "date": "2025-06-20T01:33:01.798Z",
     "description": "Novo produto criado: teste (ID: 23) - Stock: 9, Preço: 20€"
+  },
+  {
+    "id": 38,
+    "userID": 1,
+    "userName": "ADMIN",
+    "date": "2025-06-20T01:57:52.222Z",
+    "description": "Nova transação de bar registrada: 1 itens, total 2.00€"
+  },
+  {
+    "id": 39,
+    "userID": 2,
+    "userName": "employee2",
+    "date": "2025-06-20T01:58:58.892Z",
+    "description": "Início de sessão"
+  },
+  {
+    "id": 40,
+    "userID": 2,
+    "userName": "employee2",
+    "date": "2025-06-20T01:59:13.901Z",
+    "description": "Nova transação de bar registrada: 1 itens, total 2.00€"
+  },
+  {
+    "id": 41,
+    "userID": 1,
+    "userName": "ADMIN",
+    "date": "2025-06-20T01:59:40.901Z",
+    "description": "Início de sessão"
+  },
+  {
+    "id": 42,
+    "userID": 1,
+    "userName": "ADMIN",
+    "date": "2025-06-20T02:24:02.310Z",
+    "description": "Nova transação de bar registrada: 2 itens, total 10.00€"
   }
 ]

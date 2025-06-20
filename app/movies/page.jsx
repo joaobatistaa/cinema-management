@@ -524,7 +524,7 @@ export default function Movies() {
                   <div>
                     <label className="block text-white mb-1">CLASSIFICAÇÃO</label>
                     <select
-                      className="w-24 px-3 py-2 rounded border border-gray-400 bg-transparent text-white"
+                      className="w-full px-4 py-2 rounded border border-gray-400 text-white bg-[#181827] focus:outline-none"
                       value={editRating}
                       onChange={(e) => setEditRating(e.target.value)}
                       required
@@ -673,7 +673,7 @@ export default function Movies() {
                   <div>
                     <label className="block text-white mb-1">CLASSIFICAÇÃO</label>
                     <select
-                      className="w-24 px-3 py-2 rounded border border-gray-400 bg-transparent text-white"
+                      className="w-full px-4 py-2 rounded border border-gray-400 text-white bg-[#181827] focus:outline-none"
                       value={createRating}
                       onChange={e => setCreateRating(e.target.value)}
                       required
@@ -689,7 +689,7 @@ export default function Movies() {
                   <div>
                     <label className="block text-white mb-1">GÊNERO</label>
                     <select
-                      className="w-32 px-3 py-2 rounded border border-gray-400 bg-transparent text-white"
+                      className="w-full px-4 py-2 rounded border border-gray-400 text-white bg-[#181827] focus:outline-none"
                       value={createGenre}
                       onChange={e => setCreateGenre(e.target.value)}
                       required

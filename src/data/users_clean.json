@@ -37,8 +37,8 @@
   },
   {
     "id": 4,
-    "name": "aaaaa",
-    "email": "tedte@5rwe.com",
+    "name": "Customer",
+    "email": "customer@example.com",
     "password": "$2b$10$KE3Rc9hLVXDo0oV7d0wsje2nSfxsgu.ScourTjSj76jzxguWRl9o6",
     "nif": null,
     "salario": null,
@@ -48,5 +48,4 @@
     "tickets": [],
     "purl": null
   }
- 
 ]

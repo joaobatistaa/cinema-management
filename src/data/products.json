@@ -75,7 +75,7 @@
     "id": "11",
     "name": "Ice Tea Limão",
     "price": "2",
-    "stock": 6,
+    "stock": 1,
     "pack": null,
     "minStock": 5
   },
@@ -83,10 +83,9 @@
     "id": "12",
     "name": "Ice Tea Pêssego",
     "price": "2.00",
-    "stock": 4,
+    "stock": 2,
     "minStock": 5,
-    "pack": null, 
-    "minStock": 5 
+    "pack": null
   },
   {
     "id": "13",
@@ -102,7 +101,7 @@
     "price": "2",
     "stock": 15,
     "minStock": 5,
-    "pack": null  
+    "pack": null
   },
   {
     "id": "15",
@@ -111,7 +110,6 @@
     "stock": 10,
     "minStock": 5,
     "pack": null
-
   },
   {
     "id": "16",
@@ -160,5 +158,5 @@
     "minStock": 5,
     "price": "20",
     "pack": null
-    }
+  }
 ]

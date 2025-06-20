@@ -50,7 +50,7 @@ export async function POST(request) {
       await updateProductStock(cart);
     } catch (error) {
       // Apenas loga o erro, mas continua
-      console.error("Erro ao atualizar stock:", error);
+    console.error("Erro ao atualizar stock:", error);
     }
     // Regista a transação mesmo que o updateProductStock falhe
     try {
@@ -73,6 +73,11 @@ export async function POST(request) {
         desc,
         date: new Date().toISOString(),
         nif: nifToSave,
+        // Add worker info if the transaction is made by an admin or employee
+        ...(body.actorId && body.actorId !== 0 && {
+          workerId: body.actorId,
+          workerName: body.actorName 
+        })
       };
       await addTransaction(transaction);
 

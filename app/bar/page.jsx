@@ -423,6 +423,16 @@ export default function Bar() {
               Bar
             </h1>
           </div>
+          <div className="flex justify-end">
+            {userRole === 'admin' && (
+              <button
+                className="bg-quaternary text-white text-lg px-6 py-3 rounded font-medium cursor-pointer"
+                onClick={() => router.push('/registoVendas')}
+              >
+                Registo de Vendas
+              </button>
+            )}
+          </div>
         </div>
         {loading ? (
           <div className="flex justify-center items-center h-[400px]">
@@ -676,6 +686,7 @@ export default function Bar() {
               <input
                 type="email"
                 className="w-full px-4 py-2 border rounded-lg text-gray"
+                placeholder="Email (guest@guest.com para guests)"
                 value={clientEmail}
                 maxLength={25}
                 onChange={(e) => setClientEmail(e.target.value.slice(0, 25))}
@@ -684,7 +695,7 @@ export default function Bar() {
               />
               <input
                 type="text"
-                className="px-3 py-2 rounded border border-gray-400 mb-2 w-full bg-[#232336] text-white"
+                className="w-full px-4 py-2 border rounded-lg text-gray mt-3"
                 placeholder="NIF (9 dígitos, opcional)"
                 value={clientNifForEmployee}
                 onChange={(e) => setClientNifForEmployee(e.target.value)}
@@ -693,13 +704,13 @@ export default function Bar() {
               <div className="flex gap-2 mt-2">
                 <button
                   type="submit"
-                  className="bg-green-600 hover:bg-green-700 text-white font-bold px-8 py-2 rounded-lg cursor-pointer"
+                  className="bg-quaternary text-white text-lg px-8 py-2 rounded font-medium cursor-pointer"
                 >
                   Finalizar Compra
                 </button>
                 <button
                   type="button"
-                  className="bg-gray-400 hover:bg-gray-500 text-white font-bold px-6 py-2 rounded-lg cursor-pointer"
+                  className="bg-quinary text-lg text-white px-6 py-2 rounded font-medium cursor-pointer"
                   onClick={() => {
                     setShowEmailForm(false);
                     setClientEmail("");
