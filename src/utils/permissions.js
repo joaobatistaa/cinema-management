@@ -24,8 +24,11 @@ export const PERMISSIONS = {
   // CONSULTAS
   viewAccounts: [ROLES.EMPLOYEE, ROLES.ADMIN],
 
-  // TRANSACTIONS
+  // PROFILE
   viewProfile: [ROLES.CUSTOMER],  
+
+  // BACKUPS
+  viewBackups: [ROLES.ADMIN],
 };
 
 export function hasPermission(role, permission) {

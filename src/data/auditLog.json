@@ -292,5 +292,26 @@
     "userName": "ADMIN",
     "date": "2025-06-20T02:24:02.310Z",
     "description": "Nova transação de bar registrada: 2 itens, total 10.00€"
+  },
+  {
+    "id": 43,
+    "userID": 1,
+    "userName": "ADMIN",
+    "date": "2025-06-20T03:24:33.747Z",
+    "description": "Conta eliminada: tedte@5rwe.com"
+  },
+  {
+    "id": 44,
+    "userID": 1,
+    "userName": "ADMIN",
+    "date": "2025-06-20T03:24:33.403Z",
+    "description": "Conta reativada: tedte@5rwe.com"
+  },
+  {
+    "id": 45,
+    "userID": 2,
+    "userName": "employee2",
+    "date": "2025-06-20T12:59:02.731Z",
+    "description": "Início de sessão"
   }
 ]

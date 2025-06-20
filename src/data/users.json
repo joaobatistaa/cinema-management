@@ -44,9 +44,8 @@
     "salario": null,
     "role": "customer",
     "active": 1,
-    "desc": "email confirmed",
+    "desc": "",
     "tickets": [],
     "purl": null
   }
- 
 ]

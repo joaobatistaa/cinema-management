@@ -19,6 +19,8 @@ export const Constants = {
     { label: "Bilhetes", path: "/tickets", permission: "viewTickets" },
     { label: "Bar", path: "/bar", permission: "viewBar" },
     { label: "Contas", path: "/accounts", permission: "viewAccounts" },
-    { label: "Perfil", path: "/profile", permission: "viewProfile" }
+    { label: "Perfil", path: "/profile", permission: "viewProfile" },
+    { label: "Backups", path: "/backups", permission: "viewBackups" }
+
   ]
 };
