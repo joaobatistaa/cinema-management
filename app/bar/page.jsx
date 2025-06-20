@@ -30,18 +30,29 @@ export default function Bar() {
   const [editProduct, setEditProduct] = useState(null);
   const [editName, setEditName] = useState("");
   const [editStock, setEditStock] = useState("");
+  const [editMinStock, setEditMinStock] = useState(0);
   const [editPrice, setEditPrice] = useState("");
   const editPriceRef = useRef();
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [createName, setCreateName] = useState("");
   const [createStock, setCreateStock] = useState("");
+  const [createMinStock, setCreateMinStock] = useState(0);
   const [createPrice, setCreatePrice] = useState("");
   const createPriceRef = useRef();
   const [showNifForm, setShowNifForm] = useState(false);
   const [clientNif, setClientNif] = useState("");
   const [showGuestNifForm, setShowGuestNifForm] = useState(false);
   const [guestNif, setGuestNif] = useState("");
+  const [showLowStockModal, setShowLowStockModal] = useState(false);
+  const [lowStockModalClosed, setLowStockModalClosed] = useState(false);
   const pageSize = 12;
+
+  // Get products with stock below minimum stock
+  const lowStockProducts = products.filter(product => {
+    const stock = Number(product.stock) || 0;
+    const minStock = Number(product.minStock) || 0;
+    return stock < minStock;
+  });
 
   useEffect(() => {
     async function fetchProducts() {
@@ -60,6 +71,15 @@ export default function Bar() {
 
     fetchProducts();
   }, []);
+
+  // Show low stock alert when user is admin or employee and there are low stock products
+  useEffect(() => {
+    if ((userRole === 'admin' || userRole === 'employee') && 
+        lowStockProducts.length > 0 && 
+        !lowStockModalClosed) {
+      setShowLowStockModal(true);
+    }
+  }, [lowStockProducts, userRole, lowStockModalClosed]);
 
   const paginatedProducts = products.slice(
     (page - 1) * pageSize,
@@ -262,6 +282,7 @@ export default function Bar() {
     setEditProduct(product);
     setEditName(product.name);
     setEditStock(product.stock);
+    setEditMinStock(product.minStock || 0);
     setEditPrice(Number(product.price).toFixed(2).replace(".", ",") + " €");
     setShowEditModal(true);
     setTimeout(() => {
@@ -273,8 +294,8 @@ export default function Bar() {
   async function handleConfirmEdit(e) {
     e.preventDefault();
     // Validação simples
-    if (!editName.trim() || !editStock || !editPrice) {
-      toast.error("Preencha todos os campos.");
+    if (!editName.trim() || editStock === undefined || !editPrice) {
+      toast.error("Preencha todos os campos obrigatórios.");
       return;
     }
     const priceValue = editPrice.replace("€", "").replace(",", ".").trim();
@@ -286,6 +307,10 @@ export default function Bar() {
       toast.error("Stock inválido.");
       return;
     }
+    if (isNaN(Number(editMinStock)) || Number(editMinStock) < 0) {
+      toast.error("Stock mínimo inválido.");
+      return;
+    }
     try {
       const res = await fetch("/api/bar", {
         method: "PUT",
@@ -294,6 +319,7 @@ export default function Bar() {
           id: editProduct.id,
           name: editName.trim(),
           stock: Number(editStock),
+          minStock: Number(editMinStock),
           price: priceValue,
           ...getActorInfo()
         })
@@ -310,6 +336,7 @@ export default function Bar() {
               ...p,
               name: editName.trim(),
               stock: Number(editStock),
+              minStock: Number(editMinStock),
               price: priceValue
             }
             : p
@@ -326,6 +353,7 @@ export default function Bar() {
   function handleOpenCreateModal() {
     setCreateName("");
     setCreateStock("");
+    setCreateMinStock(0);
     setCreatePrice("");
     setShowCreateModal(true);
     setTimeout(() => {
@@ -336,8 +364,8 @@ export default function Bar() {
   // Submeter novo produto
   async function handleConfirmCreate(e) {
     e.preventDefault();
-    if (!createName.trim() || !createStock || !createPrice) {
-      toast.error("Preencha todos os campos.");
+    if (!createName.trim() || createStock === undefined || !createPrice) {
+      toast.error("Preencha todos os campos obrigatórios.");
       return;
     }
     const priceValue = createPrice.replace("€", "").replace(",", ".").trim();
@@ -349,6 +377,10 @@ export default function Bar() {
       toast.error("Stock inválido.");
       return;
     }
+    if (isNaN(Number(createMinStock)) || Number(createMinStock) < 0) {
+      toast.error("Stock mínimo inválido.");
+      return;
+    }
     try {
       const res = await fetch("/api/bar", {
         method: "POST",
@@ -356,6 +388,7 @@ export default function Bar() {
         body: JSON.stringify({
           name: createName.trim(),
           stock: Number(createStock),
+          minStock: Number(createMinStock),
           price: priceValue,
           ...getActorInfo()
         })
@@ -409,7 +442,12 @@ export default function Bar() {
                   }}
                 >
                   <h3 className="font-bold">{product.name}</h3>
-                  <p className="text-orange-400">Stock: {product.stock}</p>
+                  <p className="text-orange-400">
+                    Stock: {product.stock}
+                    {(userRole === 'admin' || userRole === 'employee') && (
+                      <span className="text-gray-400 text-sm ml-2">(Mín: {product.minStock || 0})</span>
+                    )}
+                  </p>
                   <p className="text-green-400">{product.price} €</p>
                   <div className="flex justify-center items-center gap-2 mt-2 relative">
                     <button
@@ -794,6 +832,16 @@ export default function Bar() {
                   />
                 </div>
                 <div className="flex-1">
+                  <label className="block text-white mb-1">MIN</label>
+                  <input
+                    type="number"
+                    min={0}
+                    className="w-full px-3 py-2 rounded border border-gray-400 bg-transparent text-white"
+                    value={editMinStock}
+                    onChange={(e) => setEditMinStock(e.target.value)}
+                  />
+                </div>
+                <div className="flex-1">
                   <label className="block text-white mb-1">PREÇO</label>
                   <input
                     ref={editPriceRef}
@@ -856,6 +904,16 @@ export default function Bar() {
                   />
                 </div>
                 <div className="flex-1">
+                  <label className="block text-white mb-1">MIN</label>
+                  <input
+                    type="number"
+                    min={0}
+                    className="w-full px-3 py-2 rounded border border-gray-400 bg-transparent text-white"
+                    value={createMinStock}
+                    onChange={(e) => setCreateMinStock(e.target.value)}
+                  />
+                </div>
+                <div className="flex-1">
                   <label className="block text-white mb-1">PREÇO</label>
                   <input
                     ref={createPriceRef}
@@ -868,18 +926,51 @@ export default function Bar() {
               </div>
               <button
                 type="submit"
-                className="w-full mt-6 bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg text-lg cursor-pointer"
+                className="w-full mt-6 bg-quaternary hover:bg-quinary text-white font-bold py-3 rounded-lg text-lg cursor-pointer"
               >
                 CRIAR PRODUTO
               </button>
               <button
                 type="button"
-                className="w-full mt-2 bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 rounded-lg cursor-pointer"
+                className="w-full mt-2 bg-quinary text-lg text-white px-6 py-3 rounded font-medium cursor-pointer hover:bg-quaternary transition"
                 onClick={() => setShowCreateModal(false)}
               >
                 Cancelar
               </button>
             </form>
+          </div>
+        </div>
+      )}
+
+      {showLowStockModal && (userRole === "admin" || userRole === "employee") && (
+        <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+          <div className="bg-[#232336] rounded-xl shadow-lg p-8 flex flex-col items-center min-w-[320px] max-w-[90vw] max-h-[80vh] overflow-y-auto">
+            <h2 className="text-white text-xl font-bold mb-4 text-center">Atenção: Produtos com Stock Baixo</h2>
+            <div className="space-y-2 mb-6 w-full">
+              {lowStockProducts.map((product) => (
+                <div key={product.id} className="flex justify-between items-center p-3 bg-[#2d2d47] rounded-lg">
+                  <span className="font-medium text-white">{product.name}</span>
+                  <div className="flex items-center">
+                    <span className="text-sm text-gray-300">
+                      Stock: <span className={`font-bold ${product.stock < product.minStock ? 'text-red-400' : 'text-white'}`}>
+                        {product.stock}
+                      </span> / Mín: {product.minStock}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="flex justify-center w-full">
+              <button
+                onClick={() => {
+                  setShowLowStockModal(false);
+                  setLowStockModalClosed(true);
+                }}
+                className="bg-quaternary hover:bg-quinary text-white font-bold px-8 py-2 rounded-lg cursor-pointer transition-colors"
+              >
+                Fechar
+              </button>
+            </div>
           </div>
         </div>
       )}

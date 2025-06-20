@@ -201,5 +201,61 @@
     "userName": "ola2",
     "date": "2025-06-19T19:22:41.253Z",
     "description": "Pedido de recuperação de senha"
+  },
+  {
+    "id": 30,
+    "userID": 4,
+    "userName": "aaaaa",
+    "date": "2025-06-19T21:09:39.600Z",
+    "description": "Início de sessão"
+  },
+  {
+    "id": 31,
+    "userID": 1,
+    "userName": "ADMIN",
+    "date": "2025-06-19T21:09:49.863Z",
+    "description": "Início de sessão"
+  },
+  {
+    "id": 32,
+    "userID": 4,
+    "userName": "aaaaa",
+    "date": "2025-06-19T21:10:26.809Z",
+    "description": "Início de sessão"
+  },
+  {
+    "id": 33,
+    "userID": 1,
+    "userName": "ADMIN",
+    "date": "2025-06-19T21:15:14.668Z",
+    "description": "Início de sessão"
+  },
+  {
+    "id": 34,
+    "userID": 1,
+    "userName": "ADMIN",
+    "date": "2025-06-20T01:24:38.083Z",
+    "description": "Produto atualizado: Ice Tea Pêssego (ID: 12) - Stock: 8, Preço: 2.00€"
+  },
+  {
+    "id": 35,
+    "userID": 1,
+    "userName": "ADMIN",
+    "date": "2025-06-20T01:25:00.374Z",
+    "description": "Produto atualizado: Ice Tea Pêssego (ID: 12) - Stock: 4, Preço: 2.00€"
+  },
+  {
+    "id": 36,
+    "userID": 1,
+    "userName": "ADMIN",
+    "date": "2025-06-20T01:25:48.058Z",
+    "description": "Produto atualizado: Ice Tea Pêssego (ID: 12) - Stock: 4, Preço: 2.00€"
+  },
+  {
+    "id": 37,
+    "userID": 1,
+    "userName": "ADMIN",
+    "date": "2025-06-20T01:33:01.798Z",
+    "description": "Novo produto criado: teste (ID: 23) - Stock: 9, Preço: 20€"
   }
 ]

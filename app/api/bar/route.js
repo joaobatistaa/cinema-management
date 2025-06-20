@@ -21,11 +21,11 @@ export async function GET() {
 export async function PUT(request) {
   try {
     const body = await request.json();
-    const { id, name, stock, price, actorId = 0, actorName = 'guest' } = body;
+    const { id, name, stock, minStock = 0, price, actorId = 0, actorName = 'guest' } = body;
     if (!id || !name || stock === undefined || price === undefined) {
       return NextResponse.json({ error: "Dados em falta" }, { status: 400 });
     }
-    const updated = await updateProduct({ id, name, stock, price });
+    const updated = await updateProduct({ id, name, stock, minStock, price });
     if (!updated) {
       return NextResponse.json({ error: "Produto não encontrado" }, { status: 404 });
     }
@@ -95,14 +95,14 @@ export async function DELETE(request) {
 export async function POST(request) {
   try {
     const body = await request.json();
-    const { name, stock, price, actorId = 0, actorName = 'guest' } = body;
+    const { name, stock, minStock = 0, price, actorId = 0, actorName = 'guest' } = body;
     if (!name || stock === undefined || price === undefined) {
       return NextResponse.json({ error: "Dados em falta" }, { status: 400 });
     }
     if (name.length > 25) {
       return NextResponse.json({ error: "O nome do produto não pode ter mais de 25 caracteres." }, { status: 400 });
     }
-    const newProduct = await addProduct({ name, stock, price });
+    const newProduct = await addProduct({ name, stock, minStock, price });
     
     // Add audit log for new product creation
     try {
