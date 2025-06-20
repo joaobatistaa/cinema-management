@@ -270,26 +270,6 @@ export default function BuyTicketPage() {
         throw new Error("Erro ao criar bilhete");
       }
 
-      const isStaff = user?.role === "employee" || user?.role === "admin";
-
-      const res = await fetch("/api/transactions/tickets", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ticketData: data,
-          desc: "Compra de Bilhete",
-          userId: user?.id,
-          nif: user?.nif || "N/A",
-          email: user?.email || "N/A",
-          ...(isStaff ? getActorInfo() : {})
-        })
-      });
-
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        throw new Error(data.error || "Erro ao registar transação.");
-      }
-
       toast.success("Bilhete comprado com sucesso!");
       setOpenDialog(false);
       router.push("/tickets");
