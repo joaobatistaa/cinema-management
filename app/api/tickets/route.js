@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getTickets, addTicket, filterTickets } from "@/src/services/tickets";
 import { sendEmail } from "@/src/utils/email";
 import { addAuditLog } from "@/src/services/auditLog";
+import { getUserByEmail } from "@/src/services/users";
 
 export async function GET(request) {
   try {
@@ -35,6 +36,24 @@ export async function POST(request) {
       ...dataWithoutEmailAndActor
     } = data;
 
+    if (!email || typeof email !== "string" || !email.trim()) {
+      return NextResponse.json(
+        { error: "Email do cliente é obrigatório" },
+        { status: 400 }
+      );
+    }
+
+    // Validar se email existe ou é guest@guest.com
+    if (email !== "guest@guest.com") {
+      const user = await getUserByEmail(email);
+      if (!user) {
+        return NextResponse.json(
+          { error: "Email não registado no sistema" },
+          { status: 400 }
+        );
+      }
+    }
+
     const newTicket = addTicket(dataWithoutEmailAndActor);
 
     // Enviar email com bilhete (se aplicável)
@@ -58,11 +77,15 @@ export async function POST(request) {
         <p>Número do bilhete: <b>${newTicket.id}</b></p>
       `;
 
-      await sendEmail({
-        to: email,
-        subject: "O seu bilhete de cinema",
-        html
-      });
+      try {
+        await sendEmail({
+          to: email,
+          subject: "O seu bilhete de cinema",
+          html
+        });
+      } catch (error) {
+        console.error("Failed to send email:", error);
+      }
     }
 
     // Preparar dados para o log de auditoria
@@ -78,31 +101,22 @@ export async function POST(request) {
       minute: "2-digit"
     });
 
-    const seat = dataWithoutEmailAndActor.seat
-      ? String.fromCharCode(64 + dataWithoutEmailAndActor.seat.row) +
-        dataWithoutEmailAndActor.seat.col
-      : "";
-
-    const itemNames = dataWithoutEmailAndActor.bar_items
-      .map((item) => item.name + " x" + item.quantity)
-      .join(", ");
-
-    const logDescription = `Novo bilhete com o ID ${newTicket.id} comprado para o filme ${movie_title} na sessão do dia ${formattedDate} às ${formattedTime}, na sala ${room_name} e lugar ${seat}. Valor gasto no bar: ${dataWithoutEmailAndActor.bar_total}€ - Itens do bar (${itemNames}). Valor do bilhete: ${dataWithoutEmailAndActor.ticket_price}€. Valor total: ${dataWithoutEmailAndActor.buy_total}€`;
-
-    // Adicionar no log de auditoria
-    try {
-      await addAuditLog({
-        userID: actorId,
-        userName: actorName,
-        description: logDescription,
-        date: new Date().toISOString()
-      });
-    } catch (auditErr) {
-      console.error("Erro ao registar no audit log:", auditErr);
-    }
+    await addAuditLog({
+      actorId,
+      actorName,
+      action: "CREATE_TICKET",
+      description: `Bilhete criado para ${email} (${movie_title} - ${formattedDate} ${formattedTime})`,
+      metadata: {
+        ticketId: newTicket.id,
+        movie: movie_title,
+        session: session_datetime,
+        room: room_name
+      }
+    });
 
     return NextResponse.json(newTicket, { status: 201 });
   } catch (error) {
+    console.error("Erro ao criar bilhete:", error);
     return NextResponse.json(
       { error: "Erro ao criar bilhete" },
       { status: 500 }

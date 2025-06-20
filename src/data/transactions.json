@@ -19,5 +19,26 @@
     "workerId": 1,
     "workerName": "ADMIN",
     "id": "1750438565500"
+  },
+  {
+    "items": [
+      {
+        "id": "18",
+        "name": "Twix",
+        "price": "2",
+        "stock": 13,
+        "pack": null,
+        "minStock": 5,
+        "quantity": 1
+      }
+    ],
+    "total": 2,
+    "userId": 0,
+    "desc": "Compra no Bar",
+    "date": "2025-06-20T21:47:54.464Z",
+    "nif": "111111111",
+    "workerId": 1,
+    "workerName": "ADMIN",
+    "id": "1750456074464"
   }
 ]

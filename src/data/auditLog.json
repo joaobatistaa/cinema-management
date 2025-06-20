@@ -103,5 +103,29 @@
     "userName": "ADMIN",
     "date": "2025-06-20T21:24:57.822Z",
     "description": "Bilhete com o ID 27 cancelado com reembolso via cash"
+  },
+  {
+    "id": 16,
+    "userID": 1,
+    "userName": "ADMIN",
+    "date": "2025-06-20T21:47:54.464Z",
+    "description": "Nova transação de bar registrada: 1 itens, total 2.00€"
+  },
+  {
+    "id": 17,
+    "date": "2025-06-20T21:52:15.961Z",
+    "description": "Bilhete criado para joao2@cliente.com (Amador - 03/07/2025 14:00)"
+  },
+  {
+    "id": 18,
+    "date": "2025-06-20T21:53:02.603Z",
+    "description": "Bilhete criado para guest@guest.com (Amador - 03/07/2025 14:00)"
+  },
+  {
+    "id": 19,
+    "userID": 3,
+    "userName": "Joao",
+    "date": "2025-06-20T21:53:44.179Z",
+    "description": "Início de sessão"
   }
 ]

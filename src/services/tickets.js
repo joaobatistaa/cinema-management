@@ -1,4 +1,4 @@
-import fs from "fs";
+zimport fs from "fs";
 import path from "path";
 
 const ticketsFilePath = path.join(process.cwd(), "src", "data", "tickets.json");
