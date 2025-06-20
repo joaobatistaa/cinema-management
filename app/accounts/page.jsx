@@ -15,6 +15,7 @@ export default function AccountsPage() {
     setEditName(user.name || "");
     setEditRole(user.role || "");
     setEditSalario(user.salario || "");
+    setEditEmail(user.email || "");
     setShowEditModal(true);
   }
 
@@ -103,7 +104,7 @@ export default function AccountsPage() {
     }
     try {
       // Só permitir alteração de role para contas admin/employee, e apenas para 'admin' ou 'employee'
-      let updates = { name: editName.trim() };
+      let updates = { name: editName.trim(), email: editEmail };
       if (editUser.role === "admin" || editUser.role === "employee") {
         if (["admin", "employee"].includes(editRole)) {
           updates.role = editRole;
@@ -150,6 +151,7 @@ export default function AccountsPage() {
   const [editUser, setEditUser] = useState(null);
   const [editRole, setEditRole] = useState("");
   const [editName, setEditName] = useState("");
+  const [editEmail, setEditEmail] = useState("");
   const [editSalario, setEditSalario] = useState("");
   const [loadingEdit, setLoadingEdit] = useState(false);
   const editNameRef = React.useRef(null);
@@ -466,23 +468,39 @@ export default function AccountsPage() {
                 <h2 className="text-2xl font-semibold text-white mb-6 text-center">
                   Editar Utilizador
                 </h2>
-                <div className="mb-4">
-                  <label className="block text-white mb-2">Nome</label>
-                  <input
-                    ref={editNameRef}
-                    className="w-full px-4 py-2 rounded border border-gray-400 bg-transparent text-white"
-                    value={editName}
-                    onChange={(e) => setEditName(e.target.value)}
-                    placeholder="Nome"
-                    maxLength={50}
-                    required
-                    autoFocus
-                    disabled={loadingEdit}
-                  />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                  <div>
+                    <label className="block text-sm font-medium text-white mb-1">
+                      Nome
+                    </label>
+                    <input
+                      type="text"
+                      className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md text-white"
+                      value={editName}
+                      onChange={(e) =>
+                        setEditName(e.target.value)
+                      }
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-white mb-1">
+                      Email
+                    </label>
+                    <input
+                      type="email"
+                      className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md text-white"
+                      value={editEmail}
+                      onChange={(e) =>
+                        setEditEmail(e.target.value)
+                      }
+                    />
+                  </div>
                 </div>
                 {(editUser.role === "admin" || editUser.role === "employee") && (
                   <div className="mb-6">
-                    <label className="block text-white mb-2">Role</label>
+                    <label className="block text-sm font-medium text-white mb-1">
+                      Role
+                    </label>
                     <select
                       className="w-full px-4 py-2 rounded border border-gray-400 text-white bg-[#181827] focus:outline-none"
                       value={editRole}
@@ -497,20 +515,16 @@ export default function AccountsPage() {
                 )}
                 {editRole === "employee" && (
                   <div className="mb-6">
-                    <label className="block text-white mb-2">Salário</label>
+                    <label className="block text-sm font-medium text-white mb-1">
+                      Salário
+                    </label>
                     <input
-                      type="number"
-                      className="w-full px-4 py-2 rounded border border-gray-400 text-white bg-[#181827] focus:outline-none"
+                      type="text"
+                      className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md text-white"
                       value={editSalario}
-                      onChange={e => {
-                        const v = e.target.value;
-                        if (v.length <= 4) setEditSalario(v);
-                      }}
-                      placeholder="Salário"
-                      min="0"
-                      max="9999"
-                      maxLength={4}
-                      disabled={loadingEdit}
+                      onChange={(e) =>
+                        setEditSalario(e.target.value)
+                      }
                     />
                   </div>
                 )}

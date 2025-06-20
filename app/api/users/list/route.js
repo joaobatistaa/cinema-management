@@ -37,6 +37,12 @@ export async function POST(request) {
     if (!isValidNif(userData.nif)) {
       return NextResponse.json({ error: "NIF inválido. Deve ter 9 dígitos." }, { status: 400 });
     }
+    if (userData.role === "employee" && (!userData.salario || parseFloat(userData.salario) < 870)) {
+      return NextResponse.json(
+        { message: "O salário mínimo é 870€" },
+        { status: 400 }
+      );
+    }
     const users = await readUsersFile();
     // Verificação de email único usando getUserByEmail
     const existingUser = await getUserByEmail(userData.email);
@@ -132,6 +138,49 @@ export async function PUT(request) {
       );
       if (emailEmUso) {
         return NextResponse.json({ message: "Já existe uma conta ativa com este email." }, { status: 409 });
+      }
+    }
+
+    if (updates.role === "employee" && (!updates.salario || parseFloat(updates.salario) < 830)) {
+      return NextResponse.json(
+        { message: "O salário mínimo para employees é 830€" },
+        { status: 400 }
+      );
+    }
+
+    // Verifica se email foi alterado
+    const emailChanged = updates.email && updates.email !== users[idx].email;
+    
+    if (emailChanged) {
+      // Verifica se o novo email já existe
+      const existingUser = await getUserByEmail(updates.email);
+      if (existingUser && existingUser.id !== id) {
+        return NextResponse.json(
+          { message: "Este email já está em uso por outro utilizador" },
+          { status: 400 }
+        );
+      }
+      
+      // Gera purl e marca conta como pendente
+      const purl = require('crypto').randomBytes(32).toString('hex');
+      updates.active = 0;
+      updates.purl = purl;
+      updates.desc = "pending email confirmation";
+      
+      // Envia email de confirmação
+      try {
+        await sendEmail({
+          to: updates.email,
+          subject: "Confirmação de alteração de email",
+          text: `Olá ${updates.name || users[idx].name},\n\nO administrador alterou o email da sua conta.\n\nPor favor confirme este email clicando no link:\nhttp://localhost:3000/confirmEmail?a=${purl}\n\nObrigado!`,
+          html: `<p>Olá ${updates.name || users[idx].name},</p>
+            <p>O administrador alterou o email da sua conta.</p>
+            <p>Por favor confirme este email clicando no link:</p>
+            <a href="http://localhost:3000/confirmEmail?a=${purl}">Confirmar email</a>
+            <p>Obrigado!</p>`
+        });
+      } catch (emailErr) {
+        console.error("Erro ao enviar email de confirmação:", emailErr);
       }
     }
 

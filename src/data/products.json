@@ -91,7 +91,7 @@
     "id": "13",
     "name": "M&Ms",
     "price": "2.50",
-    "stock": 6,
+    "stock": 5,
     "minStock": 5,
     "pack": null
   },

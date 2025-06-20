@@ -67,6 +67,10 @@ export default function HomeDashboard() {
     // Fetch bar transactions
     const transactionsRes = await fetch('/api/transactions');
     const transactions = await transactionsRes.json();
+    console.log('Transactions API Response:', transactionsRes);
+    console.log('Parsed Transactions Data:', transactions);
+    console.log('Is Array:', Array.isArray(transactions));
+    console.log('Transactions Count:', transactions?.length || 0);
     
     // Calculate ticket counts
     const dayCount = tickets.filter(t => new Date(t.datetime) > new Date(now - oneDay)).length;
@@ -89,19 +93,20 @@ export default function HomeDashboard() {
     const yearTicketRevenue = tickets.reduce((sum, t) => sum + t.buy_total, 0);
     
     // Calculate bar revenue
-    const dayBarRevenue = transactions
+    const dayBarRevenue = transactions?.length > 0 ? transactions
       .filter(t => new Date(t.date) > new Date(now - oneDay))
-      .reduce((sum, t) => sum + t.total, 0);
+      .reduce((sum, t) => sum + (t.total || 0), 0) : 0;
       
-    const weekBarRevenue = transactions
+    const weekBarRevenue = transactions?.length > 0 ? transactions
       .filter(t => new Date(t.date) > new Date(now - 7 * oneDay))
-      .reduce((sum, t) => sum + t.total, 0);
+      .reduce((sum, t) => sum + (t.total || 0), 0) : 0;
       
-    const monthBarRevenue = transactions
+    const monthBarRevenue = transactions?.length > 0 ? transactions
       .filter(t => new Date(t.date) > new Date(now - 30 * oneDay))
-      .reduce((sum, t) => sum + t.total, 0);
+      .reduce((sum, t) => sum + (t.total || 0), 0) : 0;
       
-    const yearBarRevenue = transactions.reduce((sum, t) => sum + t.total, 0);
+    const yearBarRevenue = transactions?.length > 0 ? transactions
+      .reduce((sum, t) => sum + (t.total || 0), 0) : 0;
     
     // Combine ticket and bar revenue
     setTicketsStats([
@@ -111,11 +116,12 @@ export default function HomeDashboard() {
       { label: "Ano", value: tickets.length }
     ]);
     
+    // Set bar revenue stats (only from transactions)
     setRevenueStats([
-      { label: "Dia", value: `€${(dayTicketRevenue + dayBarRevenue).toFixed(2)}` },
-      { label: "Semana", value: `€${(weekTicketRevenue + weekBarRevenue).toFixed(2)}` },
-      { label: "Mês", value: `€${(monthTicketRevenue + monthBarRevenue).toFixed(2)}` },
-      { label: "Ano", value: `€${(yearTicketRevenue + yearBarRevenue).toFixed(2)}` }
+      { label: "Dia", value: `€${dayBarRevenue.toFixed(2)}` },
+      { label: "Semana", value: `€${weekBarRevenue.toFixed(2)}` },
+      { label: "Mês", value: `€${monthBarRevenue.toFixed(2)}` },
+      { label: "Ano", value: `€${yearBarRevenue.toFixed(2)}` }
     ]);
   };
 
