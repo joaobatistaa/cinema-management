@@ -38,7 +38,7 @@ export async function updateProductStock(items) {
 }
 
 // Atualiza um produto existente
-export async function updateProduct({ id, name, stock, price }) {
+export async function updateProduct({ id, name, stock, minStock = 0, price }) {
   const fileContents = await fs.readFile(filePath, "utf-8");
   const products = JSON.parse(fileContents);
 
@@ -49,6 +49,7 @@ export async function updateProduct({ id, name, stock, price }) {
     ...products[idx],
     name,
     stock,
+    minStock: Number(minStock) || 0,
     price
   };
 
@@ -71,7 +72,7 @@ export async function deleteProduct(id) {
 }
 
 // Adiciona um novo produto
-export async function addProduct({ name, stock, price }) {
+export async function addProduct({ name, stock, minStock = 0, price }) {
   const fileContents = await fs.readFile(filePath, "utf-8");
   const products = JSON.parse(fileContents);
 
@@ -84,6 +85,7 @@ export async function addProduct({ name, stock, price }) {
     id: newId,
     name,
     stock,
+    minStock: Number(minStock) || 0,
     price,
     image: ""
   };
