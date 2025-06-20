@@ -314,5 +314,103 @@
     "buy_total": 17,
     "payment_method": "cash",
     "payment_info": "Dinheiro"
+  },
+  {
+    "id": 19,
+    "user_id": -1,
+    "movie_id": "3",
+    "session_id": "15",
+    "room_id": 6,
+    "seat": {
+      "row": 1,
+      "col": 1
+    },
+    "datetime": "2025-06-20T16:01:47.073Z",
+    "bar_items": [
+      {
+        "id": "1",
+        "name": "Pipocas G",
+        "price": "10.00",
+        "quantity": 1
+      },
+      {
+        "id": "3",
+        "name": "Pipocas P",
+        "price": "3",
+        "quantity": 1
+      }
+    ],
+    "ticket_price": 7,
+    "bar_total": 13,
+    "buy_total": 20,
+    "payment_method": "mbway",
+    "payment_info": "919788427"
+  },
+  {
+    "id": 20,
+    "user_id": -1,
+    "movie_id": "3",
+    "session_id": "15",
+    "room_id": 6,
+    "seat": {
+      "row": 1,
+      "col": 1
+    },
+    "datetime": "2025-06-20T16:01:54.961Z",
+    "bar_items": [
+      {
+        "id": "1",
+        "name": "Pipocas G",
+        "price": "10.00",
+        "quantity": 1
+      },
+      {
+        "id": "3",
+        "name": "Pipocas P",
+        "price": "3",
+        "quantity": 1
+      }
+    ],
+    "ticket_price": 7,
+    "bar_total": 13,
+    "buy_total": 20,
+    "payment_method": "cash",
+    "payment_info": "Dinheiro"
+  },
+  {
+    "id": 21,
+    "user_id": -1,
+    "movie_id": "3",
+    "session_id": "15",
+    "room_id": 6,
+    "seat": {
+      "row": 3,
+      "col": 3
+    },
+    "datetime": "2025-06-20T16:03:36.950Z",
+    "bar_items": [],
+    "ticket_price": 7,
+    "bar_total": 0,
+    "buy_total": 7,
+    "payment_method": "cash",
+    "payment_info": "Dinheiro"
+  },
+  {
+    "id": 22,
+    "user_id": 4,
+    "movie_id": "3",
+    "session_id": "15",
+    "room_id": 6,
+    "seat": {
+      "row": 2,
+      "col": 3
+    },
+    "datetime": "2025-06-20T16:06:28.282Z",
+    "bar_items": [],
+    "ticket_price": 7,
+    "bar_total": 0,
+    "buy_total": 7,
+    "payment_method": "mbway",
+    "payment_info": "919788427"
   }
 ]

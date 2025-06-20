@@ -320,5 +320,75 @@
     "userName": "ADMIN",
     "date": "2025-06-20T13:03:53.353Z",
     "description": "Início de sessão"
+  },
+  {
+    "id": 47,
+    "userID": 4,
+    "userName": "aaaaa",
+    "date": "2025-06-20T15:13:04.708Z",
+    "description": "Início de sessão"
+  },
+  {
+    "id": 48,
+    "userID": 2,
+    "userName": "employee2",
+    "date": "2025-06-20T15:56:11.690Z",
+    "description": "Início de sessão"
+  },
+  {
+    "id": 49,
+    "userID": 1,
+    "userName": "ADMIN",
+    "date": "2025-06-20T15:56:27.949Z",
+    "description": "Início de sessão"
+  },
+  {
+    "id": 50,
+    "userID": 1,
+    "userName": "ADMIN",
+    "date": "2025-06-20T16:00:39.012Z",
+    "description": "Nova transação de bar registrada: 1 itens, total 2.00€"
+  },
+  {
+    "id": 51,
+    "userID": 4,
+    "userName": "aaaaa",
+    "date": "2025-06-20T16:04:23.106Z",
+    "description": "Início de sessão"
+  },
+  {
+    "id": 52,
+    "userID": 1,
+    "userName": "ADMIN",
+    "date": "2025-06-20T16:09:28.447Z",
+    "description": "Início de sessão"
+  },
+  {
+    "id": 53,
+    "userID": 1,
+    "userName": "ADMIN",
+    "date": "2025-06-20T16:12:26.981Z",
+    "description": "Nova transação de bar registrada: 1 itens, total 4.00€"
+  },
+  {
+    "id": 54,
+    "userID": 1,
+    "userName": "ADMIN",
+    "date": "2025-06-20T16:12:59.047Z",
+    "description": "Nova transação de bar registrada: 1 itens, total 2.50€"
+  },
+  {
+    "id": 55,
+    "userID": 1,
+    "userName": "ADMIN",
+    "date": "2025-06-20T16:16:01.676Z",
+    "description": "Nova transação de bar registrada: 1 itens, total 2.50€"
+  },
+  {
+    "id": 56,
+    "userID": 1,
+    "userName": "ADMIN",
+    "date": "2025-06-20T16:17:31.234Z",
+    "description": "Nova transação de bar registrada: 1 itens, total 2.50€"
   }
 ]

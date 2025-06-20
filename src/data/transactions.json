@@ -238,5 +238,110 @@
     "workerId": 10,
     "workerName": "employee10",
     "id": "1750389300000"
+  },
+  {
+    "items": [
+      {
+        "id": "7",
+        "name": "Chocolate",
+        "price": "2",
+        "stock": 16,
+        "pack": null,
+        "minStock": 5,
+        "quantity": 1
+      }
+    ],
+    "total": 2,
+    "userId": 0,
+    "desc": "Compra no Bar",
+    "date": "2025-06-20T16:00:39.012Z",
+    "nif": null,
+    "workerId": 1,
+    "workerName": "ADMIN",
+    "id": "1750435239013"
+  },
+  {
+    "items": [
+      {
+        "id": "10",
+        "name": "Pipocas Doces P",
+        "price": "4",
+        "stock": 8,
+        "pack": null,
+        "minStock": 5,
+        "quantity": 1
+      }
+    ],
+    "total": 4,
+    "userId": 4,
+    "desc": "Compra no Bar",
+    "date": "2025-06-20T16:12:26.981Z",
+    "nif": "270309136",
+    "workerId": 1,
+    "workerName": "ADMIN",
+    "id": "1750435946981"
+  },
+  {
+    "items": [
+      {
+        "id": "13",
+        "name": "M&Ms",
+        "price": "2.50",
+        "stock": 8,
+        "minStock": 5,
+        "pack": null,
+        "quantity": 1
+      }
+    ],
+    "total": 2.5,
+    "userId": 0,
+    "desc": "Compra no Bar",
+    "date": "2025-06-20T16:12:59.047Z",
+    "nif": null,
+    "workerId": 1,
+    "workerName": "ADMIN",
+    "id": "1750435979047"
+  },
+  {
+    "items": [
+      {
+        "id": "13",
+        "name": "M&Ms",
+        "price": "2.50",
+        "stock": 7,
+        "minStock": 5,
+        "pack": null,
+        "quantity": 1
+      }
+    ],
+    "total": 2.5,
+    "userId": 4,
+    "desc": "Compra no Bar",
+    "date": "2025-06-20T16:16:01.676Z",
+    "nif": null,
+    "workerId": 1,
+    "workerName": "ADMIN",
+    "id": "1750436161677"
+  },
+  {
+    "items": [
+      {
+        "id": 21,
+        "name": "bananinhas",
+        "price": "2.5",
+        "stock": 10,
+        "pack": null,
+        "minStock": 5,
+        "quantity": 1
+      }
+    ],
+    "total": 2.5,
+    "userId": 4,
+    "desc": "Compra no Bar",
+    "date": "2025-06-20T16:17:31.234Z",
+    "nif": null,
+    "workerId": 1,
+    "workerName": "ADMIN",
+    "id": "1750436251234"
   }
 ]

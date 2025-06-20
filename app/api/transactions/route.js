@@ -43,6 +43,13 @@ export async function POST(request) {
         );
       }
     } else {
+      // Verifica se é customer (não admin nem employee)
+      if (user.role && user.role !== "customer") {
+        return NextResponse.json(
+          { error: "Apenas clientes podem realizar compras no bar" },
+          { status: 403 }
+        );
+      }
       userId = user.id;
     }
     // Atualiza stock, mas não bloqueia a transação se falhar
@@ -145,4 +152,3 @@ export async function POST(request) {
     );
   }
 }
-

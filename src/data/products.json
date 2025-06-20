@@ -51,7 +51,7 @@
     "id": "7",
     "name": "Chocolate",
     "price": "2",
-    "stock": 16,
+    "stock": 15,
     "pack": null,
     "minStock": 5
   },
@@ -67,7 +67,7 @@
     "id": "10",
     "name": "Pipocas Doces P",
     "price": "4",
-    "stock": 8,
+    "stock": 7,
     "pack": null,
     "minStock": 5
   },
@@ -91,7 +91,7 @@
     "id": "13",
     "name": "M&Ms",
     "price": "2.50",
-    "stock": 8,
+    "stock": 6,
     "minStock": 5,
     "pack": null
   },
@@ -139,7 +139,7 @@
     "id": 21,
     "name": "bananinhas",
     "price": "2.5",
-    "stock": 10,
+    "stock": 9,
     "pack": null,
     "minStock": 5
   },
