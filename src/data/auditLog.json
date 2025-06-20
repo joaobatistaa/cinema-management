@@ -1,181 +1,23 @@
 [
   {
     "id": 1,
-    "userID": 3,
-    "userName": "Joao",
-    "date": "2025-06-20T16:46:24.614Z",
-    "description": "Email confirmado para o utilizador: joao2@cliente.com"
+    "userID": 1,
+    "userName": "ADMIN",
+    "date": "2025-06-20T23:43:09.280Z",
+    "description": "Filme excluído: testea (ID: 4)"
   },
   {
     "id": 2,
-    "userID": 1,
-    "userName": "ADMIN",
-    "date": "2025-06-20T16:46:40.990Z",
-    "description": "Conta eliminada: joao2@cliente.com"
+    "userID": 3,
+    "userName": "Joao",
+    "date": "2025-06-20T23:45:45.738Z",
+    "description": "Início de sessão"
   },
   {
     "id": 3,
     "userID": 1,
     "userName": "ADMIN",
-    "date": "2025-06-20T16:46:50.974Z",
-    "description": "Conta reativada: joao2@cliente.com"
-  },
-  {
-    "id": 4,
-    "userID": 1,
-    "userName": "ADMIN",
-    "date": "2025-06-20T16:56:05.500Z",
-    "description": "Nova transação de bar registrada: 1 itens, total 2.50€"
-  },
-  {
-    "id": 5,
-    "userID": 1,
-    "userName": "ADMIN",
-    "date": "2025-06-20T21:07:46.728Z",
-    "description": "Novo bilhete com o ID 23 comprado para o filme Marcello Mio na sessão do dia 01/07/2025 às 19:00, na sala ola e lugar B1. Valor gasto no bar: 13€ - Itens do bar (Pipocas G x1, Pipocas P x1). Valor do bilhete: 7€. Valor total: 20€"
-  },
-  {
-    "id": 6,
-    "userID": 3,
-    "userName": "Joao",
-    "date": "2025-06-20T21:09:38.841Z",
-    "description": "Início de sessão"
-  },
-  {
-    "id": 7,
-    "userID": 3,
-    "userName": "Joao",
-    "date": "2025-06-20T21:10:28.959Z",
-    "description": "Novo bilhete com o ID 24 comprado para o filme Marcello Mio na sessão do dia 01/07/2025 às 19:00, na sala ola e lugar B2. Valor gasto no bar: 13.5€ - Itens do bar (Pipocas M x1, Pipocas P x1, Coca-Cola x1, Água x3). Valor do bilhete: 7€. Valor total: 20.5€"
-  },
-  {
-    "id": 8,
-    "userID": 3,
-    "userName": "Joao",
-    "date": "2025-06-20T21:20:34.603Z",
-    "description": "Início de sessão"
-  },
-  {
-    "id": 9,
-    "userID": 3,
-    "userName": "Joao",
-    "date": "2025-06-20T21:20:53.955Z",
-    "description": "Novo bilhete com o ID 25 comprado para o filme Pecadores na sessão do dia 01/07/2025 às 21:30, na sala teste 1 e lugar D1. Valor gasto no bar: 18€ - Itens do bar (Pipocas G x1, Pipocas P x1, Coca-Cola x1, Água x1, Sumo Laranja x1). Valor do bilhete: 7€. Valor total: 25€"
-  },
-  {
-    "id": 10,
-    "userID": 1,
-    "userName": "ADMIN",
-    "date": "2025-06-20T21:21:14.884Z",
-    "description": "Início de sessão"
-  },
-  {
-    "id": 11,
-    "userID": 1,
-    "userName": "ADMIN",
-    "date": "2025-06-20T21:22:09.698Z",
-    "description": "Novo bilhete com o ID 26 comprado para o filme Pecadores na sessão do dia 01/07/2025 às 21:30, na sala teste 1 e lugar E2. Valor gasto no bar: 14.5€ - Itens do bar (Pipocas G x1, Pipocas P x1, Água x1). Valor do bilhete: 7€. Valor total: 21.5€"
-  },
-  {
-    "id": 12,
-    "userID": 1,
-    "userName": "ADMIN",
-    "date": "2025-06-20T21:22:19.766Z",
-    "description": "Novo bilhete com o ID 27 comprado para o filme Pecadores na sessão do dia 01/07/2025 às 21:30, na sala teste 1 e lugar E2. Valor gasto no bar: 14.5€ - Itens do bar (Pipocas G x1, Pipocas P x1, Água x1). Valor do bilhete: 7€. Valor total: 21.5€"
-  },
-  {
-    "id": 13,
-    "userID": 1,
-    "userName": "ADMIN",
-    "date": "2025-06-20T21:24:29.006Z",
-    "description": "Novo bilhete com o ID 28 comprado para o filme Pecadores na sessão do dia 01/07/2025 às 21:30, na sala teste 1 e lugar E2. Valor gasto no bar: 14.5€ - Itens do bar (Pipocas G x1, Pipocas P x1, Água x1). Valor do bilhete: 7€. Valor total: 21.5€"
-  },
-  {
-    "id": 14,
-    "userID": 1,
-    "userName": "ADMIN",
-    "date": "2025-06-20T21:24:50.279Z",
-    "description": "Bilhete com o ID 28 cancelado com reembolso via cash"
-  },
-  {
-    "id": 15,
-    "userID": 1,
-    "userName": "ADMIN",
-    "date": "2025-06-20T21:24:57.822Z",
-    "description": "Bilhete com o ID 27 cancelado com reembolso via cash"
-  },
-  {
-    "id": 16,
-    "userID": 1,
-    "userName": "ADMIN",
-    "date": "2025-06-20T21:47:54.464Z",
-    "description": "Nova transação de bar registrada: 1 itens, total 2.00€"
-  },
-  {
-    "id": 17,
-    "date": "2025-06-20T21:52:15.961Z",
-    "description": "Bilhete criado para joao2@cliente.com (Amador - 03/07/2025 14:00)"
-  },
-  {
-    "id": 18,
-    "date": "2025-06-20T21:53:02.603Z",
-    "description": "Bilhete criado para guest@guest.com (Amador - 03/07/2025 14:00)"
-  },
-  {
-    "id": 19,
-    "userID": 3,
-    "userName": "Joao",
-    "date": "2025-06-20T21:53:44.179Z",
-    "description": "Início de sessão"
-  },
-  {
-    "id": 20,
-    "date": "2025-06-20T22:17:08.038Z",
-    "description": "Bilhete criado para safafafaf (Marcello Mio - 01/07/2025 19:00)"
-  },
-  {
-    "id": 21,
-    "date": "2025-06-20T22:19:28.356Z",
-    "description": "Bilhete criado para guest@guest.com (Marcello Mio - 01/07/2025 19:00)"
-  },
-  {
-    "id": 22,
-    "date": "2025-06-20T22:24:05.690Z",
-    "description": "Bilhete criado para putae@gmail.com (Marcello Mio - 01/07/2025 19:00)"
-  },
-  {
-    "id": 23,
-    "userID": 0,
-    "userName": "guest",
-    "date": "2025-06-20T22:33:22.311Z",
-    "description": "Nova transação de bar registrada: 2 itens, total 4.50€"
-  },
-  {
-    "id": 24,
-    "userID": 1,
-    "userName": "ADMIN",
-    "date": "2025-06-20T22:33:41.486Z",
-    "description": "Início de sessão"
-  },
-  {
-    "id": 25,
-    "userID": 1,
-    "userName": "ADMIN",
-    "date": "2025-06-20T22:35:00.641Z",
-    "description": "Nova transação de bar registrada: 2 itens, total 4.00€"
-  },
-  {
-    "id": 26,
-    "userID": 1,
-    "userName": "ADMIN",
-    "date": "2025-06-20T22:38:25.381Z",
-    "description": "Nova transação de bar registrada: 2 itens, total 4.50€"
-  },
-  {
-    "id": 27,
-    "userID": 1,
-    "userName": "ADMIN",
-    "date": "2025-06-20T23:23:23.796Z",
+    "date": "2025-06-20T23:50:51.096Z",
     "description": "Início de sessão"
   }
 ]
