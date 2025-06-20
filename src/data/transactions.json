@@ -19,5 +19,325 @@
     "workerId": 1,
     "workerName": "ADMIN",
     "id": "1750438565500"
+  },
+  {
+    "ticketData": {
+      "email": "admin@admin.com",
+      "user_id": -1,
+      "movie_title": "Marcello Mio",
+      "movie_id": "2",
+      "session_id": "7",
+      "session_datetime": "2025-07-01T19:00:00",
+      "room_id": 7,
+      "room_name": "ola",
+      "seat": {
+        "row": 2,
+        "col": 1
+      },
+      "datetime": "2025-06-20T21:07:44.184Z",
+      "bar_items": [
+        {
+          "id": "1",
+          "name": "Pipocas G",
+          "price": "10.00",
+          "quantity": 1
+        },
+        {
+          "id": "3",
+          "name": "Pipocas P",
+          "price": "3",
+          "quantity": 1
+        }
+      ],
+      "ticket_price": 7,
+      "bar_total": 13,
+      "buy_total": 20,
+      "payment_method": "cash",
+      "payment_info": "Dinheiro",
+      "actorId": 1,
+      "actorName": "ADMIN"
+    },
+    "userId": 1,
+    "desc": "Compra de Bilhete",
+    "total": 20,
+    "date": "2025-06-20T21:07:47.442Z",
+    "nif": null,
+    "workerId": 1,
+    "workerName": "ADMIN",
+    "id": "1750453667442"
+  },
+  {
+    "ticketData": {
+      "email": "joao2@cliente.com",
+      "user_id": 3,
+      "movie_title": "Marcello Mio",
+      "movie_id": "2",
+      "session_id": "7",
+      "session_datetime": "2025-07-01T19:00:00",
+      "room_id": 7,
+      "room_name": "ola",
+      "seat": {
+        "row": 2,
+        "col": 2
+      },
+      "datetime": "2025-06-20T21:10:27.242Z",
+      "bar_items": [
+        {
+          "id": "2",
+          "name": "Pipocas M",
+          "price": "5",
+          "quantity": 1
+        },
+        {
+          "id": "3",
+          "name": "Pipocas P",
+          "price": "3",
+          "quantity": 1
+        },
+        {
+          "id": "4",
+          "name": "Coca-Cola",
+          "price": "2",
+          "quantity": 1
+        },
+        {
+          "id": "5",
+          "name": "Água",
+          "price": "1.5",
+          "quantity": 3
+        }
+      ],
+      "ticket_price": 7,
+      "bar_total": 13.5,
+      "buy_total": 20.5,
+      "payment_method": "mbway",
+      "payment_info": "916656565656",
+      "actorId": 3,
+      "actorName": "Joao"
+    },
+    "userId": 3,
+    "desc": "Compra de Bilhete",
+    "total": 20.5,
+    "date": "2025-06-20T21:10:29.806Z",
+    "nif": null,
+    "id": "1750453829806"
+  },
+  {
+    "ticketData": {
+      "email": "joao2@cliente.com",
+      "user_id": 3,
+      "movie_title": "Pecadores",
+      "movie_id": "1",
+      "session_id": "1",
+      "session_datetime": "2025-07-01T21:30:00",
+      "room_id": 1,
+      "room_name": "teste 1",
+      "seat": {
+        "row": 4,
+        "col": 1
+      },
+      "datetime": "2025-06-20T21:20:51.990Z",
+      "bar_items": [
+        {
+          "id": "1",
+          "name": "Pipocas G",
+          "price": "10.00",
+          "quantity": 1
+        },
+        {
+          "id": "3",
+          "name": "Pipocas P",
+          "price": "3",
+          "quantity": 1
+        },
+        {
+          "id": "4",
+          "name": "Coca-Cola",
+          "price": "2",
+          "quantity": 1
+        },
+        {
+          "id": "5",
+          "name": "Água",
+          "price": "1.5",
+          "quantity": 1
+        },
+        {
+          "id": "6",
+          "name": "Sumo Laranja",
+          "price": "2.5",
+          "quantity": 1
+        }
+      ],
+      "ticket_price": 7,
+      "bar_total": 18,
+      "buy_total": 25,
+      "payment_method": "paypal",
+      "payment_info": "jkjkhljhl",
+      "actorId": 3,
+      "actorName": "Joao"
+    },
+    "userId": 3,
+    "desc": "Compra de Bilhete",
+    "total": 25,
+    "date": "2025-06-20T21:20:54.555Z",
+    "nif": null,
+    "id": "1750454454556"
+  },
+  {
+    "ticketData": {
+      "email": "teste@email.com",
+      "user_id": -1,
+      "movie_title": "Pecadores",
+      "movie_id": "1",
+      "session_id": "1",
+      "session_datetime": "2025-07-01T21:30:00",
+      "room_id": 1,
+      "room_name": "teste 1",
+      "seat": {
+        "row": 5,
+        "col": 2
+      },
+      "datetime": "2025-06-20T21:22:08.035Z",
+      "bar_items": [
+        {
+          "id": "1",
+          "name": "Pipocas G",
+          "price": "10.00",
+          "quantity": 1
+        },
+        {
+          "id": "3",
+          "name": "Pipocas P",
+          "price": "3",
+          "quantity": 1
+        },
+        {
+          "id": "5",
+          "name": "Água",
+          "price": "1.5",
+          "quantity": 1
+        }
+      ],
+      "ticket_price": 7,
+      "bar_total": 14.5,
+      "buy_total": 21.5,
+      "payment_method": "cash",
+      "payment_info": "Dinheiro",
+      "actorId": 1,
+      "actorName": "ADMIN"
+    },
+    "userId": 1,
+    "desc": "Compra de Bilhete",
+    "total": 21.5,
+    "date": "2025-06-20T21:22:09.709Z",
+    "nif": null,
+    "workerId": 1,
+    "workerName": "ADMIN",
+    "id": "1750454529710"
+  },
+  {
+    "ticketData": {
+      "email": "teste@email.com",
+      "user_id": -1,
+      "movie_title": "Pecadores",
+      "movie_id": "1",
+      "session_id": "1",
+      "session_datetime": "2025-07-01T21:30:00",
+      "room_id": 1,
+      "room_name": "teste 1",
+      "seat": {
+        "row": 5,
+        "col": 2
+      },
+      "datetime": "2025-06-20T21:22:18.056Z",
+      "bar_items": [
+        {
+          "id": "1",
+          "name": "Pipocas G",
+          "price": "10.00",
+          "quantity": 1
+        },
+        {
+          "id": "3",
+          "name": "Pipocas P",
+          "price": "3",
+          "quantity": 1
+        },
+        {
+          "id": "5",
+          "name": "Água",
+          "price": "1.5",
+          "quantity": 1
+        }
+      ],
+      "ticket_price": 7,
+      "bar_total": 14.5,
+      "buy_total": 21.5,
+      "payment_method": "cash",
+      "payment_info": "Dinheiro",
+      "actorId": 1,
+      "actorName": "ADMIN"
+    },
+    "userId": 1,
+    "desc": "Compra de Bilhete",
+    "total": 21.5,
+    "date": "2025-06-20T21:22:19.779Z",
+    "nif": null,
+    "workerId": 1,
+    "workerName": "ADMIN",
+    "id": "1750454539780"
+  },
+  {
+    "ticketData": {
+      "email": "teste@email.com",
+      "user_id": -1,
+      "movie_title": "Pecadores",
+      "movie_id": "1",
+      "session_id": "1",
+      "session_datetime": "2025-07-01T21:30:00",
+      "room_id": 1,
+      "room_name": "teste 1",
+      "seat": {
+        "row": 5,
+        "col": 2
+      },
+      "datetime": "2025-06-20T21:24:26.934Z",
+      "bar_items": [
+        {
+          "id": "1",
+          "name": "Pipocas G",
+          "price": "10.00",
+          "quantity": 1
+        },
+        {
+          "id": "3",
+          "name": "Pipocas P",
+          "price": "3",
+          "quantity": 1
+        },
+        {
+          "id": "5",
+          "name": "Água",
+          "price": "1.5",
+          "quantity": 1
+        }
+      ],
+      "ticket_price": 7,
+      "bar_total": 14.5,
+      "buy_total": 21.5,
+      "payment_method": "cash",
+      "payment_info": "Dinheiro",
+      "actorId": 1,
+      "actorName": "ADMIN"
+    },
+    "userId": 1,
+    "desc": "Compra de Bilhete",
+    "total": 21.5,
+    "date": "2025-06-20T21:24:29.338Z",
+    "nif": null,
+    "workerId": 1,
+    "workerName": "ADMIN",
+    "id": "1750454669338"
   }
 ]

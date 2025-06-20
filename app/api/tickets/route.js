@@ -30,8 +30,8 @@ export async function POST(request) {
       movie_title,
       room_name,
       session_datetime,
-      actorId = "unknown",       // ← extrair do corpo da requisição
-      actorName = "unknown",     // ← extrair do corpo da requisição
+      actorId = "unknown",
+      actorName = "unknown",
       ...dataWithoutEmailAndActor
     } = data;
 
@@ -109,4 +109,3 @@ export async function POST(request) {
     );
   }
 }
-

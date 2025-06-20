@@ -412,5 +412,165 @@
     "buy_total": 7,
     "payment_method": "mbway",
     "payment_info": "919788427"
+  },
+  {
+    "id": 23,
+    "user_id": -1,
+    "movie_id": "2",
+    "session_id": "7",
+    "room_id": 7,
+    "seat": {
+      "row": 2,
+      "col": 1
+    },
+    "datetime": "2025-06-20T21:07:44.184Z",
+    "bar_items": [
+      {
+        "id": "1",
+        "name": "Pipocas G",
+        "price": "10.00",
+        "quantity": 1
+      },
+      {
+        "id": "3",
+        "name": "Pipocas P",
+        "price": "3",
+        "quantity": 1
+      }
+    ],
+    "ticket_price": 7,
+    "bar_total": 13,
+    "buy_total": 20,
+    "payment_method": "cash",
+    "payment_info": "Dinheiro"
+  },
+  {
+    "id": 24,
+    "user_id": 3,
+    "movie_id": "2",
+    "session_id": "7",
+    "room_id": 7,
+    "seat": {
+      "row": 2,
+      "col": 2
+    },
+    "datetime": "2025-06-20T21:10:27.242Z",
+    "bar_items": [
+      {
+        "id": "2",
+        "name": "Pipocas M",
+        "price": "5",
+        "quantity": 1
+      },
+      {
+        "id": "3",
+        "name": "Pipocas P",
+        "price": "3",
+        "quantity": 1
+      },
+      {
+        "id": "4",
+        "name": "Coca-Cola",
+        "price": "2",
+        "quantity": 1
+      },
+      {
+        "id": "5",
+        "name": "Água",
+        "price": "1.5",
+        "quantity": 3
+      }
+    ],
+    "ticket_price": 7,
+    "bar_total": 13.5,
+    "buy_total": 20.5,
+    "payment_method": "mbway",
+    "payment_info": "916656565656"
+  },
+  {
+    "id": 25,
+    "user_id": 3,
+    "movie_id": "1",
+    "session_id": "1",
+    "room_id": 1,
+    "seat": {
+      "row": 4,
+      "col": 1
+    },
+    "datetime": "2025-06-20T21:20:51.990Z",
+    "bar_items": [
+      {
+        "id": "1",
+        "name": "Pipocas G",
+        "price": "10.00",
+        "quantity": 1
+      },
+      {
+        "id": "3",
+        "name": "Pipocas P",
+        "price": "3",
+        "quantity": 1
+      },
+      {
+        "id": "4",
+        "name": "Coca-Cola",
+        "price": "2",
+        "quantity": 1
+      },
+      {
+        "id": "5",
+        "name": "Água",
+        "price": "1.5",
+        "quantity": 1
+      },
+      {
+        "id": "6",
+        "name": "Sumo Laranja",
+        "price": "2.5",
+        "quantity": 1
+      }
+    ],
+    "ticket_price": 7,
+    "bar_total": 18,
+    "buy_total": 25,
+    "payment_method": "paypal",
+    "payment_info": "jkjkhljhl"
+  },
+  {
+    "id": 26,
+    "user_id": -1,
+    "movie_id": "1",
+    "session_id": "1",
+    "room_id": 1,
+    "seat": {
+      "row": 5,
+      "col": 2
+    },
+    "datetime": "2025-06-20T21:22:08.035Z",
+    "bar_items": [
+      {
+        "id": "1",
+        "name": "Pipocas G",
+        "price": "10.00",
+        "quantity": 1
+      },
+      {
+        "id": "3",
+        "name": "Pipocas P",
+        "price": "3",
+        "quantity": 1
+      },
+      {
+        "id": "5",
+        "name": "Água",
+        "price": "1.5",
+        "quantity": 1
+      }
+    ],
+    "ticket_price": 7,
+    "bar_total": 14.5,
+    "buy_total": 21.5,
+    "payment_method": "cash",
+    "payment_info": "Dinheiro"
   }
 ]

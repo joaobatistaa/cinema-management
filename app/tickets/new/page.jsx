@@ -37,6 +37,7 @@ export default function BuyTicketPage() {
   const [quantities, setQuantities] = useState({});
   const [openDialog, setOpenDialog] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("mbway");
+  const [customerEmail, setCustomerEmail] = useState("");
   const [paymentInfo, setPaymentInfo] = useState({
     mbway: "",
     card: "",
@@ -44,6 +45,11 @@ export default function BuyTicketPage() {
     cash: ""
   });
   const [cancelDays, setCancelDays] = useState(2);
+
+  const getActorInfo = () => ({
+    actorId: user?.id || 0,
+    actorName: user?.name || "guest"
+  });
 
   const handleQuantityChange = (itemId, delta) => {
     setQuantities((prev) => ({
@@ -184,13 +190,17 @@ export default function BuyTicketPage() {
   }
 
   async function handleConfirmPurchase() {
-    // Validação dos campos obrigatórios do método de pagamento
     if (
       (paymentMethod === "mbway" && !paymentInfo.mbway) ||
       (paymentMethod === "card" && !paymentInfo.card) ||
       (paymentMethod === "paypal" && !paymentInfo.paypal)
     ) {
       toast.error("Preencha os dados do método de pagamento.");
+      return;
+    }
+
+    if (!customerEmail && (user?.role == "employee" || user?.role == "admin")) {
+      toast.error("Indica o email do cliente!");
       return;
     }
 
@@ -205,7 +215,10 @@ export default function BuyTicketPage() {
       }
 
       const data = {
-        email: user.email,
+        email:
+          user?.role == "employee" || user?.role == "admin"
+            ? customerEmail
+            : user?.email,
         user_id,
         movie_title: movie?.title || "",
         movie_id: movieId,
@@ -241,7 +254,6 @@ export default function BuyTicketPage() {
             ? "Dinheiro"
             : "",
 
-        // 👇 Adiciona os dados do ator diretamente no body
         actorId: user.id,
         actorName: user.name
       };
@@ -258,9 +270,29 @@ export default function BuyTicketPage() {
         throw new Error("Erro ao criar bilhete");
       }
 
+      const isStaff = user?.role === "employee" || user?.role === "admin";
+
+      const res = await fetch("/api/transactions/tickets", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ticketData: data,
+          desc: "Compra de Bilhete",
+          userId: user?.id,
+          nif: user?.nif || "N/A",
+          email: user?.email || "N/A",
+          ...(isStaff ? getActorInfo() : {})
+        })
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || "Erro ao registar transação.");
+      }
+
       toast.success("Bilhete comprado com sucesso!");
       setOpenDialog(false);
-      router.replace("/tickets");
+      router.push("/tickets");
     } catch (err) {
       toast.error("Erro ao comprar bilhete.");
     } finally {
@@ -680,6 +712,19 @@ export default function BuyTicketPage() {
         <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
           <DialogTitle>Escolha o método de pagamento</DialogTitle>
           <DialogContent>
+            {(user?.role === "admin" || user?.role === "employee") && (
+              <TextField
+                autoFocus
+                margin="dense"
+                label="Email do Cliente"
+                type="email"
+                fullWidth
+                variant="standard"
+                value={customerEmail}
+                onChange={(e) => setCustomerEmail(e.target.value)}
+                required
+              />
+            )}
             <RadioGroup
               value={paymentMethod}
               onChange={(e) => setPaymentMethod(e.target.value)}
@@ -764,6 +809,8 @@ export default function BuyTicketPage() {
               color="success"
               variant="contained"
               disabled={
+                ((user?.role === "admin" || user?.role === "employee") &&
+                  !customerEmail) ||
                 (paymentMethod === "mbway" && !paymentInfo.mbway) ||
                 (paymentMethod === "card" && !paymentInfo.card) ||
                 (paymentMethod === "paypal" && !paymentInfo.paypal)

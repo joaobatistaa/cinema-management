@@ -26,5 +26,82 @@
     "userName": "ADMIN",
     "date": "2025-06-20T16:56:05.500Z",
     "description": "Nova transação de bar registrada: 1 itens, total 2.50€"
+  },
+  {
+    "id": 5,
+    "userID": 1,
+    "userName": "ADMIN",
+    "date": "2025-06-20T21:07:46.728Z",
+    "description": "Novo bilhete com o ID 23 comprado para o filme Marcello Mio na sessão do dia 01/07/2025 às 19:00, na sala ola e lugar B1. Valor gasto no bar: 13€ - Itens do bar (Pipocas G x1, Pipocas P x1). Valor do bilhete: 7€. Valor total: 20€"
+  },
+  {
+    "id": 6,
+    "userID": 3,
+    "userName": "Joao",
+    "date": "2025-06-20T21:09:38.841Z",
+    "description": "Início de sessão"
+  },
+  {
+    "id": 7,
+    "userID": 3,
+    "userName": "Joao",
+    "date": "2025-06-20T21:10:28.959Z",
+    "description": "Novo bilhete com o ID 24 comprado para o filme Marcello Mio na sessão do dia 01/07/2025 às 19:00, na sala ola e lugar B2. Valor gasto no bar: 13.5€ - Itens do bar (Pipocas M x1, Pipocas P x1, Coca-Cola x1, Água x3). Valor do bilhete: 7€. Valor total: 20.5€"
+  },
+  {
+    "id": 8,
+    "userID": 3,
+    "userName": "Joao",
+    "date": "2025-06-20T21:20:34.603Z",
+    "description": "Início de sessão"
+  },
+  {
+    "id": 9,
+    "userID": 3,
+    "userName": "Joao",
+    "date": "2025-06-20T21:20:53.955Z",
+    "description": "Novo bilhete com o ID 25 comprado para o filme Pecadores na sessão do dia 01/07/2025 às 21:30, na sala teste 1 e lugar D1. Valor gasto no bar: 18€ - Itens do bar (Pipocas G x1, Pipocas P x1, Coca-Cola x1, Água x1, Sumo Laranja x1). Valor do bilhete: 7€. Valor total: 25€"
+  },
+  {
+    "id": 10,
+    "userID": 1,
+    "userName": "ADMIN",
+    "date": "2025-06-20T21:21:14.884Z",
+    "description": "Início de sessão"
+  },
+  {
+    "id": 11,
+    "userID": 1,
+    "userName": "ADMIN",
+    "date": "2025-06-20T21:22:09.698Z",
+    "description": "Novo bilhete com o ID 26 comprado para o filme Pecadores na sessão do dia 01/07/2025 às 21:30, na sala teste 1 e lugar E2. Valor gasto no bar: 14.5€ - Itens do bar (Pipocas G x1, Pipocas P x1, Água x1). Valor do bilhete: 7€. Valor total: 21.5€"
+  },
+  {
+    "id": 12,
+    "userID": 1,
+    "userName": "ADMIN",
+    "date": "2025-06-20T21:22:19.766Z",
+    "description": "Novo bilhete com o ID 27 comprado para o filme Pecadores na sessão do dia 01/07/2025 às 21:30, na sala teste 1 e lugar E2. Valor gasto no bar: 14.5€ - Itens do bar (Pipocas G x1, Pipocas P x1, Água x1). Valor do bilhete: 7€. Valor total: 21.5€"
+  },
+  {
+    "id": 13,
+    "userID": 1,
+    "userName": "ADMIN",
+    "date": "2025-06-20T21:24:29.006Z",
+    "description": "Novo bilhete com o ID 28 comprado para o filme Pecadores na sessão do dia 01/07/2025 às 21:30, na sala teste 1 e lugar E2. Valor gasto no bar: 14.5€ - Itens do bar (Pipocas G x1, Pipocas P x1, Água x1). Valor do bilhete: 7€. Valor total: 21.5€"
+  },
+  {
+    "id": 14,
+    "userID": 1,
+    "userName": "ADMIN",
+    "date": "2025-06-20T21:24:50.279Z",
+    "description": "Bilhete com o ID 28 cancelado com reembolso via cash"
+  },
+  {
+    "id": 15,
+    "userID": 1,
+    "userName": "ADMIN",
+    "date": "2025-06-20T21:24:57.822Z",
+    "description": "Bilhete com o ID 27 cancelado com reembolso via cash"
   }
 ]
