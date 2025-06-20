@@ -14,9 +14,7 @@ export default function SalesRecordsPage() {
   const [filterDate, setFilterDate] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
   const [popularProducts, setPopularProducts] = useState([]);
-  const transactionsPerPage = 10;
 
   // Fetch transactions
   useEffect(() => {
@@ -60,14 +58,8 @@ export default function SalesRecordsPage() {
     return matchesSearch && matchesDate;
   });
 
-  // Pagination
-  const indexOfLastTransaction = currentPage * transactionsPerPage;
-  const indexOfFirstTransaction = indexOfLastTransaction - transactionsPerPage;
-  const currentTransactions = filteredTransactions.slice(
-    indexOfFirstTransaction, 
-    indexOfLastTransaction
-  );
-  const totalPages = Math.ceil(filteredTransactions.length / transactionsPerPage);
+  // Use all filtered transactions
+  const currentTransactions = filteredTransactions;
 
   // Format currency
   const formatCurrency = (amount) => {
@@ -187,7 +179,6 @@ export default function SalesRecordsPage() {
                   value={searchTerm}
                   onChange={(e) => {
                     setSearchTerm(e.target.value);
-                    setCurrentPage(1);
                   }}
                 />
                 <svg
@@ -212,7 +203,6 @@ export default function SalesRecordsPage() {
                   value={filterDate}
                   onChange={(e) => {
                     setFilterDate(e.target.value);
-                    setCurrentPage(1);
                   }}
                 />
               </div>
@@ -228,28 +218,29 @@ export default function SalesRecordsPage() {
             </div>
 
             {/* Transactions Table */}
-            <div className="overflow-x-auto overflow-y-auto max-h-[550px] px-8 pb-8 mt-6 w-full">
-              <table className="min-w-full bg-[#232336] rounded-lg">
-                <thead>
-                  <tr className="bg-[#1f1f2e] text-white">
-                    <th className="py-2 px-2 text-left text-sm">Data</th>
-                    <th className="py-2 px-2 text-left text-sm">Itens</th>
-                    <th className="py-2 px-2 text-left text-sm">Total</th>
-                    <th className="py-2 px-2 text-left text-sm">NIF</th>
-                    <th className="py-2 px-2 text-left text-sm">Funcionário</th>
-                  </tr>
-                </thead>
+            <div className="mx-4 mt-3 mb-6 overflow-hidden rounded-lg shadow-lg flex-1 flex flex-col bg-[#1f1f2e]" style={{ maxHeight: '200px' }}>
+              <div className="overflow-y-auto flex-1">
+                <table className="min-w-full divide-y divide-[#282846] text-white text-sm">
+                  <thead className="sticky top-0 bg-[#1f1f2e] z-10">
+                    <tr>
+                      <th className="px-3 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Data</th>
+                      <th className="px-3 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Itens</th>
+                      <th className="px-3 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Total</th>
+                      <th className="px-3 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">NIF</th>
+                      <th className="px-3 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Funcionário</th>
+                    </tr>
+                  </thead>
                 <tbody>
                   {currentTransactions.length > 0 ? (
                     currentTransactions.map((transaction, index) => (
                       <tr
                         key={`${transaction.id}-${index}`}
-                        className="border-b border-[#282846] text-white hover:bg-[#282846] transition text-sm"
+                        className="border-b border-[#282846] hover:bg-[#282846] transition"
                       >
-                        <td className="py-1 px-2 text-sm">
+                        <td className="px-3 py-2 whitespace-nowrap">
                           {formatDate(transaction.date)}
                         </td>
-                        <td className="py-1 px-2 text-sm">
+                        <td className="px-3 py-2">
                           <div className="space-y-1">
                             {transaction.items.map((item, i) => (
                               <div key={i} className="flex justify-between">
@@ -263,53 +254,33 @@ export default function SalesRecordsPage() {
                             ))}
                           </div>
                         </td>
-                        <td className="py-1 px-2 text-sm font-medium">
+                        <td className="px-3 py-2 whitespace-nowrap font-medium">
                           {formatCurrency(transaction.total)}
                         </td>
-                        <td className="py-1 px-2 text-sm">
+                        <td className="px-3 py-2 whitespace-nowrap">
                           {transaction.nif || '-'}
                         </td>
-                        <td className="py-1 px-2 text-sm">
+                        <td className="px-3 py-2 whitespace-nowrap">
                           {transaction.workerName || '-'}
                         </td>
                       </tr>
                     ))
                   ) : (
                     <tr>
-                      <td colSpan="5" className="py-4 text-center text-sm text-gray-400">
+                      <td colSpan="5" className="px-3 py-4 text-center text-sm text-gray-400">
                         Nenhuma transação encontrada
                       </td>
                     </tr>
                   )}
                 </tbody>
-              </table>
+                </table>
+              </div>
             </div>
 
-              {/* Pagination */}
-              {totalPages > 1 && (
-                <div className="flex justify-between items-center mt-6 pb-8 px-8">
-                  <button
-                    onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-                    disabled={currentPage === 1}
-                    className="px-4 py-2 bg-quaternary text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    Anterior
-                  </button>
-                  <span className="text-white">
-                    Página {currentPage} de {Math.max(1, totalPages)}
-                  </span>
-                  <button
-                    onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-                    disabled={currentPage >= totalPages}
-                    className="px-4 py-2 bg-quaternary text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    Próxima
-                  </button>
-                </div>
-              )}
+
 
               {/* Most Popular Products */}
-              <div className="px-8 pb-8">
+              <div className="mx-4">
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                   <h2 className="text-2xl font-semibold text-white">
                     Produtos Mais Vendidos
@@ -347,36 +318,38 @@ export default function SalesRecordsPage() {
                     </button>
                   </div>
                 </div>
-                <div className="bg-[#232336] rounded-lg overflow-hidden">
-                  <table className="min-w-full">
-                    <thead>
-                      <tr className="bg-[#1f1f2e] text-white">
-                        <th className="py-2 px-4 text-left text-sm">Produto</th>
-                        <th className="py-2 px-4 text-right text-sm">Quantidade</th>
-                        <th className="py-2 px-4 text-right text-sm">Total</th>
-                      </tr>
-                    </thead>
+                <div className="overflow-hidden rounded-lg shadow-lg flex flex-col bg-[#1f1f2e]" style={{ maxHeight: '300px' }}>
+                  <div className="overflow-y-auto">
+                    <table className="min-w-full divide-y divide-[#282846] text-white text-sm">
+                      <thead className="sticky top-0 bg-[#1f1f2e] z-10">
+                        <tr>
+                          <th className="px-3 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Produto</th>
+                          <th className="px-3 py-3 text-right text-xs font-medium text-white uppercase tracking-wider">Quantidade</th>
+                          <th className="px-3 py-3 text-right text-xs font-medium text-white uppercase tracking-wider">Total</th>
+                        </tr>
+                      </thead>
                     <tbody>
                       {popularProducts.length > 0 ? (
                         popularProducts.map((product, index) => (
                           <tr 
                             key={index}
-                            className="border-b border-[#282846] text-white hover:bg-[#282846] transition text-sm"
+                            className="border-b border-[#282846] hover:bg-[#282846] transition"
                           >
-                            <td className="py-2 px-4">{product.name}</td>
-                            <td className="py-2 px-4 text-right">{product.quantity}</td>
-                            <td className="py-2 px-4 text-right">{formatCurrency(product.total)}</td>
+                            <td className="px-3 py-2 whitespace-nowrap">{product.name}</td>
+                            <td className="px-3 py-2 whitespace-nowrap text-right">{product.quantity}</td>
+                            <td className="px-3 py-2 whitespace-nowrap text-right">{formatCurrency(product.total)}</td>
                           </tr>
                         ))
                       ) : (
                         <tr>
-                          <td colSpan="3" className="py-4 text-center text-sm text-gray-400">
+                          <td colSpan="3" className="px-3 py-4 text-center text-sm text-gray-400">
                             Nenhum dado de venda disponível
                           </td>
                         </tr>
                       )}
                     </tbody>
-                  </table>
+                    </table>
+                  </div>
                 </div>
               </div>
           </div>

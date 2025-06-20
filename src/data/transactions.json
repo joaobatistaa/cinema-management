@@ -70,5 +70,173 @@
     "workerId": 1,
     "workerName": "ADMIN",
     "id": "1750386242310"
+  },
+  {
+    "items": [
+      {
+        "id": "11",
+        "name": "Ice Tea Limão",
+        "price": "2",
+        "stock": 6,
+        "pack": null,
+        "minStock": 5,
+        "quantity": 1
+      }
+    ],
+    "total": 2,
+    "userId": 1,
+    "desc": "Compra no Bar",
+    "date": "2025-06-20T03:00:00.000Z",
+    "nif": null,
+    "workerId": 3,
+    "workerName": "employee3",
+    "id": "1750387200000"
+  },
+  {
+    "items": [
+      {
+        "id": "12",
+        "name": "Ice Tea Pêssego",
+        "price": "2.00",
+        "stock": 5,
+        "minStock": 5,
+        "pack": null,
+        "quantity": 1
+      }
+    ],
+    "total": 2,
+    "userId": 2,
+    "desc": "Compra no Bar",
+    "date": "2025-06-20T03:05:00.000Z",
+    "nif": null,
+    "workerId": 4,
+    "workerName": "employee4",
+    "id": "1750387500000"
+  },
+  {
+    "items": [
+      {
+        "id": "11",
+        "name": "Ice Tea Limão",
+        "price": "2",
+        "stock": 7,
+        "pack": null,
+        "minStock": 5,
+        "quantity": 2
+      }
+    ],
+    "total": 4,
+    "userId": 3,
+    "desc": "Compra no Bar",
+    "date": "2025-06-20T03:10:00.000Z",
+    "nif": null,
+    "workerId": 5,
+    "workerName": "employee5",
+    "id": "1750387800000"
+  },
+  {
+    "items": [
+      {
+        "id": "12",
+        "name": "Ice Tea Pêssego",
+        "price": "2.00",
+        "stock": 3,
+        "minStock": 5,
+        "pack": null,
+        "quantity": 3
+      }
+    ],
+    "total": 6,
+    "userId": 4,
+    "desc": "Compra no Bar",
+    "date": "2025-06-20T03:15:00.000Z",
+    "nif": null,
+    "workerId": 6,
+    "workerName": "employee6",
+    "id": "1750388100000"
+  },
+  {
+    "items": [
+      {
+        "id": "11",
+        "name": "Ice Tea Limão",
+        "price": "2",
+        "stock": 5,
+        "pack": null,
+        "minStock": 5,
+        "quantity": 1
+      }
+    ],
+    "total": 2,
+    "userId": 5,
+    "desc": "Compra no Bar",
+    "date": "2025-06-20T03:20:00.000Z",
+    "nif": null,
+    "workerId": 7,
+    "workerName": "employee7",
+    "id": "1750388400000"
+  },
+  {
+    "items": [
+      {
+        "id": "12",
+        "name": "Ice Tea Pêssego",
+        "price": "2.00",
+        "stock": 4,
+        "minStock": 5,
+        "pack": null,
+        "quantity": 2
+      }
+    ],
+    "total": 4,
+    "userId": 6,
+    "desc": "Compra no Bar",
+    "date": "2025-06-20T03:25:00.000Z",
+    "nif": null,
+    "workerId": 8,
+    "workerName": "employee8",
+    "id": "1750388700000"
+  },
+  {
+    "items": [
+      {
+        "id": "11",
+        "name": "Ice Tea Limão",
+        "price": "2",
+        "stock": 3,
+        "pack": null,
+        "minStock": 5,
+        "quantity": 2
+      }
+    ],
+    "total": 4,
+    "userId": 7,
+    "desc": "Compra no Bar",
+    "date": "2025-06-20T03:30:00.000Z",
+    "nif": null,
+    "workerId": 9,
+    "workerName": "employee9",
+    "id": "1750389000000"
+  },
+  {
+    "items": [
+      {
+        "id": "12",
+        "name": "Ice Tea Pêssego",
+        "price": "2.00",
+        "stock": 6,
+        "minStock": 5,
+        "pack": null,
+        "quantity": 1
+      }
+    ],
+    "total": 2,
+    "userId": 8,
+    "desc": "Compra no Bar",
+    "date": "2025-06-20T03:35:00.000Z",
+    "nif": null,
+    "workerId": 10,
+    "workerName": "employee10",
+    "id": "1750389300000"
   }
 ]

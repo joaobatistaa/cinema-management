@@ -292,8 +292,8 @@ export default function AccountsPage() {
                 </button>
               </div>
             </div>
-            {/* Input de pesquisa com ícone de lupa (bem afastado da barra, colado à tabela) */}
-            <div className="w-full flex justify-start mt-12 px-8">
+            {/* Input de pesquisa alinhado com a tabela */}
+            <div className="w-full flex justify-start mt-12 px-4">
               <div className="relative">
                 <span className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                   <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -316,53 +316,70 @@ export default function AccountsPage() {
                 <span className="text-white">Carregando...</span>
               </div>
             ) : (
-              <div className="overflow-x-auto px-8 pb-8 mt-6">
-                <table className="min-w-full bg-[#232336] rounded-lg overflow-hidden">
-                  <thead>
-                    <tr className="bg-[#1f1f2e] text-white">
-                      <th className="py-2 px-2 text-left text-sm">ID</th>
-                      <th className="py-2 px-2 text-left text-sm">Nome</th>
-                      <th className="py-2 px-2 text-left text-sm">Email</th>
-                      <th className="py-2 px-2 text-left text-sm">Função</th>
-                      <th className="py-2 px-2 text-left text-sm">Salário</th>
-                      <th className="py-2 px-2 text-left text-sm">Ativo</th>
-                      <th className="py-2 px-2 text-left text-sm">Descrição</th>
-                      <th className="py-2 px-2 text-left text-sm">Editar</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {users
-                      .filter((rowUser) => {
-                        const term = searchTerm.trim().toLowerCase();
-                        if (!term) return true;
-                        const name = rowUser.name?.toLowerCase() || "";
-                        const email = rowUser.email?.toLowerCase() || "";
-                        const role = (rowUser.role || "").toLowerCase();
-                        // Corrigir costumer/customer
-                        const roleNorm = role === "costumer" ? "customer" : role;
-                        // Estado
-                        const estado = rowUser.active ? "sim" : "não";
-                        // Pesquisa múltiplos termos
-                        return term.split(" ").every(t =>
-                          name.includes(t) ||
-                          email.includes(t) ||
-                          roleNorm.includes(t) ||
-                          estado.includes(t)
-                        );
-                      })
-                      .map((rowUser) => (
-                        <tr
-                          key={rowUser.id}
-                          className="border-b border-[#282846] text-white hover:bg-[#282846] transition text-sm"
-                        >
-                          <td className="py-1 px-2 text-sm">{rowUser.id}</td>
-                          <td className="py-1 px-2 text-sm">{rowUser.name}</td>
-                          <td className="py-1 px-2 text-sm">{rowUser.email}</td>
-                          <td className="py-1 px-2 text-sm">{rowUser.role}</td>
-                          <td className="py-1 px-2 text-sm">{rowUser.salario ? rowUser.salario : "-"}</td>
-                          <td className="py-1 px-2 text-sm">{rowUser.active ? "Sim" : "Não"}</td>
-                          <td className="py-1 px-2 text-sm">{rowUser.desc || ""}</td>
-                          <td className="py-1 px-2 text-sm">
+              <div className="mx-4 mt-3 mb-6 overflow-hidden rounded-lg shadow-lg flex-1 flex flex-col bg-[#1f1f2e]" style={{ maxHeight: '400px' }}>
+                <div className="overflow-y-auto flex-1">
+                  <table className="min-w-full divide-y divide-[#282846] text-white text-sm">
+                    <thead className="sticky top-0 bg-[#1f1f2e] z-10">
+                      <tr>
+                        <th className="px-3 py-2 text-left text-xs font-medium text-gray-300 uppercase tracking-wider whitespace-nowrap">
+                          ID
+                        </th>
+                        <th className="px-3 py-2 text-left text-xs font-medium text-gray-300 uppercase tracking-wider whitespace-nowrap">
+                          Nome
+                        </th>
+                        <th className="px-3 py-2 text-left text-xs font-medium text-gray-300 uppercase tracking-wider whitespace-nowrap">
+                          Email
+                        </th>
+                        <th className="px-3 py-2 text-left text-xs font-medium text-gray-300 uppercase tracking-wider whitespace-nowrap">
+                          Função
+                        </th>
+                        <th className="px-3 py-2 text-left text-xs font-medium text-gray-300 uppercase tracking-wider whitespace-nowrap">
+                          Salário
+                        </th>
+                        <th className="px-3 py-2 text-left text-xs font-medium text-gray-300 uppercase tracking-wider whitespace-nowrap">
+                          Ativo
+                        </th>
+                        <th className="px-3 py-2 text-left text-xs font-medium text-gray-300 uppercase tracking-wider whitespace-nowrap">
+                          Descrição
+                        </th>
+                        <th className="px-3 py-2 text-right text-xs font-medium text-gray-300 uppercase tracking-wider whitespace-nowrap">
+                          Ações
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-[#232336] divide-y divide-[#282846] text-white">
+                      {users
+                        .filter((rowUser) => {
+                          const term = searchTerm.trim().toLowerCase();
+                          if (!term) return true;
+                          const name = rowUser.name?.toLowerCase() || "";
+                          const email = rowUser.email?.toLowerCase() || "";
+                          const role = (rowUser.role || "").toLowerCase();
+                          // Corrigir costumer/customer
+                          const roleNorm = role === "costumer" ? "customer" : role;
+                          // Estado
+                          const estado = rowUser.active ? "sim" : "não";
+                          // Pesquisa múltiplos termos
+                          return term.split(" ").every(t =>
+                            name.includes(t) ||
+                            email.includes(t) ||
+                            roleNorm.includes(t) ||
+                            estado.includes(t)
+                          );
+                        })
+                        .map((rowUser) => (
+                          <tr
+                            key={rowUser.id}
+                            className={`hover:bg-[#282846] transition-colors ${rowUser.active === 0 ? 'bg-gray-800' : ''}`}
+                          >
+                            <td className="px-3 py-2 text-xs">{rowUser.id}</td>
+                            <td className="px-3 py-2 text-xs">{rowUser.name}</td>
+                            <td className="px-3 py-2 text-xs">{rowUser.email}</td>
+                            <td className="px-3 py-2 text-xs">{rowUser.role}</td>
+                            <td className="px-3 py-2 text-xs">{rowUser.salario ? rowUser.salario : "-"}</td>
+                            <td className="px-3 py-2 text-xs">{rowUser.active ? "Sim" : "Não"}</td>
+                            <td className="px-3 py-2 text-xs">{rowUser.desc || ""}</td>
+                            <td className="px-3 py-2 text-xs">
                             {user && user.role !== "employee" && user.email !== rowUser.email ? (
                               <div className="flex gap-2">
                                 {/* Botão de reativar */}
@@ -418,13 +435,17 @@ export default function AccountsPage() {
                           </td>
                         </tr>
                       ))}
-                  </tbody>
-                </table>
+                    </tbody>
+                  </table>
+                </div>
+                <div className="bg-[#1f1f2e] px-6 py-3 text-xs text-gray-400">
+                  {users.length} utilizador{users.length !== 1 ? 'es' : ''} encontrado{users.length !== 1 ? 's' : ''}
+                </div>
               </div>
             )}
             {/* Botão de auditoria para admins, canto inferior direito do cartão principal */}
             {user && user.role === "admin" && (
-              <div className="flex justify-end items-end w-full mt-8 pr-8">
+              <div className="flex justify-end items-end w-full mt-4 pr-8">
                 <button
                   className="bg-quaternary text-lg text-white px-6 py-3 rounded font-medium cursor-pointer"
                   onClick={() => router.push("/audit-log")}
@@ -579,7 +600,7 @@ export default function AccountsPage() {
                     value={newUser.nif}
                     onChange={(e) => setNewUser((u) => ({ ...u, nif: e.target.value }))}
                     placeholder="NIF (obrigatório para funcionários)"
-                    i maxLength={9}
+                    maxLength={9}
                     disabled={loadingNewUser}
                   />
                 </div>
