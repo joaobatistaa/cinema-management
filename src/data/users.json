@@ -34,5 +34,31 @@
     "desc": "",
     "tickets": [],
     "purl": null
+  },
+  {
+    "id": 4,
+    "role": "customer",
+    "email": "test1750458278766@test.com",
+    "password": "$2b$10$7J8C58Rxk0Lbs9QPE.Lu1ObS2986d7Ec1dw7snxTIsymCIR2L9wpe",
+    "name": "Test User",
+    "nif": null,
+    "active": 0,
+    "purl": "dGVzdDE3NTA0NTgyNzg3NjZAdGVzdC5j",
+    "desc": "pending email confirmation",
+    "tickets": [],
+    "salario": null
+  },
+  {
+    "id": 5,
+    "role": "customer",
+    "email": "test1750458278821@test.com",
+    "password": "$2b$10$dxXlGtK/KFpsU6HRNo3XxuLfqpbvfPKgIUvPs70mZYw63ES6JJCaG",
+    "name": "Test User",
+    "nif": null,
+    "active": 0,
+    "purl": "dGVzdDE3NTA0NTgyNzg4MjFAdGVzdC5j",
+    "desc": "pending email confirmation",
+    "tickets": [],
+    "salario": null
   }
 ]

@@ -29,6 +29,7 @@ export async function POST(request) {
     const {
       email,
       movie_title,
+      isGuest,
       room_name,
       session_datetime,
       actorId = "unknown",
@@ -43,18 +44,20 @@ export async function POST(request) {
       );
     }
 
-    // Validar se email existe ou é guest@guest.com
-    if (email !== "guest@guest.com") {
-      const user = await getUserByEmail(email);
-      if (!user) {
-        return NextResponse.json(
-          { error: "Email não registado no sistema" },
-          { status: 400 }
-        );
-      }
+    let user = null;
+    let userId = null;
+
+    user = await getUserByEmail(email.trim());
+    if (!user) {
+      userId = 0;
+    } else {
+      userId = user.id;
     }
 
-    const newTicket = addTicket(dataWithoutEmailAndActor);
+    const newTicket = addTicket({
+      ...dataWithoutEmailAndActor,
+      user_id: userId
+    });
 
     // Enviar email com bilhete (se aplicável)
     if (email) {

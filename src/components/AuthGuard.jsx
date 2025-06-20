@@ -30,6 +30,7 @@ export default function AuthGuard({ children }) {
         publicPaths.includes(pathname) ||
         pathname.startsWith("/movies/") ||
         pathname.startsWith("/sessions") ||
+        pathname.startsWith("/tickets/new") ||
         pathname.startsWith("/confirmEmail") ||
         pathname.startsWith("/forgotPassword") ||
         pathname.startsWith("/resetPassword");

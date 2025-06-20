@@ -190,6 +190,7 @@ export default function BuyTicketPage() {
   }
 
   async function handleConfirmPurchase() {
+    console.log("puta");
     if (
       (paymentMethod === "mbway" && !paymentInfo.mbway) ||
       (paymentMethod === "card" && !paymentInfo.card) ||
@@ -203,23 +204,25 @@ export default function BuyTicketPage() {
       toast.error("Indica o email do cliente!");
       return;
     }
+    console.log("puta");
+
+    if (!customerEmail && !user) {
+      toast.error("Indica o email!");
+      return;
+    }
 
     setSaving(true);
     try {
       const now = new Date();
       const datetime = now.toISOString();
 
-      let user_id = -1;
-      if (user?.role === "customer") {
-        user_id = user?.id;
-      }
-
       const data = {
         email:
           user?.role == "employee" || user?.role == "admin"
             ? customerEmail
+            : !user
+            ? customerEmail
             : user?.email,
-        user_id,
         movie_title: movie?.title || "",
         movie_id: movieId,
         session_id: sessionId,
@@ -254,8 +257,8 @@ export default function BuyTicketPage() {
             ? "Dinheiro"
             : "",
 
-        actorId: user.id,
-        actorName: user.name
+        actorId: user?.id || "unknown",
+        actorName: user?.name || "unknown"
       };
 
       const response = await fetch("/api/tickets", {
@@ -689,8 +692,28 @@ export default function BuyTicketPage() {
           </form>
         )}
         {/* Dialog de pagamento */}
-        <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
-          <DialogTitle>Escolha o método de pagamento</DialogTitle>
+        <Dialog
+          open={openDialog}
+          onClose={() => setOpenDialog(false)}
+          className="bg-black"
+          PaperProps={{
+            sx: {
+              backgroundColor: "#232336", // conteúdo escuro
+              borderRadius: "16px",
+              p: 3,
+              minWidth: "320px",
+              maxWidth: "90vw",
+              maxHeight: "80vh",
+              overflowY: "auto",
+              color: "white"
+            }
+          }}
+        >
+          <DialogTitle
+            sx={{ color: "white", textAlign: "center", fontWeight: "bold" }}
+          >
+            Escolha o método de pagamento
+          </DialogTitle>
           <DialogContent>
             {(user?.role === "admin" || user?.role === "employee") && (
               <TextField
@@ -703,36 +726,58 @@ export default function BuyTicketPage() {
                 value={customerEmail}
                 onChange={(e) => setCustomerEmail(e.target.value)}
                 required
+                InputLabelProps={{ style: { color: "#ccc" } }}
+                InputProps={{ style: { color: "white" } }}
               />
             )}
+            {!user && (
+              <TextField
+                autoFocus
+                margin="dense"
+                label="Email"
+                type="email"
+                fullWidth
+                variant="standard"
+                value={customerEmail}
+                onChange={(e) => setCustomerEmail(e.target.value)}
+                required
+                InputLabelProps={{ style: { color: "#ccc" } }}
+                InputProps={{ style: { color: "white" } }}
+              />
+            )}
+
             <RadioGroup
               value={paymentMethod}
               onChange={(e) => setPaymentMethod(e.target.value)}
             >
               <FormControlLabel
                 value="mbway"
-                control={<Radio />}
+                control={<Radio sx={{ color: "white" }} />}
                 label="MB WAY"
+                sx={{ color: "white" }}
               />
               <FormControlLabel
                 value="card"
-                control={<Radio />}
+                control={<Radio sx={{ color: "white" }} />}
                 label="Cartão Débito/VISA"
+                sx={{ color: "white" }}
               />
               <FormControlLabel
                 value="paypal"
-                control={<Radio />}
+                control={<Radio sx={{ color: "white" }} />}
                 label="PayPal"
+                sx={{ color: "white" }}
               />
-              {/* Só mostra a opção dinheiro para admin ou employee */}
               {(user?.role === "admin" || user?.role === "employee") && (
                 <FormControlLabel
                   value="cash"
-                  control={<Radio />}
+                  control={<Radio sx={{ color: "white" }} />}
                   label="Dinheiro"
+                  sx={{ color: "white" }}
                 />
               )}
             </RadioGroup>
+
             {paymentMethod === "mbway" && (
               <TextField
                 autoFocus
@@ -745,8 +790,11 @@ export default function BuyTicketPage() {
                 onChange={(e) =>
                   setPaymentInfo((info) => ({ ...info, mbway: e.target.value }))
                 }
+                InputLabelProps={{ style: { color: "#ccc" } }}
+                InputProps={{ style: { color: "white" } }}
               />
             )}
+
             {paymentMethod === "card" && (
               <TextField
                 autoFocus
@@ -759,8 +807,11 @@ export default function BuyTicketPage() {
                 onChange={(e) =>
                   setPaymentInfo((info) => ({ ...info, card: e.target.value }))
                 }
+                InputLabelProps={{ style: { color: "#ccc" } }}
+                InputProps={{ style: { color: "white" } }}
               />
             )}
+
             {paymentMethod === "paypal" && (
               <TextField
                 autoFocus
@@ -776,18 +827,20 @@ export default function BuyTicketPage() {
                     paypal: e.target.value
                   }))
                 }
+                InputLabelProps={{ style: { color: "#ccc" } }}
+                InputProps={{ style: { color: "white" } }}
               />
             )}
-            {/* Dinheiro não precisa de campo extra */}
           </DialogContent>
-          <DialogActions>
-            <Button onClick={() => setOpenDialog(false)} color="primary">
+          <DialogActions sx={{ justifyContent: "center", gap: 2, mt: 2 }}>
+            <button
+              onClick={() => setOpenDialog(false)}
+              className="bg-quaternary hover:bg-quinary text-white font-bold px-8 py-2 rounded-lg cursor-pointer transition-colors"
+            >
               Cancelar
-            </Button>
-            <Button
+            </button>
+            <button
               onClick={handleConfirmPurchase}
-              color="success"
-              variant="contained"
               disabled={
                 ((user?.role === "admin" || user?.role === "employee") &&
                   !customerEmail) ||
@@ -795,9 +848,18 @@ export default function BuyTicketPage() {
                 (paymentMethod === "card" && !paymentInfo.card) ||
                 (paymentMethod === "paypal" && !paymentInfo.paypal)
               }
+              className={`bg-quaternary hover:bg-quinary text-white font-bold px-8 py-2 rounded-lg cursor-pointer transition-colors ${
+                ((user?.role === "admin" || user?.role === "employee") &&
+                  !customerEmail) ||
+                (paymentMethod === "mbway" && !paymentInfo.mbway) ||
+                (paymentMethod === "card" && !paymentInfo.card) ||
+                (paymentMethod === "paypal" && !paymentInfo.paypal)
+                  ? "opacity-50 cursor-not-allowed"
+                  : ""
+              }`}
             >
               Confirmar Compra
-            </Button>
+            </button>
           </DialogActions>
         </Dialog>
       </div>

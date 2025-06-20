@@ -15,7 +15,7 @@ export default function Bar() {
   // Helper function to get actor information
   const getActorInfo = () => ({
     actorId: user?.id || 0,
-    actorName: user?.name || 'guest'
+    actorName: user?.name || "guest"
   });
 
   const [products, setProducts] = useState([]);
@@ -43,12 +43,13 @@ export default function Bar() {
   const [clientNif, setClientNif] = useState("");
   const [showGuestNifForm, setShowGuestNifForm] = useState(false);
   const [guestNif, setGuestNif] = useState("");
+  const [guestEmail, setGuestEmail] = useState("");
   const [showLowStockModal, setShowLowStockModal] = useState(false);
   const [lowStockModalClosed, setLowStockModalClosed] = useState(false);
   const pageSize = 12;
 
   // Get products with stock below minimum stock
-  const lowStockProducts = products.filter(product => {
+  const lowStockProducts = products.filter((product) => {
     const stock = Number(product.stock) || 0;
     const minStock = Number(product.minStock) || 0;
     return stock < minStock;
@@ -74,9 +75,11 @@ export default function Bar() {
 
   // Show low stock alert when user is admin or employee and there are low stock products
   useEffect(() => {
-    if ((userRole === 'admin' || userRole === 'employee') && 
-        lowStockProducts.length > 0 && 
-        !lowStockModalClosed) {
+    if (
+      (userRole === "admin" || userRole === "employee") &&
+      lowStockProducts.length > 0 &&
+      !lowStockModalClosed
+    ) {
       setShowLowStockModal(true);
     }
   }, [lowStockProducts, userRole, lowStockModalClosed]);
@@ -190,12 +193,18 @@ export default function Bar() {
         return;
       }
     }
+
+    if (!guestEmail) {
+      toast.error("Insira um Email.");
+      return;
+    }
+
     try {
       const res = await fetch("/api/transactions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          email: "guest@guest.com",
+          email: guestEmail,
           cart,
           desc: "Compra no Bar",
           nif: nifStr,
@@ -223,25 +232,7 @@ export default function Bar() {
       return;
     }
     const emailTrimmed = email.trim().toLowerCase();
-    // Validação extra: só aceita email existente ou guest@guest.com
-    let isValid = false;
-    try {
-      const res = await fetch(
-        "/api/users/by-email?email=" + encodeURIComponent(emailTrimmed)
-      );
-      if (res.ok) {
-        const user = await res.json();
-        isValid = !!user && !!user.id;
-      }
-    } catch {
-      // ignore
-    }
-    if (!isValid && emailTrimmed !== "guest@guest.com") {
-      toast.error(
-        "Utilizador não encontrado. Para clientes sem conta, utilize o email guest@guest.com."
-      );
-      return;
-    }
+
     let nifStr = nif;
     if (!nifStr || typeof nifStr !== "string" || !nifStr.trim()) {
       nifStr = null;
@@ -333,12 +324,12 @@ export default function Bar() {
         prev.map((p) =>
           p.id === editProduct.id
             ? {
-              ...p,
-              name: editName.trim(),
-              stock: Number(editStock),
-              minStock: Number(editMinStock),
-              price: priceValue
-            }
+                ...p,
+                name: editName.trim(),
+                stock: Number(editStock),
+                minStock: Number(editMinStock),
+                price: priceValue
+              }
             : p
         )
       );
@@ -424,10 +415,10 @@ export default function Bar() {
             </h1>
           </div>
           <div className="flex justify-end">
-            {userRole === 'admin' && (
+            {userRole === "admin" && (
               <button
                 className="bg-quaternary text-white text-lg px-6 py-3 rounded font-medium cursor-pointer"
-                onClick={() => router.push('/registoVendas')}
+                onClick={() => router.push("/registoVendas")}
               >
                 Registo de Vendas
               </button>
@@ -454,8 +445,10 @@ export default function Bar() {
                   <h3 className="font-bold">{product.name}</h3>
                   <p className="text-orange-400">
                     Stock: {product.stock}
-                    {(userRole === 'admin' || userRole === 'employee') && (
-                      <span className="text-gray-400 text-sm ml-2">(Mín: {product.minStock || 0})</span>
+                    {(userRole === "admin" || userRole === "employee") && (
+                      <span className="text-gray-400 text-sm ml-2">
+                        (Mín: {product.minStock || 0})
+                      </span>
                     )}
                   </p>
                   <p className="text-green-400">{product.price} €</p>
@@ -511,9 +504,16 @@ export default function Bar() {
                               )
                             ) {
                               const { actorId, actorName } = getActorInfo();
-                              fetch(`/api/bar?id=${product.id}&actorId=${actorId}&actorName=${encodeURIComponent(actorName)}`, {
-                                method: "DELETE"
-                              })
+                              fetch(
+                                `/api/bar?id=${
+                                  product.id
+                                }&actorId=${actorId}&actorName=${encodeURIComponent(
+                                  actorName
+                                )}`,
+                                {
+                                  method: "DELETE"
+                                }
+                              )
                                 .then((res) => {
                                   if (!res.ok)
                                     throw new Error(
@@ -625,10 +625,11 @@ export default function Bar() {
                     <button
                       key={n}
                       onClick={() => setPage(n + 1)}
-                      className={`cursor-pointer px-3 py-1 rounded ${page === n + 1
+                      className={`cursor-pointer px-3 py-1 rounded ${
+                        page === n + 1
                           ? "bg-white text-black"
                           : "bg-gray-800 text-white"
-                        }`}
+                      }`}
                     >
                       {n + 1}
                     </button>
@@ -686,7 +687,7 @@ export default function Bar() {
               <input
                 type="email"
                 className="w-full px-4 py-2 border rounded-lg text-gray"
-                placeholder="Email (guest@guest.com para guests)"
+                placeholder="Email"
                 value={clientEmail}
                 maxLength={25}
                 onChange={(e) => setClientEmail(e.target.value.slice(0, 25))}
@@ -770,9 +771,7 @@ export default function Bar() {
       {showGuestNifForm && userRole === "guest" && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
           <div className="bg-[#232336] rounded-xl shadow-lg p-8 flex flex-col items-center min-w-[320px] max-w-[90vw]">
-            <h2 className="text-white text-xl font-bold mb-4">
-              NIF para Fatura (opcional)
-            </h2>
+            <h2 className="text-white text-xl font-bold mb-4">Email e NIF</h2>
             <form
               className="flex flex-col items-center w-full"
               onSubmit={(e) => {
@@ -781,24 +780,33 @@ export default function Bar() {
               }}
             >
               <input
+                type="email"
+                className="w-full px-4 py-2 border rounded-lg text-gray"
+                placeholder="Email"
+                value={guestEmail}
+                maxLength={25}
+                onChange={(e) => setGuestEmail(e.target.value.slice(0, 25))}
+                required
+                autoFocus
+              />
+              <input
                 type="text"
-                className="px-3 py-2 rounded border border-gray-400 mb-2 w-full bg-[#232336] text-white"
+                className="w-full px-4 py-2 border rounded-lg text-gray mt-3"
                 placeholder="NIF (9 dígitos, opcional)"
                 value={guestNif}
                 onChange={(e) => setGuestNif(e.target.value)}
                 maxLength={9}
-                autoFocus
               />
-              <div className="flex gap-2 mt-2">
+              <div className="flex gap-2 mt-6">
                 <button
                   type="submit"
-                  className="bg-green-600 hover:bg-green-700 text-white font-bold px-8 py-2 rounded-lg cursor-pointer"
+                  className="bg-quaternary text-white text-lg px-8 py-2 rounded-lg font-medium cursor-pointer"
                 >
                   Finalizar Compra
                 </button>
                 <button
                   type="button"
-                  className="bg-gray-400 hover:bg-gray-500 text-white font-bold px-6 py-2 rounded-lg cursor-pointer"
+                  className="bg-quinary text-lg text-white px-6 py-2 rounded-lg font-medium cursor-pointer"
                   onClick={() => setShowGuestNifForm(false)}
                 >
                   Cancelar
@@ -953,38 +961,54 @@ export default function Bar() {
         </div>
       )}
 
-      {showLowStockModal && (userRole === "admin" || userRole === "employee") && (
-        <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
-          <div className="bg-[#232336] rounded-xl shadow-lg p-8 flex flex-col items-center min-w-[320px] max-w-[90vw] max-h-[80vh] overflow-y-auto">
-            <h2 className="text-white text-xl font-bold mb-4 text-center">Atenção: Produtos com Stock Baixo</h2>
-            <div className="space-y-2 mb-6 w-full">
-              {lowStockProducts.map((product) => (
-                <div key={product.id} className="flex justify-between items-center p-3 bg-[#2d2d47] rounded-lg">
-                  <span className="font-medium text-white">{product.name}</span>
-                  <div className="flex items-center">
-                    <span className="text-sm text-gray-300">
-                      Stock: <span className={`font-bold ${product.stock < product.minStock ? 'text-red-400' : 'text-white'}`}>
-                        {product.stock}
-                      </span> / Mín: {product.minStock}
+      {showLowStockModal &&
+        (userRole === "admin" || userRole === "employee") && (
+          <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+            <div className="bg-[#232336] rounded-xl shadow-lg p-8 flex flex-col items-center min-w-[320px] max-w-[90vw] max-h-[80vh] overflow-y-auto">
+              <h2 className="text-white text-xl font-bold mb-4 text-center">
+                Atenção: Produtos com Stock Baixo
+              </h2>
+              <div className="space-y-2 mb-6 w-full">
+                {lowStockProducts.map((product) => (
+                  <div
+                    key={product.id}
+                    className="flex justify-between items-center p-3 bg-[#2d2d47] rounded-lg"
+                  >
+                    <span className="font-medium text-white">
+                      {product.name}
                     </span>
+                    <div className="flex items-center">
+                      <span className="text-sm text-gray-300">
+                        Stock:{" "}
+                        <span
+                          className={`font-bold ${
+                            product.stock < product.minStock
+                              ? "text-red-400"
+                              : "text-white"
+                          }`}
+                        >
+                          {product.stock}
+                        </span>{" "}
+                        / Mín: {product.minStock}
+                      </span>
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
-            <div className="flex justify-center w-full">
-              <button
-                onClick={() => {
-                  setShowLowStockModal(false);
-                  setLowStockModalClosed(true);
-                }}
-                className="bg-quaternary hover:bg-quinary text-white font-bold px-8 py-2 rounded-lg cursor-pointer transition-colors"
-              >
-                Fechar
-              </button>
+                ))}
+              </div>
+              <div className="flex justify-center w-full">
+                <button
+                  onClick={() => {
+                    setShowLowStockModal(false);
+                    setLowStockModalClosed(true);
+                  }}
+                  className="bg-quaternary hover:bg-quinary text-white font-bold px-8 py-2 rounded-lg cursor-pointer transition-colors"
+                >
+                  Fechar
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
     </div>
   );
 }

@@ -646,5 +646,36 @@
     "buy_total": 7,
     "payment_method": "cash",
     "payment_info": "Dinheiro"
+  },
+  {
+    "id": 30,
+    "movie_id": "2",
+    "session_id": "7",
+    "room_id": 7,
+    "seat": {
+      "row": 3,
+      "col": 2
+    },
+    "datetime": "2025-06-20T22:24:04.008Z",
+    "bar_items": [
+      {
+        "id": "2",
+        "name": "Pipocas M",
+        "price": "5",
+        "quantity": 1
+      },
+      {
+        "id": "3",
+        "name": "Pipocas P",
+        "price": "3",
+        "quantity": 1
+      }
+    ],
+    "ticket_price": 7,
+    "bar_total": 8,
+    "buy_total": 15,
+    "payment_method": "mbway",
+    "payment_info": "aasfafa",
+    "user_id": 0
   }
 ]
